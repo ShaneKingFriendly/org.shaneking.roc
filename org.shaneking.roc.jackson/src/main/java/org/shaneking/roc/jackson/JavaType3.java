@@ -1,6 +1,5 @@
 package org.shaneking.roc.jackson;
 
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,21 +11,21 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
-public interface JavaTypeResolvable {
+public class JavaType3 {
 
-  default JavaType[] resolveRtnJavaTypes(ProceedingJoinPoint pjp) {
+  public static JavaType[] resolveRtnJavaTypes(ProceedingJoinPoint pjp) {
     Method method = resolveMethod(pjp);
     JavaType javaType = resolveJavaType(ResolvableType.forMethodReturnType(method).getType(), pjp.getTarget().getClass());
     return resolveJavaTypes(javaType);
   }
 
-  default JavaType[] resolveArgJavaTypes(ProceedingJoinPoint pjp, int idx) {
+  public static JavaType[] resolveArgJavaTypes(ProceedingJoinPoint pjp, int idx) {
     Method method = resolveMethod(pjp);
     JavaType javaType = resolveJavaType(ResolvableType.forMethodParameter(method, idx).getType(), pjp.getTarget().getClass());
     return resolveJavaTypes(javaType);
   }
 
-  default JavaType[] resolveJavaTypes(JavaType javaType) {
+  public static JavaType[] resolveJavaTypes(JavaType javaType) {
     JavaType[] rtnJavaTypes = new JavaType[javaType.containedTypeCount()];
     for (int i = 0; i < javaType.containedTypeCount(); i++) {
       rtnJavaTypes[i] = javaType.containedType(i);
@@ -34,7 +33,7 @@ public interface JavaTypeResolvable {
     return rtnJavaTypes;
   }
 
-  default JavaType resolveJavaType(Type type, Class<?> contextClass) {
+  public static JavaType resolveJavaType(Type type, Class<?> contextClass) {
     TypeFactory typeFactory = OM3.om().getTypeFactory();
     if (contextClass != null) {
       ResolvableType resolvableType = ResolvableType.forType(type);
@@ -62,7 +61,7 @@ public interface JavaTypeResolvable {
     return typeFactory.constructType(type);
   }
 
-  default ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
+  public static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
     ResolvableType rtnResolvableType = null;
     if (contextType.hasGenerics()) {
       rtnResolvableType = ResolvableType.forType(typeVariable, contextType);
@@ -89,7 +88,7 @@ public interface JavaTypeResolvable {
     return ResolvableType.NONE;
   }
 
-  default Method resolveMethod(ProceedingJoinPoint pjp) {
+  public static Method resolveMethod(ProceedingJoinPoint pjp) {
     Method rtnMethod = null;
     String methodLongString = pjp.getSignature().toLongString();
     for (Method method : pjp.getSignature().getDeclaringType().getMethods()) {
