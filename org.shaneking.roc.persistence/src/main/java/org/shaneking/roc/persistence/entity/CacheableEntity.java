@@ -5,7 +5,6 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.sql.Condition;
 import org.shaneking.ling.persistence.sql.entity.IdAdtVerEntity;
-import org.shaneking.ling.persistence.sql.entity.mysql.MySqler;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.Map0;
 
@@ -15,8 +14,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Accessors(chain = true)
-@ToString
-public class CacheableEntity extends IdAdtVerEntity<Map<String, Condition>> implements MySqler {
+@ToString(callSuper = true)
+public abstract class CacheableEntity extends IdAdtVerEntity<Map<String, Condition>> {
   @Override
   public @NonNull List<Condition> findHavingConditions(@NonNull String fieldName) {
     Map<String, Condition> conditionMap = this.getHavingConditions();
