@@ -99,6 +99,7 @@
   <!-- Unused : mvn -N versions:update-child-modules -->
   <modules>
     <module>org.shaneking.roc.jackson</module>
+    <module>org.shaneking.roc.persistence</module>
     <module>org.shaneking.roc.test</module>
     <module>org.shaneking.roc.zero</module>
   </modules>
