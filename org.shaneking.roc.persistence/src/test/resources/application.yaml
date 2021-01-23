@@ -1,0 +1,10 @@
+## spring
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    ## external
+    #url: jdbc:sqlite:D:/eclipse/xy.db
+    ## internal
+    url: jdbc:sqlite::resource:sktest.roc.persistence.sqllite
+    username:
+    password:

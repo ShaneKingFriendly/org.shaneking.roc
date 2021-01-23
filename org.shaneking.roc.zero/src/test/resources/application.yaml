@@ -3,7 +3,8 @@ sk:
     zero:
       net:
         address:
-          'propPath': 'classpath:vhosts.properties'
+          enabled: true
+          prop-path: classpath:vhosts.properties
           vhosts:
-            'inet.address.test1': '44.44.44.44'
-            'inet.address.test2': "44.44.44.45,44.44.44.46"
+            inet.address.test1: 44.44.44.44
+            inet.address.test2: 44.44.44.45,44.44.44.46

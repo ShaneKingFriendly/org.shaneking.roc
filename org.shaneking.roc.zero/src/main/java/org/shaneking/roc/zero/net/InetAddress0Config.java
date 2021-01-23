@@ -34,20 +34,20 @@ public class InetAddress0Config {
 
   @PostConstruct
   public void postConstruct() {
-    if (enabled) {
-      if (!String0.isNullOrEmpty(propPath)) {
+    if (this.isEnabled()) {
+      if (!String0.isNullOrEmpty(this.getPropPath())) {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
-          Resource[] resources = resolver.getResources(propPath);
+          Resource[] resources = resolver.getResources(this.getPropPath());
           for (Resource resource : resources) {
             ResourceBundle resourceBundle = new PropertyResourceBundle(resource.getInputStream());
             resourceBundle.keySet().forEach(k -> InetAddress0.putCustomHost(k, String0.nullToEmpty(resourceBundle.getString(k))));
           }
         } catch (Exception e) {
-          log.error(propPath, e);
+          log.error(this.getPropPath(), e);
         }
       }
-      vhosts.forEach(InetAddress0::putCustomHost);
+      this.getVhosts().forEach(InetAddress0::putCustomHost);
     }
   }
 }
