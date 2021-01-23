@@ -28,7 +28,20 @@ public class CacheableDao {
   @Getter
   private JdbcTemplate jdbcTemplate;
 
+  public <T extends CacheableEntity> void protectInsert(T t) {
+
+  }
+
+  public <T extends CacheableEntity> void protectUpdate(T t) {
+    protectInsert(t);
+  }
+
+  public <T extends CacheableEntity> void protectSelect(T t) {
+
+  }
+
   public <T extends CacheableEntity> int add(@NonNull Class<T> cacheType, @NonNull T t) {
+    protectInsert(t);
     Tuple.Pair<String, List<Object>> pair = t.insertSql();
     log.info(OM3.writeValueAsString(pair));
     return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -40,10 +53,10 @@ public class CacheableDao {
     return (int) this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.COUNT_1_);
   }
 
-  public <T extends CacheableEntity> int ids(@NonNull Class<T> cacheType, @NonNull T t) {
+  public <T extends CacheableEntity> String ids(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectIdsSql();
     log.info(OM3.writeValueAsString(pair));
-    return (int) this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.GROUP__CONCAT_ID_);
+    return String.valueOf(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.GROUP__CONCAT_ID_));
   }
 
   @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)
@@ -52,6 +65,7 @@ public class CacheableDao {
       if (String0.isNullOrEmpty(t.getId())) {
         throw new ZeroException(OM3.p(cacheType, t));
       } else {
+        protectUpdate(t);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -71,6 +85,7 @@ public class CacheableDao {
           t = cacheType.newInstance();
         }
         t.forceWhereCondition(IdEntity.FIELD__ID).resetId(id);
+        protectUpdate(t);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -90,6 +105,7 @@ public class CacheableDao {
           t = cacheType.newInstance();
         }
         t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
+        protectUpdate(t);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -105,6 +121,7 @@ public class CacheableDao {
       throw new ZeroException(OM3.p(cacheType, t, ids));
     } else {
       t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
+      protectUpdate(t);
       Tuple.Pair<String, List<Object>> pair = t.updateSql();
       log.info(OM3.writeValueAsString(pair));
       return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -116,6 +133,7 @@ public class CacheableDao {
     if (String0.isNullOrEmpty(t.getId())) {
       throw new ZeroException(OM3.p(cacheType, t));
     } else {
+      protectUpdate(t);
       Tuple.Pair<String, List<Object>> pair = t.updateSql();
       log.info(OM3.writeValueAsString(pair));
       return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());

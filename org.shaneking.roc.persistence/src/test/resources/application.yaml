@@ -2,9 +2,12 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    ## external
-    #url: jdbc:sqlite:D:/eclipse/xy.db
-    ## internal
-    url: jdbc:sqlite::resource:sktest.roc.persistence.sqllite
-    username:
     password:
+    ## absolute
+    #url: jdbc:sqlite:D:/eclipse/xy.db
+    ## compiled for test(../org.shaneking.roc.persistence/target/test-classes/sktest.roc.persistence.sqllite)
+    #url: jdbc:sqlite::resource:sktest.roc.persistence.sqllite
+    ## relative
+    url: jdbc:sqlite:src/test/resources/sktest.roc.persistence.sqllite
+    username:
+

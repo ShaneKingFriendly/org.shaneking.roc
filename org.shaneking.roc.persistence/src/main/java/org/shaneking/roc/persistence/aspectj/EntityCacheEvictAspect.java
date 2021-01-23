@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.lang.Object0;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.annotation.EntityCacheable;
+import org.shaneking.roc.persistence.annotation.EntityCacheEvict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,21 +27,21 @@ public class EntityCacheEvictAspect {
   private void pointcut() {
   }
 
-  @After("pointcut() && @annotation(entityCacheable)")
-  public void after(JoinPoint jp, EntityCacheable entityCacheable) throws Throwable {
-    if (jp.getArgs().length > entityCacheable.clsIdx() && jp.getArgs()[entityCacheable.clsIdx()] instanceof Class) {
-      Class clazz = (Class) jp.getArgs()[entityCacheable.clsIdx()];
+  @After("pointcut() && @annotation(entityCacheEvict)")
+  public void after(JoinPoint jp, EntityCacheEvict entityCacheEvict) throws Throwable {
+    if (jp.getArgs().length > entityCacheEvict.clsIdx() && jp.getArgs()[entityCacheEvict.clsIdx()] instanceof Class) {
+      Class clazz = (Class) jp.getArgs()[entityCacheEvict.clsIdx()];
       try {
-        if (entityCacheable.pKeyIdx() > -1) {
-          Object pKeyObj = jp.getArgs()[entityCacheable.pKeyIdx()];
+        if (entityCacheEvict.pKeyIdx() > -1) {
+          Object pKeyObj = jp.getArgs()[entityCacheEvict.pKeyIdx()];
           if (pKeyObj instanceof List) {
             //org.shaneking.roc.persistence.dao.CacheableDao.delByIds
-            List<String> pKeyList = String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheable.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
+            List<String> pKeyList = String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheEvict.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
             log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), EntityCacheUtils.INFO_CODE__CACHE_HIT_PART, entityCacheAbstractWrapper.hdel(clazz.getName(), pKeyList.toArray(new String[0])), OM3.writeValueAsString(pKeyList)));
           } else {
             //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T)
             //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T, java.lang.String)
-            String k = String.valueOf(String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheable.pKeyPath()));
+            String k = String.valueOf(String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheEvict.pKeyPath()));
             if (String0.isNull2Empty(k)) {
               log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().getName(), EntityCacheUtils.ERR_CODE__ANNOTATION_SETTING_ERROR));
             } else {
