@@ -1,9 +1,9 @@
-package org.shaneking.roc.test;
+package org.shaneking.roc.zero;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @ComponentScan
 @Configuration
-public class SKSpringTestAutoConfiguration {
+public class RocZeroAutoConfiguration {
 }

@@ -24,6 +24,16 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <!-- @ConfigurationProperties, @EnableConfigurationProperties -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.shaneking.ling</groupId>
       <artifactId>org.shaneking.ling.zero</artifactId>
       <version>${org.shaneking.ling_version}</version>

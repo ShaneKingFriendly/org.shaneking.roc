@@ -10,5 +10,5 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @ConditionalOnBean(JdbcTemplate.class)
 @ConditionalOnClass(JdbcTemplate.class)
 @Configuration
-public class PersistenceAutoConfiguration {
+public class RocPersistenceAutoConfiguration {
 }
