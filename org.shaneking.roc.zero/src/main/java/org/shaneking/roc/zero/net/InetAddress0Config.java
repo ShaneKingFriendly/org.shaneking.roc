@@ -41,13 +41,13 @@ public class InetAddress0Config {
           Resource[] resources = resolver.getResources(propPath);
           for (Resource resource : resources) {
             ResourceBundle resourceBundle = new PropertyResourceBundle(resource.getInputStream());
-            resourceBundle.keySet().forEach(k -> InetAddress0.putCustomHost(k, String0.nullToEmpty(resourceBundle.getString(k)).split(String0.COMMA)));
+            resourceBundle.keySet().forEach(k -> InetAddress0.putCustomHost(k, String0.nullToEmpty(resourceBundle.getString(k))));
           }
         } catch (Exception e) {
           log.error(propPath, e);
         }
       }
-      vhosts.forEach((k, v) -> InetAddress0.putCustomHost(k, v.split(String0.COMMA)));
+      vhosts.forEach(InetAddress0::putCustomHost);
     }
   }
 }
