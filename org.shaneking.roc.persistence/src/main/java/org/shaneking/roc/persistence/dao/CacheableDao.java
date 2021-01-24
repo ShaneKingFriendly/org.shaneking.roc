@@ -28,20 +28,7 @@ public class CacheableDao {
   @Getter
   private JdbcTemplate jdbcTemplate;
 
-  public <T extends CacheableEntity> void protectInsert(T t) {
-
-  }
-
-  public <T extends CacheableEntity> void protectUpdate(T t) {
-    protectInsert(t);
-  }
-
-  public <T extends CacheableEntity> void protectSelect(T t) {
-
-  }
-
   public <T extends CacheableEntity> int add(@NonNull Class<T> cacheType, @NonNull T t) {
-    protectInsert(t);
     Tuple.Pair<String, List<Object>> pair = t.insertSql();
     log.info(OM3.writeValueAsString(pair));
     return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -65,7 +52,6 @@ public class CacheableDao {
       if (String0.isNullOrEmpty(t.getId())) {
         throw new ZeroException(OM3.p(cacheType, t));
       } else {
-        protectUpdate(t);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -76,16 +62,12 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 2)
-  public <T extends CacheableEntity> int delById(@NonNull Class<T> cacheType, T t, @NonNull String id) {
+  public <T extends CacheableEntity> int delById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
     try {
       if (String0.isNullOrEmpty(id)) {
         throw new ZeroException(OM3.p(cacheType, id));
       } else {
-        if (t == null) {
-          t = cacheType.newInstance();
-        }
         t.forceWhereCondition(IdEntity.FIELD__ID).resetId(id);
-        protectUpdate(t);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -96,16 +78,12 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 2)
-  public <T extends CacheableEntity> int delByIds(@NonNull Class<T> cacheType, T t, @NonNull List<String> ids) {
+  public <T extends CacheableEntity> int delByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
       if (ids.size() == 0) {
         return 0;
       } else {
-        if (t == null) {
-          t = cacheType.newInstance();
-        }
         t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
-        protectUpdate(t);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -121,7 +99,6 @@ public class CacheableDao {
       throw new ZeroException(OM3.p(cacheType, t, ids));
     } else {
       t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
-      protectUpdate(t);
       Tuple.Pair<String, List<Object>> pair = t.updateSql();
       log.info(OM3.writeValueAsString(pair));
       return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -133,7 +110,6 @@ public class CacheableDao {
     if (String0.isNullOrEmpty(t.getId())) {
       throw new ZeroException(OM3.p(cacheType, t));
     } else {
-      protectUpdate(t);
       Tuple.Pair<String, List<Object>> pair = t.updateSql();
       log.info(OM3.writeValueAsString(pair));
       return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -157,6 +133,26 @@ public class CacheableDao {
     }
   }
 
+  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> T one(@NonNull Class<T> cacheType, @NonNull T t) {
+    return oneWithoutCache(cacheType, t, false);
+  }
+
+  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> T one(@NonNull Class<T> cacheType, @NonNull T t, boolean rtnNullIfNotEqualsOne) {
+    return oneWithoutCache(cacheType, t, rtnNullIfNotEqualsOne);
+  }
+
+  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id) {
+    return oneByIdWithoutCache(cacheType, id, false);
+  }
+
+  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
+    return oneByIdWithoutCache(cacheType, id, rtnNullIfNotEqualsOne);
+  }
+
   private <T extends CacheableEntity> List<T> lstWithoutCache(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectSql();
     log.info(OM3.writeValueAsString(pair));
@@ -172,16 +168,6 @@ public class CacheableDao {
     });
   }
 
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T one(@NonNull Class<T> cacheType, @NonNull T t) {
-    return oneWithoutCache(cacheType, t, false);
-  }
-
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T one(@NonNull Class<T> cacheType, @NonNull T t, boolean rtnNullIfNotEqualsOne) {
-    return oneWithoutCache(cacheType, t, rtnNullIfNotEqualsOne);
-  }
-
   private <T extends CacheableEntity> T oneWithoutCache(@NonNull Class<T> cacheType, @NonNull T t, boolean rtnNullIfNotEqualsOne) {
     List<T> lst = this.lst(cacheType, t);
     if (lst.size() == 1) {
@@ -193,16 +179,6 @@ public class CacheableDao {
         throw new ZeroException(MessageFormat.format(FMT_RESULT_NOT_EQUALS_ONE, cacheType.getName(), OM3.writeValueAsString(t)));
       }
     }
-  }
-
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id) {
-    return oneByIdWithoutCache(cacheType, id, false);
-  }
-
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
-    return oneByIdWithoutCache(cacheType, id, rtnNullIfNotEqualsOne);
   }
 
   private <T extends CacheableEntity> T oneByIdWithoutCache(@NonNull Class<T> cacheType, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
