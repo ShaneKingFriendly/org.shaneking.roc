@@ -122,10 +122,9 @@ public class CacheableDao {
   }
 
   //can't with t. if add t parameter, cache will over
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
+  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
-      T t = cacheType.newInstance();
       t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
       return lstWithoutCache(cacheType, t);
     } catch (Exception e) {
@@ -143,14 +142,14 @@ public class CacheableDao {
     return oneWithoutCache(cacheType, t, rtnNullIfNotEqualsOne);
   }
 
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id) {
-    return oneByIdWithoutCache(cacheType, id, false);
+  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
+    return oneByIdWithoutCache(cacheType, t, id, false);
   }
 
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
-    return oneByIdWithoutCache(cacheType, id, rtnNullIfNotEqualsOne);
+  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
+    return oneByIdWithoutCache(cacheType, t, id, rtnNullIfNotEqualsOne);
   }
 
   private <T extends CacheableEntity> List<T> lstWithoutCache(@NonNull Class<T> cacheType, @NonNull T t) {
@@ -181,9 +180,8 @@ public class CacheableDao {
     }
   }
 
-  private <T extends CacheableEntity> T oneByIdWithoutCache(@NonNull Class<T> cacheType, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
+  private <T extends CacheableEntity> T oneByIdWithoutCache(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
     try {
-      T t = cacheType.newInstance();
       t.setId(id);
       return oneWithoutCache(cacheType, t, rtnNullIfNotEqualsOne);
     } catch (Exception e) {

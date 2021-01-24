@@ -18,7 +18,7 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @BeforeEach
   void beforeEach() {
-    cacheableDao.delByIds(Test4CacheableEntity.class, null, List0.newArrayList(cacheableDao.ids(Test4CacheableEntity.class, new Test4CacheableEntity()).split(String0.COMMA)));
+    cacheableDao.delByIds(Test4CacheableEntity.class, new Test4CacheableEntity(), List0.newArrayList(cacheableDao.ids(Test4CacheableEntity.class, new Test4CacheableEntity()).split(String0.COMMA)));
 
     Test4CacheableEntity test4CacheableEntity = new Test4CacheableEntity();
     test4CacheableEntity.initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
@@ -51,7 +51,7 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @Test
   void delByIds() {
-    assertEquals(1, cacheableDao.delByIds(Test4CacheableEntity.class, null, List0.newArrayList(String0.ARY_HEX)));
+    assertEquals(1, cacheableDao.delByIds(Test4CacheableEntity.class, new Test4CacheableEntity(), List0.newArrayList(String0.ARY_HEX)));
   }
 
   @Test
@@ -75,7 +75,7 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @Test
   void lstByIds() {
-    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(Test4CacheableEntity.class, List0.newArrayList(String0.ARY_HEX)).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(Test4CacheableEntity.class, new Test4CacheableEntity(), List0.newArrayList(String0.ARY_HEX)).get(0).getId());
   }
 
   @Test
@@ -85,6 +85,6 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @Test
   void oneById() {
-    assertEquals(String0.ARY_HEX, cacheableDao.oneById(Test4CacheableEntity.class, String0.ARY_HEX).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.oneById(Test4CacheableEntity.class, new Test4CacheableEntity(), String0.ARY_HEX).getId());
   }
 }
