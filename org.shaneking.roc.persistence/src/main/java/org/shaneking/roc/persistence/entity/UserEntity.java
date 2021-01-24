@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.zero.crypto.Crypto0;
+import org.shaneking.ling.zero.lang.String0;
 
 import javax.persistence.Column;
 
@@ -11,7 +13,6 @@ import javax.persistence.Column;
 @ToString(callSuper = true)
 public abstract class UserEntity extends CacheableEntity {
   @Column(columnDefinition = "default '' COMMENT ''")
-  @Getter
   @Setter
   private String haha;
 
@@ -29,4 +30,12 @@ public abstract class UserEntity extends CacheableEntity {
   @Getter
   @Setter
   private String email;
+
+  public String getHaha() {
+    if (String0.isNullOrEmpty(haha) || haha.startsWith(Crypto0.ENCRYPTED_PREFIX)) {
+      return haha;
+    } else {
+      return Crypto0.ENCRYPTED_PREFIX + Crypto0.aesEncrypt(haha);
+    }
+  }
 }
