@@ -4,5 +4,5 @@ Persistence with Spring for ShaneKing
 
 ## Must
 
-- org.shaneking.roc.persistence.aspectj.EntityCacheAbstractWrapper
+- org.shaneking.roc.persistence.cache.AbstractCache
 

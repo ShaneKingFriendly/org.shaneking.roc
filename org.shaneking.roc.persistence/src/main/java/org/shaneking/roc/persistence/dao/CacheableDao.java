@@ -121,8 +121,22 @@ public class CacheableDao {
     return lstWithoutCache(cacheType, t);
   }
 
-  //can't with t. if add t parameter, cache will over
-  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
+  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
+  public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
+    try {
+      T t = cacheType.newInstance();
+      t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
+      return lstWithoutCache(cacheType, t);
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, ids), e);
+    }
+  }
+
+  /*
+   * can't with t. if add t parameter, cache will over
+   *
+   * for example: (UserEntity.class, {name:ShaneKing}, [1,2,3])
+   */
   public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
       t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);

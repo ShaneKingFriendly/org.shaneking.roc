@@ -60,68 +60,56 @@ public class TenantedCacheableDao {
     return this.getCacheableDao().ids(cacheType, t);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> int delById(Class<T> cacheType, T t, String tenantIds) {
     protectUpdate(t, tenantIds);
     return this.getCacheableDao().delById(cacheType, t);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 2)
   public <T extends TenantedEntity> int delById(Class<T> cacheType, T t, String id, String tenantIds) {
     protectUpdate(t, tenantIds);
     return this.getCacheableDao().delById(cacheType, t, id);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 2)
   public <T extends TenantedEntity> int delByIds(Class<T> cacheType, T t, List<String> ids, String tenantIds) {
     protectUpdate(t, tenantIds);
     return this.getCacheableDao().delByIds(cacheType, t, ids);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 2)
   public <T extends TenantedEntity> int modByIdsVer(Class<T> cacheType, T t, List<String> ids, String tenantIds) {
     protectUpdate(t, tenantIds);
     return this.getCacheableDao().modByIdsVer(cacheType, t, ids);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> int modByIdVer(Class<T> cacheType, T t, String tenantIds) {
     protectUpdate(t, tenantIds);
     return this.getCacheableDao().modByIdVer(cacheType, t);
   }
 
-  //  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> List<T> lst(Class<T> cacheType, T t, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().lst(cacheType, t);
   }
 
-  //can't with t. if add t parameter, cache will over
-  //  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> List<T> lstByIds(Class<T> cacheType, T t, List<String> ids, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().lstByIds(cacheType, t, ids);
   }
 
-  //  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> T one(Class<T> cacheType, T t, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().one(cacheType, t);
   }
 
-  //  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> T one(Class<T> cacheType, T t, boolean rtnNullIfNotEqualsOne, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().one(cacheType, t, rtnNullIfNotEqualsOne);
   }
 
-  //  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> T oneById(Class<T> cacheType, T t, String id, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().oneById(cacheType, t, id);
   }
 
-  //  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
   public <T extends TenantedEntity> T oneById(Class<T> cacheType, T t, String id, boolean rtnNullIfNotEqualsOne, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().oneById(cacheType, t, id, rtnNullIfNotEqualsOne);

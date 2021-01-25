@@ -60,68 +60,56 @@ public class ChannelizedCacheableDao {
     return this.getCacheableDao().ids(cacheType, t);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> int delById(Class<T> cacheType, T t, String channelIds) {
     protectUpdate(t, channelIds);
     return this.getCacheableDao().delById(cacheType, t);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 2)
   public <T extends ChannelizedEntity> int delById(Class<T> cacheType, T t, String id, String channelIds) {
     protectUpdate(t, channelIds);
     return this.getCacheableDao().delById(cacheType, t, id);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 2)
   public <T extends ChannelizedEntity> int delByIds(Class<T> cacheType, T t, List<String> ids, String channelIds) {
     protectUpdate(t, channelIds);
     return this.getCacheableDao().delByIds(cacheType, t, ids);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 2)
   public <T extends ChannelizedEntity> int modByIdsVer(Class<T> cacheType, T t, List<String> ids, String channelIds) {
     protectUpdate(t, channelIds);
     return this.getCacheableDao().modByIdsVer(cacheType, t, ids);
   }
 
-  //  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> int modByIdVer(Class<T> cacheType, T t, String channelIds) {
     protectUpdate(t, channelIds);
     return this.getCacheableDao().modByIdVer(cacheType, t);
   }
 
-  //  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> List<T> lst(Class<T> cacheType, T t, String channelIds) {
     protectSelect(t, channelIds);
     return this.getCacheableDao().lst(cacheType, t);
   }
 
-  //can't with t. if add t parameter, cache will over
-  //  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> List<T> lstByIds(Class<T> cacheType, T t, List<String> ids, String channelIds) {
     protectSelect(t, channelIds);
     return this.getCacheableDao().lstByIds(cacheType, t, ids);
   }
 
-  //  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> T one(Class<T> cacheType, T t, String channelIds) {
     protectSelect(t, channelIds);
     return this.getCacheableDao().one(cacheType, t);
   }
 
-  //  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> T one(Class<T> cacheType, T t, boolean rtnNullIfNotEqualsOne, String channelIds) {
     protectSelect(t, channelIds);
     return this.getCacheableDao().one(cacheType, t, rtnNullIfNotEqualsOne);
   }
 
-  //  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> T oneById(Class<T> cacheType, T t, String id, String channelIds) {
     protectSelect(t, channelIds);
     return this.getCacheableDao().oneById(cacheType, t, id);
   }
 
-  //  @EntityCacheable(pKeyIdx = 2, rKeyPath = IdEntity.FIELD__ID)
   public <T extends ChannelizedEntity> T oneById(Class<T> cacheType, T t, String id, boolean rtnNullIfNotEqualsOne, String channelIds) {
     protectSelect(t, channelIds);
     return this.getCacheableDao().oneById(cacheType, t, id, rtnNullIfNotEqualsOne);

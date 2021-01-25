@@ -1,17 +1,22 @@
-package sktest.roc.persistence.aspectj;
+package sktest.roc.persistence.cache;
 
 import lombok.NonNull;
-import org.shaneking.roc.persistence.aspectj.EntityCacheAbstractWrapper;
+import org.shaneking.roc.persistence.cache.AbstractCache;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
 @Component
-public class EntityCacheAbstractWrapperTest extends EntityCacheAbstractWrapper {
+public class AbstractCacheTest extends AbstractCache {
 
   @Override
   public Boolean del(@NonNull String key) {
+    return null;
+  }
+
+  @Override
+  public String get(@NonNull String key) {
     return null;
   }
 
@@ -37,6 +42,14 @@ public class EntityCacheAbstractWrapperTest extends EntityCacheAbstractWrapper {
 
   @Override
   public void hset(@NonNull String key, @NonNull String field, @NonNull String value) {
+
+  }
+
+  public void set(@NonNull String key, @NonNull String value) {
+
+  }
+
+  public void set(@NonNull String key, int seconds, @NonNull String value) {
 
   }
 }

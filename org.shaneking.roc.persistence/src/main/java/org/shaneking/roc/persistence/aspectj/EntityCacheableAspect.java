@@ -8,7 +8,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.lang.Object0;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.roc.persistence.annotation.EntityCacheable;
+import org.shaneking.roc.persistence.cache.AbstractCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EntityCacheableAspect {
   @Autowired
-  private EntityCacheAbstractWrapper entityCacheAbstractWrapper;
+  private AbstractCache cache;
 
   @Pointcut("execution(@org.shaneking.roc.persistence.annotation.EntityCacheable * *..*.*(..))")
   private void pointcut() {
@@ -43,7 +45,7 @@ public class EntityCacheableAspect {
           if (pKeyObj instanceof List) {
             //org.shaneking.roc.persistence.dao.CacheableDao.lstByIds
             List<String> pKeyList = String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheable.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
-            List<String> cachedList = entityCacheAbstractWrapper.hmget(clazz.getName(), pKeyList.toArray(new String[0]));
+            List<String> cachedList = cache.hmget(clazz.getName(), pKeyList.toArray(new String[0]));
             if (cachedList.size() > 0) {
               //compile error
 //              rtnList = cachedList.parallelStream().filter(s -> !Strings.isNullOrEmpty(s)).map(s -> OM3.readValue(s, clazz, true)).filter(o -> o != null).collect(Collectors.toList());
@@ -64,11 +66,11 @@ public class EntityCacheableAspect {
             //org.shaneking.roc.persistence.dao.CacheableDao.oneById(java.lang.Class<T>, java.lang.String, boolean)
             String k = String.valueOf(String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheable.pKeyPath()));
             if (String0.isNull2Empty(k)) {
-              log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), EntityCacheUtils.ERR_CODE__ANNOTATION_SETTING_ERROR));
+              log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroException.ERR_CODE__ANNOTATION_SETTING_ERROR));
             } else {
-              String cached = entityCacheAbstractWrapper.hget(clazz.getName(), k);
+              String cached = cache.hget(clazz.getName(), k);
               if (!String0.isNullOrEmpty(cached)) {
-                log.info(MessageFormat.format("{0} - {1} : {2}", clazz.getName(), EntityCacheUtils.INFO_CODE__CACHE_HIT_ALL, cached));
+                log.info(MessageFormat.format("{0} - {1} : {2}", clazz.getName(), AbstractCache.ERR_CODE__CACHE_HIT_ALL, cached));
                 rtn = OM3.readValue(cached, clazz, true);
               }
             }
@@ -79,16 +81,16 @@ public class EntityCacheableAspect {
       }
       if (rtn == null) {
         if (argList != null && argList.size() == 0) {
-          log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), EntityCacheUtils.INFO_CODE__CACHE_HIT_ALL, rtnList.size(), OM3.writeValueAsString(rtnList)));
+          log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), AbstractCache.ERR_CODE__CACHE_HIT_ALL, rtnList.size(), OM3.writeValueAsString(rtnList)));
           rtn = rtnList;
         } else {
           if (argList != null && argList.size() > 0 && entityCacheable.pKeyIdx() > -1) {
-            log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), EntityCacheUtils.INFO_CODE__CACHE_HIT_PART, rtnList.size(), OM3.writeValueAsString(rtnList)));
+            log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), AbstractCache.ERR_CODE__CACHE_HIT_PART, rtnList.size(), OM3.writeValueAsString(rtnList)));
             pjp.getArgs()[entityCacheable.pKeyIdx()] = argList;
             rtn = pjp.proceed(pjp.getArgs());
           } else {
             if (entityCacheable.pKeyIdx() > -1) {
-              log.warn(MessageFormat.format("{0} - {1}", clazz.getName(), EntityCacheUtils.INFO_CODE__CACHE_HIT_MISS));
+              log.warn(MessageFormat.format("{0} - {1}", clazz.getName(), AbstractCache.ERR_CODE__CACHE_HIT_MISS));
             }
             rtn = pjp.proceed();
           }
@@ -96,7 +98,7 @@ public class EntityCacheableAspect {
             if (rtn instanceof List) {
               List<Object> rstList = (List<Object>) rtn;
               if (rstList.size() > 0) {
-                entityCacheAbstractWrapper.hmset(clazz.getName(), rstList.parallelStream().collect(HashMap::new, (a, o) -> {
+                cache.hmset(clazz.getName(), rstList.parallelStream().collect(HashMap::new, (a, o) -> {
                   String k = String.valueOf(Object0.gs(o, entityCacheable.rKeyPath()));
                   if (!String0.isNullOrEmpty(k)) {
                     a.put(k, OM3.writeValueAsString(o));
@@ -112,7 +114,7 @@ public class EntityCacheableAspect {
             } else {
               String k = String.valueOf(Object0.gs(rtn, entityCacheable.rKeyPath()));
               if (!String0.isNullOrEmpty(k)) {
-                entityCacheAbstractWrapper.hset(clazz.getName(), k, OM3.writeValueAsString(rtn));
+                cache.hset(clazz.getName(), k, OM3.writeValueAsString(rtn));
               }
             }
           } else {
@@ -121,7 +123,7 @@ public class EntityCacheableAspect {
         }
       }
     } else {
-      log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), EntityCacheUtils.ERR_CODE__ANNOTATION_SETTING_ERROR));
+      log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroException.ERR_CODE__ANNOTATION_SETTING_ERROR));
       rtn = pjp.proceed();
     }
     return rtn;
