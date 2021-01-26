@@ -7,8 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.rr.Resp;
+import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.cache.AbstractCache;
 import org.shaneking.roc.rr.Req;
@@ -25,11 +25,11 @@ import java.text.MessageFormat;
 @Slf4j
 @Order(700)
 public class RrCacheAspect {
-  @Autowired
-  private AbstractCache cache;
-
   @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;
+
+  @Autowired
+  private AbstractCache cache;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCache * *..*.*(..))")
   private void pointcut() {
@@ -38,6 +38,7 @@ public class RrCacheAspect {
   @Around("pointcut() && @annotation(rrCache)")
   public Object around(ProceedingJoinPoint pjp, RrCache rrCache) throws Throwable {
     Object rtn = null;
+    boolean proceed = false;
     if (enabled) {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
@@ -49,6 +50,7 @@ public class RrCacheAspect {
           if (String0.isNullOrEmpty(respCached)) {
             log.info(MessageFormat.format("{0} - {1}", AbstractCache.ERR_CODE__CACHE_HIT_MISS, key));
             req.getPub().setTracingId(tracingId);
+            proceed = true;
             rtn = pjp.proceed();
             if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
               cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(rtn));
@@ -62,10 +64,15 @@ public class RrCacheAspect {
         } catch (Throwable throwable) {
           log.error(OM3.writeValueAsString(req), throwable);
           req.getPub().setTracingId(tracingId);
-          rtn = pjp.proceed();
+          if (proceed) {
+            throw throwable;
+          } else {
+            rtn = pjp.proceed();
+          }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroException.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().getName(), OM3.writeValueAsString(rrCache)));
+        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().getName(), OM3.writeValueAsString(rrCache)));
+        rtn = pjp.proceed();
       }
     } else {
       rtn = pjp.proceed();

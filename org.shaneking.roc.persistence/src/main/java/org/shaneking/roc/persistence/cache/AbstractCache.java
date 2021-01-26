@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractCache {
-  public static final String ERR_CODE__ANNOTATION_SETTING_ERROR = "ABSTRACT_CACHE__ANNOTATION_SETTING_ERROR";
   public static final String ERR_CODE__CACHE_HIT_ALL = "ABSTRACT_CACHE__CACHE_HIT_ALL";
   public static final String ERR_CODE__CACHE_HIT_MISS = "ABSTRACT_CACHE__CACHE_HIT_MISS";
   public static final String ERR_CODE__CACHE_HIT_PART = "ABSTRACT_CACHE__CACHE_HIT_PART";

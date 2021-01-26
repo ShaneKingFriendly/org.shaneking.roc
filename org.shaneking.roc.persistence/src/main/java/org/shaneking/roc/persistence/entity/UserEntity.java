@@ -11,7 +11,7 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class UserEntity extends CacheableEntity {
+public abstract class UserEntity extends TenantedEntity {
   @Column(columnDefinition = "default '' COMMENT ''")
   @Setter
   private String haha;
@@ -38,4 +38,7 @@ public abstract class UserEntity extends CacheableEntity {
       return Crypto0.ENCRYPTED_PREFIX + Crypto0.aesEncrypt(haha);
     }
   }
+
+  //@see sktest.roc.rr.cfg.RrCfg.test4UserEntity
+  public abstract <T extends UserEntity> Class<T> entityClass();
 }

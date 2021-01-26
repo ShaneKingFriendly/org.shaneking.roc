@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ToString
 public class Req<O, R> {
-  @Getter
   @Setter
   private ReqCtx ctx;
 
@@ -42,5 +41,12 @@ public class Req<O, R> {
 
   public static <O, R> Req<O, R> build(ReqPub pub, String enc) {
     return new Req<O, R>().setPub(pub).setEnc(enc);
+  }
+
+  public ReqCtx getCtx() {
+    if (ctx == null) {
+      ctx = new ReqCtx();
+    }
+    return ctx;
   }
 }

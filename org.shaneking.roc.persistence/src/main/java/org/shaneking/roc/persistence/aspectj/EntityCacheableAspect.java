@@ -6,9 +6,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.Object0;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.roc.persistence.annotation.EntityCacheable;
 import org.shaneking.roc.persistence.cache.AbstractCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class EntityCacheableAspect {
             //org.shaneking.roc.persistence.dao.CacheableDao.oneById(java.lang.Class<T>, java.lang.String, boolean)
             String k = String.valueOf(String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheable.pKeyPath()));
             if (String0.isNull2Empty(k)) {
-              log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroException.ERR_CODE__ANNOTATION_SETTING_ERROR));
+              log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
             } else {
               String cached = cache.hget(clazz.getName(), k);
               if (!String0.isNullOrEmpty(cached)) {
@@ -123,7 +123,7 @@ public class EntityCacheableAspect {
         }
       }
     } else {
-      log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroException.ERR_CODE__ANNOTATION_SETTING_ERROR));
+      log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
       rtn = pjp.proceed();
     }
     return rtn;

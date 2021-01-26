@@ -6,9 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import javax.persistence.Transient;
+
 @Accessors(chain = true)
 @ToString
 public class ReqPub {
+  @Transient
+  public static final String ERR_CODE__REQUIRED_CHANNEL_NAME = "REQ_PUB__REQUIRED_CHANNEL_NAME";
   @Getter
   @Setter
   private String channelName;

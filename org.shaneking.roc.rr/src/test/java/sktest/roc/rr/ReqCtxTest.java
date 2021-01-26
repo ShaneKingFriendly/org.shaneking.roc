@@ -25,5 +25,9 @@ class ReqCtxTest {
   @Table
   public static class Test4UserEntity extends UserEntity implements SqlliteDialectSqlEntities {
 
+    @Override
+    public Class<Test4UserEntity> entityClass() {
+      return Test4UserEntity.class;
+    }
   }
 }
