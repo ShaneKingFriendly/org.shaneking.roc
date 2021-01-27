@@ -40,10 +40,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.shaneking.ling</groupId>
       <artifactId>org.shaneking.ling.zero</artifactId>
       <version>${org.shaneking.ling_version}</version>
