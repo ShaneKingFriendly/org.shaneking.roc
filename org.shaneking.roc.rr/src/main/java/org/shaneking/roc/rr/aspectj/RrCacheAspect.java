@@ -8,9 +8,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
+import org.shaneking.ling.zero.lang.Boolean0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.cache.AbstractCache;
+import org.shaneking.roc.persistence.entity.AuditLogEntity;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import java.text.MessageFormat;
 @Aspect
 @Component
 @Slf4j
-@Order(700)
+@Order(600)
 public class RrCacheAspect {
   @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;
@@ -38,20 +40,29 @@ public class RrCacheAspect {
   @Around("pointcut() && @annotation(rrCache)")
   public Object around(ProceedingJoinPoint pjp, RrCache rrCache) throws Throwable {
     Object rtn = null;
-    boolean proceed = false;
+    boolean proceedBefore = false;
+    boolean proceedAfter = false;
     if (enabled) {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
         String tracingId = req.getPub().getTracingId();
         try {
           req.getPub().setTracingId(null);
+
           String key = String.join(String0.MORE, pjp.getSignature().getName(), OM3.writeValueAsString(req));
           String respCached = cache.get(key);
+
+          AuditLogEntity auditLogEntity = req.getCtx().getAuditLog();
+          if (auditLogEntity != null) {
+            auditLogEntity.setCached(Boolean0.yn(!String0.isNullOrEmpty(respCached)));
+          }
+
           if (String0.isNullOrEmpty(respCached)) {
             log.info(MessageFormat.format("{0} - {1}", AbstractCache.ERR_CODE__CACHE_HIT_MISS, key));
             req.getPub().setTracingId(tracingId);
-            proceed = true;
+            proceedBefore = true;
             rtn = pjp.proceed();
+            proceedAfter = true;
             if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
               cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(rtn));
             }
@@ -64,10 +75,14 @@ public class RrCacheAspect {
         } catch (Throwable throwable) {
           log.error(OM3.writeValueAsString(req), throwable);
           req.getPub().setTracingId(tracingId);
-          if (proceed) {
-            throw throwable;
+          if (proceedBefore && !proceedAfter) {
+            throw throwable;//process error
           } else {
-            rtn = pjp.proceed();
+            if (proceedAfter) {
+              rtn = Resp.failed(Resp.CODE_UNKNOWN_EXCEPTION, String.valueOf(throwable), req);
+            } else {
+              rtn = pjp.proceed();
+            }
           }
         }
       } else {

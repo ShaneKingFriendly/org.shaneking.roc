@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ToString
 public class Pri<O, R> {
-  @Getter
   @Setter
   private PriExt ext;//extend settings like table config
 
@@ -40,5 +39,12 @@ public class Pri<O, R> {
 
   public static <O, R> Pri<O, R> build(R rtn, O obj, PriExt ext) {
     return new Pri<O, R>().setRtn(rtn).setObj(obj).setExt(ext);
+  }
+
+  public PriExt getExt() {
+    if (ext == null) {
+      ext = new PriExt();
+    }
+    return ext;
   }
 }

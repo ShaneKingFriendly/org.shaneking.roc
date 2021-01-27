@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.roc.persistence.entity.AuditLogEntity;
 import org.shaneking.roc.persistence.entity.ChannelEntity;
 import org.shaneking.roc.persistence.entity.TenantEntity;
 import org.shaneking.roc.persistence.entity.UserEntity;
@@ -14,10 +15,10 @@ import org.shaneking.roc.persistence.entity.UserEntity;
 public class ReqCtx {
   @Getter
   @Setter
-  private ChannelEntity channel;
+  private AuditLogEntity auditLog;
   @Getter
   @Setter
-  private String ips;
+  private ChannelEntity channel;
   @Getter
   @Setter
   private ObjectNode jon;//json object node

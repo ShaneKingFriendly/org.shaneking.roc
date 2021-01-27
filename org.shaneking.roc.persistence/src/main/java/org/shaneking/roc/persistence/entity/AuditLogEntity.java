@@ -53,11 +53,22 @@ public abstract class AuditLogEntity extends ChannelizedTenantedEntity {
   @Setter
   private String reqSignature;
 
+  @Column(length = 1, columnDefinition = "default '' COMMENT ''")
+  @Getter
+  @Setter
+  private String cached;//Y|N
+
   @Column(columnDefinition = "default '' COMMENT ''")
   @Getter
   @Lob
   @Setter
   private String respJsonStr;
+
+  @Column(columnDefinition = "default '' COMMENT ''")
+  @Getter
+  @Lob
+  @Setter
+  private String respJsonStrCtx;
 
   @Column(columnDefinition = "default '' COMMENT ''")
   @Getter

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Slf4j
-@Order(400)
+@Order(300)
 public class RrLimitingAspect {
 }

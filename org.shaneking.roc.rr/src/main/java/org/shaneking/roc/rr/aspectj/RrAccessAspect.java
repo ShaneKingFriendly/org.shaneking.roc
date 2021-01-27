@@ -14,7 +14,6 @@ import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.ApiAccessEntity;
 import org.shaneking.roc.persistence.entity.ChannelEntity;
 import org.shaneking.roc.persistence.entity.TenantEntity;
-import org.shaneking.roc.persistence.entity.UserEntity;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.ReqPub;
 import org.shaneking.roc.rr.annotation.RrAccess;
@@ -28,7 +27,7 @@ import java.text.MessageFormat;
 @Aspect
 @Component
 @Slf4j
-@Order(600)
+@Order(500)
 public class RrAccessAspect {
   @Value("${sk.roc.rr.access.enabled:true}")
   private boolean enabled;
@@ -43,9 +42,6 @@ public class RrAccessAspect {
   private ChannelEntity channelEntityClass;
 
   @Autowired
-  private UserEntity userEntityClass;
-
-  @Autowired
   private TenantEntity tenantEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
@@ -55,40 +51,58 @@ public class RrAccessAspect {
   @Around("pointcut() && @annotation(rrAccess)")
   public Object around(ProceedingJoinPoint pjp, RrAccess rrAccess) throws Throwable {
     Object rtn = null;
-    boolean proceed = false;
+    boolean proceedBefore = false;
+    boolean proceedAfter = false;
     if (enabled) {
       if (pjp.getArgs().length > rrAccess.reqParamIdx() && pjp.getArgs()[rrAccess.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
-        log.info(OM3.writeValueAsString(req));
         if (req.getPub() == null || String0.isNullOrEmpty(req.getPub().getChannelName())) {
           rtn = Resp.failed(ReqPub.ERR_CODE__REQUIRED_CHANNEL_NAME, OM3.writeValueAsString(req.getPub()), req);
         } else {
-          ChannelEntity channelEntity = cacheableDao.one(channelEntityClass.entityClass(), channelEntityClass.entityClass().newInstance().setName(req.getPub().getChannelName()), true);
-          if (channelEntity == null) {
-            rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, req.getPub().getChannelName(), req);
-          } else {
-            req.getCtx().setChannel(channelEntity);
-
-            TenantEntity tenantEntity = cacheableDao.one(tenantEntityClass.entityClass(), tenantEntityClass.entityClass().newInstance().setName(String0.nullOrEmptyTo(req.getPub().getTenantName(), req.getPub().getChannelName())), true);
-            if (tenantEntity == null) {
-              rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, String.valueOf(req.getPub().getTenantName()), req);
+          try {
+            ChannelEntity channelEntity = cacheableDao.one(channelEntityClass.entityClass(), channelEntityClass.entityClass().newInstance().setName(req.getPub().getChannelName()), true);
+            if (channelEntity == null) {
+              rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, req.getPub().getChannelName(), req);
             } else {
-              req.getCtx().setTenant(tenantEntity);
+              req.getCtx().setChannel(channelEntity);
+              if (req.getCtx().getAuditLog() != null) {
+                req.getCtx().getAuditLog().setChannelId(channelEntity.getId());
+              }
 
-              ApiAccessEntity apiAccessEntitySelect = apiAccessEntityClass.entityClass().newInstance();
-              apiAccessEntitySelect.setChannelId(channelEntity.getId()).setTenantId(tenantEntity.getId());
-              ApiAccessEntity apiAccessEntity = cacheableDao.one(apiAccessEntityClass.entityClass(), apiAccessEntitySelect, true);
-              if (apiAccessEntity == null) {
-                rtn = Resp.failed(ApiAccessEntity.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntitySelect), req);
+              TenantEntity tenantEntity = cacheableDao.one(tenantEntityClass.entityClass(), tenantEntityClass.entityClass().newInstance().setName(String0.nullOrEmptyTo(req.getPub().getTenantName(), req.getPub().getChannelName())), true);
+              if (tenantEntity == null) {
+                rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, String.valueOf(req.getPub().getTenantName()), req);
               } else {
-                if (apiAccessEntity.check("TODO", pjp.getSignature().getName())) {
+                req.getCtx().setTenant(tenantEntity);
+                if (req.getCtx().getAuditLog() != null) {
+                  req.getCtx().getAuditLog().setTenantId(tenantEntity.getId());
+                }
 
-
-                  //TODO
+                ApiAccessEntity apiAccessEntitySelect = apiAccessEntityClass.entityClass().newInstance();
+                apiAccessEntitySelect.setChannelId(channelEntity.getId()).setTenantId(tenantEntity.getId());
+                ApiAccessEntity apiAccessEntity = cacheableDao.one(apiAccessEntityClass.entityClass(), apiAccessEntitySelect, true);
+                if (apiAccessEntity == null) {
+                  rtn = Resp.failed(ApiAccessEntity.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntitySelect), req);
                 } else {
-                  rtn = Resp.failed(ApiAccessEntity.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntity), req);
+                  if (apiAccessEntity.check(req.getCtx().getAuditLog() == null ? null : req.getCtx().getAuditLog().getReqUrl(), pjp.getSignature().getName())) {
+                    proceedBefore = true;
+                    rtn = pjp.proceed();
+                    proceedAfter = true;
+                  } else {
+                    rtn = Resp.failed(ApiAccessEntity.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntity), req);
+                  }
                 }
               }
+            }
+          } catch (Throwable throwable) {
+            log.error(OM3.writeValueAsString(req), throwable);
+            if (proceedBefore && !proceedAfter) {
+              throw throwable;//process error
+            } else {
+              if (!proceedAfter) {
+                rtn = Resp.failed(Resp.CODE_UNKNOWN_EXCEPTION, String.valueOf(throwable), req);
+              }
+              //rtn can reused
             }
           }
         }
