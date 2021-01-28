@@ -24,6 +24,7 @@ import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCrypto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -32,10 +33,11 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
+@ConditionalOnProperty(prefix = "sk.roc.rr.crypto", value = "enabled")
 @Slf4j
 @Order(700)
 public class RrCryptoAspect {
-  @Value("${sk.roc.rr.crypto.enabled:true}")
+  @Value("${sk.roc.rr.crypto.enabled:false}")
   private boolean enabled;
 
   @Autowired

@@ -19,6 +19,7 @@ import org.shaneking.roc.rr.ReqPub;
 import org.shaneking.roc.rr.annotation.RrAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -26,10 +27,11 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
+@ConditionalOnProperty(prefix = "sk.roc.rr.access", value = "enabled")
 @Slf4j
 @Order(500)
 public class RrAccessAspect {
-  @Value("${sk.roc.rr.access.enabled:true}")
+  @Value("${sk.roc.rr.access.enabled:false}")
   private boolean enabled;
 
   @Autowired

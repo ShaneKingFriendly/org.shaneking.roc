@@ -39,9 +39,15 @@
     </dependency>
     <dependency>
       <groupId>org.shaneking.ling</groupId>
+      <artifactId>org.shaneking.ling.cache</artifactId>
+      <version>${org.shaneking.ling_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.shaneking.ling</groupId>
       <artifactId>org.shaneking.ling.persistence</artifactId>
       <version>${org.shaneking.ling_version}</version>
     </dependency>
+    <!-- test(spring default logback, so not need dependency logback) -->
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>

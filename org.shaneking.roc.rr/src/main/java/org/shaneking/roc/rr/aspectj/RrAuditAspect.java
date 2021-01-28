@@ -17,6 +17,7 @@ import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAudit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -24,10 +25,11 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
+@ConditionalOnProperty(prefix = "sk.roc.rr.audit", value = "enabled")
 @Slf4j
 @Order(400)///small will first
 public class RrAuditAspect {
-  @Value("${sk.roc.rr.audit.enabled:true}")
+  @Value("${sk.roc.rr.audit.enabled:false}")
   private boolean enabled;
 
   @Autowired

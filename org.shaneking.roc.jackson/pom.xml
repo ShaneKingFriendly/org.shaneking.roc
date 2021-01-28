@@ -32,6 +32,7 @@
       <artifactId>org.shaneking.ling.jackson</artifactId>
       <version>${org.shaneking.ling_version}</version>
     </dependency>
+    <!-- test(spring default logback, so not need dependency logback) -->
     <dependency>
       <groupId>org.shaneking.roc</groupId>
       <artifactId>org.shaneking.roc.test</artifactId>

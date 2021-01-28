@@ -5,18 +5,19 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.shaneking.ling.cache.StringCaches;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.Boolean0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
-import org.shaneking.roc.persistence.cache.AbstractCache;
 import org.shaneking.roc.persistence.entity.AuditLogEntity;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -24,14 +25,15 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
+@ConditionalOnProperty(prefix = "sk.roc.rr.cache", value = "enabled")
 @Slf4j
 @Order(600)
 public class RrCacheAspect {
-  @Value("${sk.roc.rr.cache.enabled:true}")
+  @Value("${sk.roc.rr.cache.enabled:false}")
   private boolean enabled;
 
   @Autowired
-  private AbstractCache cache;
+  private StringCaches cache;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCache * *..*.*(..))")
   private void pointcut() {
@@ -58,7 +60,7 @@ public class RrCacheAspect {
           }
 
           if (String0.isNullOrEmpty(respCached)) {
-            log.info(MessageFormat.format("{0} - {1}", AbstractCache.ERR_CODE__CACHE_HIT_MISS, key));
+            log.info(MessageFormat.format("{0} - {1}", StringCaches.ERR_CODE__CACHE_HIT_MISS, key));
             req.getPub().setTracingId(tracingId);
             proceedBefore = true;
             rtn = pjp.proceed();
@@ -67,7 +69,7 @@ public class RrCacheAspect {
               cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(rtn));
             }
           } else {
-            log.info(MessageFormat.format("{0} - {1} : {2}", AbstractCache.ERR_CODE__CACHE_HIT_ALL, key, respCached));
+            log.info(MessageFormat.format("{0} - {1} : {2}", StringCaches.ERR_CODE__CACHE_HIT_ALL, key, respCached));
             Resp<?> resp = OM3.readValue(respCached, OM3.om().getTypeFactory().constructParametricType(Resp.class, JavaType3.resolveRtnJavaTypes(pjp)));
             ((Req<?, ?>) resp.getData()).getPub().setTracingId(tracingId);
             rtn = resp;
