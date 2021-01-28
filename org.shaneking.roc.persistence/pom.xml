@@ -23,6 +23,11 @@
   </licenses>
 
   <dependencies>
+    <!-- @ConditionalOnProperty -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
     <!-- @ConfigurationProperties, @EnableConfigurationProperties -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
