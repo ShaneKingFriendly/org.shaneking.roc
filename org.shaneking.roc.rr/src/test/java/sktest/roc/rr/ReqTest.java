@@ -14,17 +14,12 @@ class ReqTest {
   @Test
   void build() {
     assertAll(
-      () -> assertEquals("Req(ctx=null, enc=null, pri=null, pub=null)", Req.build().toString()),
-
-      () -> assertEquals("{}", OM3.writeValueAsString(Req.build())),
-
-      () -> assertEquals("{\"pri\":{}}", OM3.writeValueAsString(Req.build(Pri.build()))),
-
-      () -> assertEquals("{\"pub\":{}}", OM3.writeValueAsString(Req.build(new ReqPub()))),
-
-      () -> assertEquals("{\"pri\":{},\"pub\":{}}", OM3.writeValueAsString(Req.build(new ReqPub(), Pri.build()))),
-
-      () -> assertEquals("{\"enc\":\"enc\",\"pub\":{}}", OM3.writeValueAsString(Req.build(new ReqPub(), "enc")))
+      () -> assertEquals("Req(ctx=ReqCtx(auditLog=null, channel=null, jon=null, language=null, tenant=null, user=null), enc=null, pri=null, pub=null)", Req.build().toString()),
+      () -> assertEquals("{\"ctx\":{}}", OM3.writeValueAsString(Req.build())),
+      () -> assertEquals("{\"ctx\":{},\"pri\":{\"ext\":{\"table\":{}}}}", OM3.writeValueAsString(Req.build(Pri.build()))),
+      () -> assertEquals("{\"ctx\":{},\"pub\":{}}", OM3.writeValueAsString(Req.build(new ReqPub()))),
+      () -> assertEquals("{\"ctx\":{},\"pri\":{\"ext\":{\"table\":{}}},\"pub\":{}}", OM3.writeValueAsString(Req.build(new ReqPub(), Pri.build()))),
+      () -> assertEquals("{\"ctx\":{},\"enc\":\"enc\",\"pub\":{}}", OM3.writeValueAsString(Req.build(new ReqPub(), "enc")))
     );
   }
 }

@@ -16,9 +16,9 @@ class ReqCtxTest {
   @Test
   void testToString() {
     assertAll(
-      () -> assertEquals("ReqCtx(ips=null, jon=null, language=null, user=null)", new ReqCtx().toString()),
+      () -> assertEquals("ReqCtx(auditLog=null, channel=null, jon=null, language=null, tenant=null, user=null)", new ReqCtx().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new ReqCtx())),
-      () -> assertEquals("{\"ips\":\"ips\",\"jon\":{},\"language\":\"language\",\"user\":{}}", OM3.writeValueAsString(new ReqCtx().setIps("ips").setJon(OM3.createObjectNode()).setLanguage("language").setUser(new Test4UserEntity())))
+      () -> assertEquals("{\"jon\":{},\"language\":\"language\",\"user\":{}}", OM3.writeValueAsString(new ReqCtx().setJon(OM3.createObjectNode()).setLanguage("language").setUser(new Test4UserEntity())))
     );
   }
 

@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration;
 //@ConditionalOnBean(JdbcTemplate.class)
 //@ConditionalOnClass(JdbcTemplate.class)
 @Configuration
-public class RocPersistenceAutoConfiguration {
+public class PersistenceAutoConfiguration {
 }

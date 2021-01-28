@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.shaneking.roc.rr.RocRrAutoConfiguration
+org.shaneking.roc.rr.RrAutoConfiguration

@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Configuration;
 
 @ComponentScan
 @Configuration
-public class RocRrAutoConfiguration {
+public class RrAutoConfiguration {
 }
