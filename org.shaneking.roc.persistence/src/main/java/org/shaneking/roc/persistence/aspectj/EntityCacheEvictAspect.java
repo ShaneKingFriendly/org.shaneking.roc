@@ -12,6 +12,8 @@ import org.shaneking.ling.zero.lang.Object0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.annotation.EntityCacheEvict;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
@@ -20,8 +22,11 @@ import java.util.stream.Collectors;
 
 @Aspect
 @Component
+@ConditionalOnProperty(prefix = "sk.roc.persistence.entity.cache", value = "enabled")
 @Slf4j
 public class EntityCacheEvictAspect {
+  @Value("${sk.roc.persistence.entity.cache.enabled:false}")
+  private boolean enabled;
   @Autowired
   private StringCaches cache;
 
@@ -31,31 +36,33 @@ public class EntityCacheEvictAspect {
 
   @After("pointcut() && @annotation(entityCacheEvict)")
   public void after(JoinPoint jp, EntityCacheEvict entityCacheEvict) throws Throwable {
-    if (jp.getArgs().length > entityCacheEvict.clsIdx() && jp.getArgs()[entityCacheEvict.clsIdx()] instanceof Class) {
-      Class clazz = (Class) jp.getArgs()[entityCacheEvict.clsIdx()];
-      try {
-        if (entityCacheEvict.pKeyIdx() > -1) {
-          Object pKeyObj = jp.getArgs()[entityCacheEvict.pKeyIdx()];
-          if (pKeyObj instanceof List) {
-            //org.shaneking.roc.persistence.dao.CacheableDao.delByIds
-            List<String> pKeyList = String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheEvict.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
-            log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), StringCaches.ERR_CODE__CACHE_HIT_PART, cache.hdel(clazz.getName(), pKeyList.toArray(new String[0])), OM3.writeValueAsString(pKeyList)));
-          } else {
-            //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T)
-            //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T, java.lang.String)
-            String k = String.valueOf(String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheEvict.pKeyPath()));
-            if (String0.isNull2Empty(k)) {
-              log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+    if (enabled) {
+      if (jp.getArgs().length > entityCacheEvict.clsIdx() && jp.getArgs()[entityCacheEvict.clsIdx()] instanceof Class) {
+        Class clazz = (Class) jp.getArgs()[entityCacheEvict.clsIdx()];
+        try {
+          if (entityCacheEvict.pKeyIdx() > -1) {
+            Object pKeyObj = jp.getArgs()[entityCacheEvict.pKeyIdx()];
+            if (pKeyObj instanceof List) {
+              //org.shaneking.roc.persistence.dao.CacheableDao.delByIds
+              List<String> pKeyList = String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheEvict.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
+              log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), StringCaches.ERR_CODE__CACHE_HIT_PART, cache.hdel(clazz.getName(), pKeyList.toArray(new String[0])), OM3.writeValueAsString(pKeyList)));
             } else {
-              log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), StringCaches.ERR_CODE__CACHE_HIT_PART, cache.hdel(clazz.getName(), k), k));
+              //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T)
+              //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T, java.lang.String)
+              String k = String.valueOf(String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheEvict.pKeyPath()));
+              if (String0.isNull2Empty(k)) {
+                log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+              } else {
+                log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), StringCaches.ERR_CODE__CACHE_HIT_PART, cache.hdel(clazz.getName(), k), k));
+              }
             }
           }
+        } catch (Throwable e) {
+          log.error(String.valueOf(clazz), e);
         }
-      } catch (Throwable e) {
-        log.error(String.valueOf(clazz), e);
+      } else {
+        log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
       }
-    } else {
-      log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
     }
   }
 }
