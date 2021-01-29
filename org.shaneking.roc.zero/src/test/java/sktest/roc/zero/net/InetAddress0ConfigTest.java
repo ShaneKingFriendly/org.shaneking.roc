@@ -15,7 +15,9 @@ class InetAddress0ConfigTest extends SKSpringUnit {
       () -> assertEquals("44.44.44.44", InetAddress0.customAddress("inet.address.test1")),
       () -> assertTrue(List0.newArrayList("44.44.44.45", "44.44.44.46").contains(InetAddress0.customAddress("inet.address.test2"))),
       () -> assertEquals("222.222.222.222", InetAddress0.customAddress("inet.address.test3")),
-      () -> assertTrue(List0.newArrayList("222.222.222.223", "222.222.222.224").contains(InetAddress0.customAddress("inet.address.test4")))
+      () -> assertTrue(List0.newArrayList("222.222.222.223", "222.222.222.224").contains(InetAddress0.customAddress("inet.address.test4"))),
+      () -> assertEquals("33.33.33.33", InetAddress0.customAddress("inet.address.test5")),
+      () -> assertTrue(List0.newArrayList("33.33.33.34").contains(InetAddress0.customAddress("inet.address.test6")))
     );
   }
 }

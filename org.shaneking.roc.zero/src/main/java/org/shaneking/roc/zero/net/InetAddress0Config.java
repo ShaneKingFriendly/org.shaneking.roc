@@ -32,7 +32,7 @@ public class InetAddress0Config {
   private String extHostsPath;
   @Getter
   @Setter
-  private String extPropPath;
+  private String extPropsPath;
   @Getter
   @Setter
   private Map<String, String> vhosts = Map0.newHashMap();
@@ -57,19 +57,19 @@ public class InetAddress0Config {
             });
           }
         } catch (Exception e) {
-          log.error(this.getExtPropPath(), e);
+          log.error(this.getExtPropsPath(), e);
         }
       }
-      if (!String0.isNullOrEmpty(this.getExtPropPath())) {
+      if (!String0.isNullOrEmpty(this.getExtPropsPath())) {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
-          Resource[] resources = resolver.getResources(this.getExtPropPath());
+          Resource[] resources = resolver.getResources(this.getExtPropsPath());
           for (Resource resource : resources) {
             ResourceBundle resourceBundle = new PropertyResourceBundle(resource.getInputStream());
             resourceBundle.keySet().forEach(k -> InetAddress0.putCustomHost(k, String0.nullToEmpty(resourceBundle.getString(k))));
           }
         } catch (Exception e) {
-          log.error(this.getExtPropPath(), e);
+          log.error(this.getExtPropsPath(), e);
         }
       }
       this.getVhosts().forEach(InetAddress0::putCustomHost);

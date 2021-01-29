@@ -1,0 +1,5 @@
+sk:
+  roc:
+    cache:
+      string:
+        enabled: true

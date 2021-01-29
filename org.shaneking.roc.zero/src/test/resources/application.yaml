@@ -4,7 +4,8 @@ sk:
       net:
         address:
           enabled: true
-          prop-path: classpath:vhosts.properties
+          ext-hosts-path: classpath:vhosts
+          ext-props-path: classpath:vhosts.properties
           vhosts:
             inet.address.test1: 44.44.44.44
             inet.address.test2: 44.44.44.45,44.44.44.46
