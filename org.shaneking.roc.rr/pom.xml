@@ -62,6 +62,12 @@
     </dependency>
     <dependency>
       <groupId>org.shaneking.roc</groupId>
+      <artifactId>org.shaneking.roc.persistence.test</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.shaneking.roc</groupId>
       <artifactId>org.shaneking.roc.test</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>

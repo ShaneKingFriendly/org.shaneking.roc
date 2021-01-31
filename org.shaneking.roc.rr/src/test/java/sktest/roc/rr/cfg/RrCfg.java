@@ -1,13 +1,9 @@
 package sktest.roc.rr.cfg;
 
-import org.shaneking.roc.persistence.entity.ApiAccessEntity;
-import org.shaneking.roc.persistence.entity.AuditLogEntity;
-import org.shaneking.roc.persistence.entity.UserEntity;
+import org.shaneking.roc.persistence.entity.*;
+import org.shaneking.roc.persistence.test.entity.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import sktest.roc.rr.entity.Test4ApiAccessEntity;
-import sktest.roc.rr.entity.Test4AuditLogEntity;
-import sktest.roc.rr.entity.Test4UserEntity;
 
 public class RrCfg {
 
@@ -21,6 +17,18 @@ public class RrCfg {
   @ConditionalOnMissingBean(AuditLogEntity.class)
   public Test4AuditLogEntity test4AuditLogEntity() {
     return new Test4AuditLogEntity();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(ChannelEntity.class)
+  public Test4ChannelEntity test4ChannelEntity() {
+    return new Test4ChannelEntity();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(TenantEntity.class)
+  public Test4TenantEntity test4TenantEntity() {
+    return new Test4TenantEntity();
   }
 
   @Bean

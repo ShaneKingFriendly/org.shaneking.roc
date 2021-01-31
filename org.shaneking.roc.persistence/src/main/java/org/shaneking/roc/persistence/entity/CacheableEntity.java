@@ -36,15 +36,6 @@ public abstract class CacheableEntity extends IdAdtVerEntity<Map<String, Conditi
     return conditionMap.keySet().parallelStream().filter(Objects::nonNull).filter(s -> s.equals(fieldName) || s.startsWith(fieldName + String0.UNDERLINE + String0.UNDERLINE)).map(s -> this.getWhereConditions().get(s)).collect(Collectors.toList());
   }
 
-  public Condition forceHavingCondition(@NonNull String field) {
-    Map<String, Condition> conditionMap = this.getHavingConditions();
-    if (conditionMap == null) {
-      conditionMap = Map0.newHashMap();
-      this.setHavingConditions(conditionMap);
-    }
-    return forceCondition(conditionMap, field);
-  }
-
   public Condition forceCondition(@NonNull Map<String, Condition> conditionMap, @NonNull String field) {
     Condition condition = conditionMap.get(field);
     if (condition == null) {
@@ -52,6 +43,15 @@ public abstract class CacheableEntity extends IdAdtVerEntity<Map<String, Conditi
       conditionMap.put(field, condition);
     }
     return condition;
+  }
+
+  public Condition forceHavingCondition(@NonNull String field) {
+    Map<String, Condition> conditionMap = this.getHavingConditions();
+    if (conditionMap == null) {
+      conditionMap = Map0.newHashMap();
+      this.setHavingConditions(conditionMap);
+    }
+    return forceCondition(conditionMap, field);
   }
 
   public Condition forceWhereCondition(@NonNull String field) {

@@ -52,23 +52,6 @@
       <artifactId>org.shaneking.ling.persistence</artifactId>
       <version>${org.shaneking.ling_version}</version>
     </dependency>
-    <!-- test(spring default logback, so not need dependency logback) -->
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xerial</groupId>
-      <artifactId>sqlite-jdbc</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.shaneking.roc</groupId>
-      <artifactId>org.shaneking.roc.test</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
 </project>

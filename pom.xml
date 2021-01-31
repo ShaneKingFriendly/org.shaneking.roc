@@ -101,6 +101,7 @@
     <module>org.shaneking.roc.cache</module>
     <module>org.shaneking.roc.jackson</module>
     <module>org.shaneking.roc.persistence</module>
+    <module>org.shaneking.roc.persistence.test</module>
     <module>org.shaneking.roc.rr</module>
     <module>org.shaneking.roc.test</module>
     <module>org.shaneking.roc.zero</module>

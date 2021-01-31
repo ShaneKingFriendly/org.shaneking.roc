@@ -1,3 +1,13 @@
+## sk
+sk:
+  roc:
+    cache:
+      string:
+        enabled: true
+    persistence:
+      entity:
+        enabled: true
+
 ## spring
 spring:
   datasource:
