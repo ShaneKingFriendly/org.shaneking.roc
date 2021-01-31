@@ -3,9 +3,11 @@ package org.shaneking.roc.persistence.dao;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.persistence.Tenanted;
 import org.shaneking.ling.persistence.sql.Condition;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.persistence.entity.TenantedEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,7 @@ public class TenantedCacheableDao {
     }
   }
 
+  //comment for idea compare
   public <T extends TenantedEntity> int add(Class<T> cacheType, T t, String tenantIds) {
     protectInsert(t, tenantIds);
     return this.getCacheableDao().add(cacheType, t);
@@ -60,6 +63,14 @@ public class TenantedCacheableDao {
     return this.getCacheableDao().ids(cacheType, t);
   }
 
+  public <T extends TenantedEntity> int delById(Class<T> cacheType, String id, String tenantIds) {
+    try {
+      return delById(cacheType, cacheType.newInstance(), id, tenantIds);
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, id, tenantIds), e);
+    }
+  }
+
   public <T extends TenantedEntity> int delById(Class<T> cacheType, T t, String tenantIds) {
     protectUpdate(t, tenantIds);
     return this.getCacheableDao().delById(cacheType, t);
@@ -68,6 +79,14 @@ public class TenantedCacheableDao {
   public <T extends TenantedEntity> int delById(Class<T> cacheType, T t, String id, String tenantIds) {
     protectUpdate(t, tenantIds);
     return this.getCacheableDao().delById(cacheType, t, id);
+  }
+
+  public <T extends TenantedEntity> int delByIds(Class<T> cacheType, List<String> ids, String tenantIds) {
+    try {
+      return delByIds(cacheType, cacheType.newInstance(), ids, tenantIds);
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, ids, tenantIds), e);
+    }
   }
 
   public <T extends TenantedEntity> int delByIds(Class<T> cacheType, T t, List<String> ids, String tenantIds) {
@@ -90,6 +109,14 @@ public class TenantedCacheableDao {
     return this.getCacheableDao().lst(cacheType, t);
   }
 
+  public <T extends TenantedEntity> List<T> lstByIds(Class<T> cacheType, List<String> ids, String tenantIds) {
+    try {
+      return lstByIds(cacheType, cacheType.newInstance(), ids, tenantIds);
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, ids, tenantIds), e);
+    }
+  }
+
   public <T extends TenantedEntity> List<T> lstByIds(Class<T> cacheType, T t, List<String> ids, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().lstByIds(cacheType, t, ids);
@@ -105,9 +132,25 @@ public class TenantedCacheableDao {
     return this.getCacheableDao().one(cacheType, t, rtnNullIfNotEqualsOne);
   }
 
+  public <T extends TenantedEntity> T oneById(Class<T> cacheType, String id, String tenantIds) {
+    try {
+      return oneById(cacheType, cacheType.newInstance(), id, tenantIds);
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, id, tenantIds), e);
+    }
+  }
+
   public <T extends TenantedEntity> T oneById(Class<T> cacheType, T t, String id, String tenantIds) {
     protectSelect(t, tenantIds);
     return this.getCacheableDao().oneById(cacheType, t, id);
+  }
+
+  public <T extends TenantedEntity> T oneById(Class<T> cacheType, String id, boolean rtnNullIfNotEqualsOne, String tenantIds) {
+    try {
+      return oneById(cacheType, cacheType.newInstance(), id, rtnNullIfNotEqualsOne, tenantIds);
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, id, rtnNullIfNotEqualsOne, tenantIds), e);
+    }
   }
 
   public <T extends TenantedEntity> T oneById(Class<T> cacheType, T t, String id, boolean rtnNullIfNotEqualsOne, String tenantIds) {

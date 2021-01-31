@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ChannelEntity extends CacheableEntity {
+public abstract class ChannelEntity extends TenantedEntity {
   @Transient
   public static final String ERR_CODE__NEED_ENCODING = "API_ACCESS__NEED_ENCODING";
 

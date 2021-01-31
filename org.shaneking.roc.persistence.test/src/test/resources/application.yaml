@@ -6,7 +6,8 @@ sk:
         enabled: true
     persistence:
       entity:
-        enabled: true
+        cache:
+          enabled: true
 
 ## spring
 spring:

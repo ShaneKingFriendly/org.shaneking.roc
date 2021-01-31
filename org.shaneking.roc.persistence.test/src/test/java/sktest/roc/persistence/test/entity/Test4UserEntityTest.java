@@ -2,15 +2,28 @@ package sktest.roc.persistence.test.entity;
 
 import org.junit.jupiter.api.Test;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.test.SKUnit;
+import org.shaneking.ling.test.crypto.Crypto0Unit;
+import org.shaneking.ling.zero.crypto.Crypto0;
+import org.shaneking.roc.persistence.entity.UserEntity;
 import org.shaneking.roc.persistence.test.entity.Test4UserEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Test4UserEntityTest {
+class Test4UserEntityTest extends SKUnit {
 
   @Test
   void entityClass() {
     assertNotNull(new Test4UserEntity().entityClass());
+  }
+
+  @Test
+  void getHaha() {
+    UserEntity userEntity = new Test4UserEntity();
+    userEntity.setHaha(Crypto0Unit.I_LOVE_YOU);
+    assertEquals(Crypto0.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU__ENCRYPTED, userEntity.getHaha());
+    userEntity.setHaha(Crypto0.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU);
+    assertEquals(Crypto0.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU, userEntity.getHaha());
   }
 
   @Test
