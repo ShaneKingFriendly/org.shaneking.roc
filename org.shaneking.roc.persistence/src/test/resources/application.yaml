@@ -1,0 +1,24 @@
+## sk
+sk:
+  roc:
+    cache:
+      string:
+        enabled: true
+    persistence:
+      entity:
+        cache:
+          enabled: true
+
+## spring
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    password:
+    ## absolute
+    #url: jdbc:sqlite:D:/eclipse/xy.db
+    ## compiled for test(../org.shaneking.roc.persistence/target/test-classes/sktest.sqllite)
+    #url: jdbc:sqlite::resource:sktest.sqllite
+    ## relative
+    url: jdbc:sqlite:src/test/resources/sktest.sqllite
+    username:
+

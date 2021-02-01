@@ -1,28 +1,28 @@
-package sktest.roc.persistence.hello.entity;
+package sktest.roc.persistence.entity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.test.SKUnit;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.hello.entity.HelloApiAccessEntity;
-
-import java.io.IOException;
-import java.nio.file.Files;
+import org.shaneking.roc.persistence.entity.ApiAccessEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HelloApiAccessEntityTest extends SKUnit {
 
   @Test
-  void createTableIfNotExistSql() throws IOException {
-//    Files.write(tstOFiles().toPath(), new HelloApiAccessEntity().createTableIfNotExistSql().getBytes());
-    Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloApiAccessEntity().createTableIfNotExistSql().trim());
-  }
-
-  @Test
-  void entityClass() {
-    assertNotNull(new HelloApiAccessEntity().entityClass());
+  void check() {
+    ApiAccessEntity apiAccessEntity = new HelloApiAccessEntity();
+    assertAll(
+      () -> assertFalse(apiAccessEntity.check(null, null)),
+      () -> assertFalse(apiAccessEntity.check(String0.ARY_L62, String0.ARY_L62))
+    );
+    apiAccessEntity.setAllowSignatureRegex(String0.ARY_HEX).setAllowUrlRegex(String0.ARY_HEX).setDenySignatureRegex(String0.ARY_HEX).setDenyUrlRegex(String0.ARY_HEX);
+    assertAll(
+      () -> assertFalse(apiAccessEntity.check(null, null)),
+      () -> assertFalse(apiAccessEntity.check(String0.ARY_L62, String0.ARY_L62))
+    );
   }
 
   @Test

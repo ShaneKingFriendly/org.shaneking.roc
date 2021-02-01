@@ -45,22 +45,28 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @Test
   void delById() {
-    HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
-//    helloCacheableEntity.setId(String0.ARY_HEX);
     assertEquals(0, cacheableDao.delById(HelloCacheableEntity.class, String0.ARY_DEC));
-    assertEquals(0, cacheableDao.delById(HelloCacheableEntity.class, helloCacheableEntity, String0.ARY_DEC));
-    assertThrows(ZeroException.class, () -> cacheableDao.delById(HelloCacheableEntity.class, helloCacheableEntity));
+    assertEquals(0, cacheableDao.delById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_DEC));
+    assertThrows(NullPointerException.class, () -> cacheableDao.delById(HelloCacheableEntity.class, new HelloCacheableEntity(), null));
+    assertThrows(ZeroException.class, () -> cacheableDao.delById(HelloCacheableEntity.class, new HelloCacheableEntity()));
+
+    HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
+    helloCacheableEntity.setId(String0.ARY_HEX);
+    assertEquals(1, cacheableDao.delById(HelloCacheableEntity.class, helloCacheableEntity));
   }
 
   @Test
   void delByIds() {
     assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, List0.newArrayList(String0.ARY_DEC)));
+    assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, List0.newArrayList()));
     assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(String0.ARY_DEC)));
+    assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList()));
   }
 
   @Test
   void modByIdsVer() {
     HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
+    assertThrows(ZeroException.class, () -> cacheableDao.modByIdsVer(HelloCacheableEntity.class, helloCacheableEntity, List0.newArrayList()));
     helloCacheableEntity.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
     assertEquals(1, cacheableDao.modByIdsVer(HelloCacheableEntity.class, helloCacheableEntity, List0.newArrayList(String0.ARY_HEX)));
   }
@@ -68,6 +74,7 @@ class CacheableDaoTest extends SKSpringUnit {
   @Test
   void modByIdVer() {
     HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
+    assertThrows(ZeroException.class, () -> cacheableDao.modByIdVer(HelloCacheableEntity.class, helloCacheableEntity));
     helloCacheableEntity.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
     assertEquals(1, cacheableDao.modByIdVer(HelloCacheableEntity.class, helloCacheableEntity));
   }
@@ -84,6 +91,9 @@ class CacheableDaoTest extends SKSpringUnit {
 
     assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(String0.ARY_HEX, String0.ARY_DEC)).get(0).getId());
     assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, List0.newArrayList(String0.ARY_HEX, String0.ARY_DEC)).get(0).getId());
+
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList()).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, List0.newArrayList()).get(0).getId());
   }
 
   @Test

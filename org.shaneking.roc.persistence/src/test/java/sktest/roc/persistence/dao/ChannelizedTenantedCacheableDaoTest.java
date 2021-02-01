@@ -7,9 +7,9 @@ import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.ChannelizedTenantedCacheableDao;
-import org.shaneking.roc.persistence.hello.entity.HelloAuditLogEntity;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import sktest.roc.persistence.entity.HelloAuditLogEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
