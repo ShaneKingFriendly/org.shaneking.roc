@@ -1,0 +1,12 @@
+create table if not exists `t_hello_tenant_entity` (
+  `version` int not null  default 0,
+  `id` char(40) not null,
+  `invalid` varchar(1) default 'N',
+  `last_modify_date_time` varchar(20) default '',
+  `last_modify_user_id` varchar(40) default '',
+  `name` varchar(10) default '',
+  `description` varchar(255) default '',
+  primary key (`id`)
+);
+
+create unique index if not exists u_idx_name on t_hello_tenant_entity(`name`);

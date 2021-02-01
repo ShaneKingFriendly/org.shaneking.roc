@@ -1,9 +1,0 @@
-create table if not exists `t_test_4_cacheable_entity` (
-  `version` int not null  default 0,
-  `id` char(40) not null,
-  `invalid` varchar(1) default 'N',
-  `last_modify_date_time` varchar(20) default '',
-  `last_modify_user_id` varchar(40) default '',
-  primary key (`id`)
-);
-

@@ -68,6 +68,6 @@ public abstract class ApiAccessEntity extends ChannelizedTenantedEntity {
     return deny && allow;
   }
 
-  //@see sktest.roc.rr.cfg.RrCfg.test4ApiAccessEntity
+  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessEntity
   public abstract <T extends ApiAccessEntity> Class<T> entityClass();
 }

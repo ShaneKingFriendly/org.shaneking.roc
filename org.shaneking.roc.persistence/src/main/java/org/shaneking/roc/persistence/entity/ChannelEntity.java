@@ -49,6 +49,6 @@ public abstract class ChannelEntity extends TenantedEntity {
   @Setter
   private String tokenValueType;
 
-  //@see sktest.roc.rr.cfg.RrCfg.test4ChannelEntity
+  //@see sktest.roc.rr.cfg.RrCfg.helloChannelEntity
   public abstract <T extends ChannelEntity> Class<T> entityClass();
 }

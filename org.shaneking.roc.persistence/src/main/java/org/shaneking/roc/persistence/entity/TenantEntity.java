@@ -20,6 +20,6 @@ public abstract class TenantEntity extends CacheableEntity {
   @Setter
   private String description;
 
-  //@see sktest.roc.rr.cfg.RrCfg.test4TenantEntity
+  //@see sktest.roc.rr.cfg.RrCfg.helloTenantEntity
   public abstract <T extends TenantEntity> Class<T> entityClass();
 }

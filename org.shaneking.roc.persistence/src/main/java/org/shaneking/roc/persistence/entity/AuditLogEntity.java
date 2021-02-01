@@ -86,6 +86,6 @@ public abstract class AuditLogEntity extends ChannelizedTenantedEntity {
   @Setter
   private String respDatetime;
 
-  //@see sktest.roc.rr.cfg.RrCfg.test4AuditLogEntity
+  //@see sktest.roc.rr.cfg.RrCfg.helloAuditLogEntity
   public abstract <T extends AuditLogEntity> Class<T> entityClass();
 }

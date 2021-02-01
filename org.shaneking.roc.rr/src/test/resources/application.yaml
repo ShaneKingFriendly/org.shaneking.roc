@@ -1,3 +1,25 @@
+## sk
+sk:
+  roc:
+    cache:
+      string:
+        enabled: true
+    persistence:
+      entity:
+        cache:
+          enabled: true
+    rr:
+      limiting:
+        enabled: true
+      audit:
+        enabled: true
+      access:
+        enabled: true
+      cache:
+        enabled: true
+      crypto:
+        enabled: true
+
 ## spring
 spring:
   datasource:

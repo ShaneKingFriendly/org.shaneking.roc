@@ -8,12 +8,12 @@
     <version>0.241.1</version>
   </parent>
 
-  <artifactId>org.shaneking.roc.rr</artifactId>
+  <artifactId>org.shaneking.roc.persistence.hello</artifactId>
   <version>0.241.1</version>
   <packaging>jar</packaging>
 
-  <name>org.shaneking.roc.rr</name>
-  <description>Request and Response with Spring for ShaneKing</description>
+  <name>org.shaneking.roc.persistence.hello</name>
+  <description>Persistence Hello with Spring for ShaneKing</description>
   <url>https://github.com/ShaneKingOrg/org.shaneking.roc</url>
   <licenses>
     <license>
@@ -23,31 +23,11 @@
   </licenses>
 
   <dependencies>
-    <!-- @ConditionalOnProperty -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-autoconfigure</artifactId>
-    </dependency>
-    <!-- @ConfigurationProperties, @EnableConfigurationProperties -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.shaneking.ling</groupId>
-      <artifactId>org.shaneking.ling.rr</artifactId>
-      <version>${org.shaneking.ling_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.shaneking.roc</groupId>
-      <artifactId>org.shaneking.roc.jackson</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.shaneking.roc</groupId>
       <artifactId>org.shaneking.roc.persistence</artifactId>
       <version>${project.parent.version}</version>
+      <scope>provided</scope>
     </dependency>
     <!-- test(spring default logback, so not need dependency logback) -->
     <dependency>
@@ -57,7 +37,7 @@
     </dependency>
     <dependency>
       <groupId>org.shaneking.roc</groupId>
-      <artifactId>org.shaneking.roc.persistence.hello</artifactId>
+      <artifactId>org.shaneking.roc.cache</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>

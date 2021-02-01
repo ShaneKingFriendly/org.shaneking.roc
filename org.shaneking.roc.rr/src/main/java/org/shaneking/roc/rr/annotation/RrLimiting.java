@@ -7,5 +7,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface RrLimiting {
+  String prop() default "";
 
+  int limit() default -1;
 }

@@ -39,6 +39,6 @@ public abstract class UserEntity extends TenantedEntity {
     }
   }
 
-  //@see sktest.roc.rr.cfg.RrCfg.test4UserEntity
+  //@see sktest.roc.rr.cfg.RrCfg.helloUserEntity
   public abstract <T extends UserEntity> Class<T> entityClass();
 }
