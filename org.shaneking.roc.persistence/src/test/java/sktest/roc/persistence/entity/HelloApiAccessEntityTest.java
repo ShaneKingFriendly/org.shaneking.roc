@@ -16,7 +16,7 @@ class HelloApiAccessEntityTest extends SKUnit {
     ApiAccessEntity apiAccessEntity = new HelloApiAccessEntity();
     assertAll(
       () -> assertFalse(apiAccessEntity.check(null, null)),
-      () -> assertFalse(apiAccessEntity.check(String0.ARY_L62, String0.ARY_L62))
+      () -> assertTrue(apiAccessEntity.check(String0.ARY_L62, String0.ARY_L62))
     );
     apiAccessEntity.setAllowSignatureRegex(String0.ARY_HEX).setAllowUrlRegex(String0.ARY_HEX).setDenySignatureRegex(String0.ARY_HEX).setDenyUrlRegex(String0.ARY_HEX);
     assertAll(
