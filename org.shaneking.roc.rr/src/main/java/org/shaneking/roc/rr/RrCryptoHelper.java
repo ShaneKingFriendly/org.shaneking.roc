@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.entity.ChannelEntity;
@@ -38,7 +39,12 @@ public class RrCryptoHelper {
     return req;
   }
 
-  public <O, R> Req<O, R> encrypt(@NonNull Req<O, R> respData, String tokenValue, String tokenAlgorithmType, String tokenValueType, TypeReference<Pri<O, R>> typeReference) {
+  public <O, R> Resp<Req<O, R>> decrypt(@NonNull Resp<Req<O, R>> resp, String tokenValue, String tokenAlgorithmType, String tokenValueType, TypeReference<Pri<O, R>> typeReference) {
+    decrypt(resp.getData(), tokenValue, tokenAlgorithmType, tokenValueType, typeReference);
+    return resp;
+  }
+
+  public <O, R> Req<O, R> decrypt(@NonNull Req<O, R> respData, String tokenValue, String tokenAlgorithmType, String tokenValueType, TypeReference<Pri<O, R>> typeReference) {
     String token = tokenValue;
     if (!String0.isNullOrEmpty(token) && ChannelEntity.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(tokenValueType)) {
       token = environment.getProperty(token, token);

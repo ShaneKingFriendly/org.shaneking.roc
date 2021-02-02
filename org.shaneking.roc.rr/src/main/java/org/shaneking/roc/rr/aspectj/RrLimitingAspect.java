@@ -46,12 +46,12 @@ public class RrLimitingAspect {
     if (enabled) {
       if (!String0.isNullOrEmpty(rrLimiting.prop()) && rrLimiting.limit() > 0) {
         Integer limit = environment.getProperty(rrLimiting.prop(), Integer.class, rrLimiting.limit());
-        AtomicLong atomicLong = map.getOrDefault(rrLimiting.prop(), new AtomicLong(0));
+        AtomicLong atomicLong = map.putIfAbsent(rrLimiting.prop(), new AtomicLong(0));
         if (AtomicLong0.tryIncreaseFailed(atomicLong, limit)) {
           try {
             rtn = pjp.proceed();
           } catch (Throwable throwable) {
-            log.error(pjp.getSignature().getName(), throwable);
+            log.error(pjp.getSignature().toLongString(), throwable);
             throw throwable;
           } finally {
             AtomicLong0.tryDecreaseFailed(atomicLong);
@@ -60,7 +60,7 @@ public class RrLimitingAspect {
           throw new ZeroException(ERR_CODE__BUSY_NOW);
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().getName(), OM3.writeValueAsString(rrLimiting)));
+        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
         rtn = pjp.proceed();
       }
     } else {

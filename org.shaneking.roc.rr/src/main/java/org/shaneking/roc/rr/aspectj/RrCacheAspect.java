@@ -13,6 +13,7 @@ import org.shaneking.ling.zero.lang.Boolean0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.entity.AuditLogEntity;
+import org.shaneking.roc.rr.Ctx;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,36 +48,40 @@ public class RrCacheAspect {
     if (enabled) {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
+        Ctx ctx = req.gnnCtx();
         String tracingId = req.getPub().getTracingId();
         try {
-          req.getPub().setTracingId(null);
+          req.setCtx(null).getPub().setTracingId(null);
 
-          String key = String.join(String0.MORE, pjp.getSignature().getName(), OM3.writeValueAsString(req));
+          String key = String.join(String0.MORE, pjp.getSignature().toLongString(), OM3.writeValueAsString(req));
           String respCached = cache.get(key);
 
-          AuditLogEntity auditLogEntity = req.getCtx().getAuditLog();
+          AuditLogEntity auditLogEntity = ctx.getAuditLog();
           if (auditLogEntity != null) {
             auditLogEntity.setCached(Boolean0.yn(!String0.isNullOrEmpty(respCached)));
           }
 
           if (String0.isNullOrEmpty(respCached)) {
             log.info(MessageFormat.format("{0} - {1}", StringCaches.ERR_CODE__CACHE_HIT_MISS, key));
-            req.getPub().setTracingId(tracingId);
+            req.setCtx(ctx).getPub().setTracingId(tracingId);
             proceedBefore = true;
             rtn = pjp.proceed();
             proceedAfter = true;
             if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
+              Ctx rstCtx = ((Req) ((Resp<?>) rtn).getData()).getCtx();///ctx has many abstract class, doesn't have construct.
+              ((Req) ((Resp<?>) rtn).getData()).setCtx(null);
               cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(rtn));
+              ((Req) ((Resp<?>) rtn).getData()).setCtx(rstCtx);
             }
           } else {
             log.info(MessageFormat.format("{0} - {1} : {2}", StringCaches.ERR_CODE__CACHE_HIT_ALL, key, respCached));
             Resp<?> resp = OM3.readValue(respCached, OM3.om().getTypeFactory().constructParametricType(Resp.class, JavaType3.resolveRtnJavaTypes(pjp)));
-            ((Req<?, ?>) resp.getData()).getPub().setTracingId(tracingId);
+            ((Req<?, ?>) resp.getData()).setCtx(ctx).getPub().setTracingId(tracingId);
             rtn = resp;
           }
         } catch (Throwable throwable) {
           log.error(OM3.writeValueAsString(req), throwable);
-          req.getPub().setTracingId(tracingId);
+          req.setCtx(ctx).getPub().setTracingId(tracingId);
           if (proceedBefore && !proceedAfter) {
             throw throwable;//process error
           } else {
@@ -88,7 +93,7 @@ public class RrCacheAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().getName(), OM3.writeValueAsString(rrCache)));
+        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrCache)));
         rtn = pjp.proceed();
       }
     } else {

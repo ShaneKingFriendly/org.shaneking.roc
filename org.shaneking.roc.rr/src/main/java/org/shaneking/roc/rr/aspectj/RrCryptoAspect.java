@@ -65,11 +65,11 @@ public class RrCryptoAspect {
       if (pjp.getArgs().length > rrCrypto.reqParamIdx() && pjp.getArgs()[rrCrypto.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCrypto.reqParamIdx()];
         try {
-          TenantEntity tenantEntity = req.getCtx().getTenant();
+          TenantEntity tenantEntity = req.gnnCtx().getTenant();
           if (tenantEntity == null) {
-            rtn = Resp.failed(Tenanted.ERR_CODE__NOT_FOUND, OM3.writeValueAsString(req.getCtx()), req);
+            rtn = Resp.failed(Tenanted.ERR_CODE__NOT_FOUND, OM3.writeValueAsString(req.gnnCtx()), req);
           } else {
-            ChannelEntity channelEntity = req.getCtx().getChannel();
+            ChannelEntity channelEntity = req.gnnCtx().getChannel();
             if (channelEntity == null) {
               channelEntity = channelEntityClass.entityClass().newInstance();
               channelEntity.setTokenForce(String0.N).setTokenAlgorithmType(Crypto0.ALGORITHM_NAME__AES).setTokenValueType(ChannelEntity.TOKEN_VALUE_TYPE__SELF);
@@ -92,16 +92,16 @@ public class RrCryptoAspect {
               }
 
 
-              UserEntity userEntity = tenantedCacheableDao.oneById(userEntityClass.entityClass(), userEntityClass.entityClass().newInstance(), req.getPri().getExt().getUserId(), true, tenantEntity.getId());
+              UserEntity userEntity = tenantedCacheableDao.oneById(userEntityClass.entityClass(), userEntityClass.entityClass().newInstance(), req.getPri().gnnExt().getUserId(), true, tenantEntity.getId());
               if (userEntity == null) {
-                rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().getExt().getUserId(), req);
+                rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserId(), req);
               } else {
-                req.getCtx().setUser(userEntity);
-                if (req.getCtx().getAuditLog() != null) {
-                  req.getCtx().getAuditLog().setReqUserId(userEntity.getId());
+                req.gnnCtx().setUser(userEntity);
+                if (req.gnnCtx().getAuditLog() != null) {
+                  req.gnnCtx().getAuditLog().setReqUserId(userEntity.getId());
                 }
 
-                AuditLogEntity auditLogEntity = req.getCtx().getAuditLog();
+                AuditLogEntity auditLogEntity = req.gnnCtx().getAuditLog();
                 if (auditLogEntity != null) {
                   auditLogEntity.setReqJsonStr(OM3.writeValueAsString(req));
                 }
@@ -139,7 +139,7 @@ public class RrCryptoAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().getName(), OM3.writeValueAsString(rrCrypto)));
+        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrCrypto)));
         rtn = pjp.proceed();
       }
     } else {

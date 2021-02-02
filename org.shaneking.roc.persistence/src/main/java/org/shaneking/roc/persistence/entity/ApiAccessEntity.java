@@ -37,35 +37,35 @@ public abstract class ApiAccessEntity extends ChannelizedTenantedEntity {
   private String denySignatureRegex;
 
   public boolean check(String url, String signature) {
-    boolean allow = false;
-    boolean deny = true;
+    boolean urlAllow = false;
+    boolean urlDeny = false;
+    boolean signatureAllow = false;
+    boolean signatureDeny = false;
     if (!String0.isNullOrEmpty(url)) {
       if (String0.isNullOrEmpty(getAllowUrlRegex())) {
-        allow = allow || true;
+        urlAllow = urlAllow || true;
       } else {
-        allow = allow || Pattern.matches(getAllowUrlRegex(), url);
+        urlAllow = urlAllow || Pattern.matches(getAllowUrlRegex(), url);
       }
-
       if (String0.isNullOrEmpty(getDenyUrlRegex())) {
-        deny = deny && false;
+        urlDeny = urlDeny || false;
       } else {
-        deny = deny && Pattern.matches(getDenyUrlRegex(), url);
+        urlDeny = urlDeny || Pattern.matches(getDenyUrlRegex(), url);
       }
     }
     if (!String0.isNullOrEmpty(signature)) {
       if (String0.isNullOrEmpty(getAllowSignatureRegex())) {
-        allow = allow || true;
+        signatureAllow = signatureAllow || true;
       } else {
-        allow = allow || Pattern.matches(getAllowSignatureRegex(), signature);
+        signatureAllow = signatureAllow || Pattern.matches(getAllowSignatureRegex(), signature);
       }
-
       if (String0.isNullOrEmpty(getDenySignatureRegex())) {
-        deny = deny && false;
+        signatureDeny = signatureDeny || false;
       } else {
-        deny = deny && Pattern.matches(getDenySignatureRegex(), signature);
+        signatureDeny = signatureDeny || Pattern.matches(getDenySignatureRegex(), signature);
       }
     }
-    return deny && allow;
+    return (urlAllow || signatureAllow) && !(urlDeny || signatureDeny);
   }
 
   //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessEntity

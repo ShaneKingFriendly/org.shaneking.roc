@@ -69,14 +69,14 @@ public class RrAuditAspect {
           auditLogEntity.setReqJsonStrRaw(OM3.writeValueAsString(req));
 //          auditLogEntity.setReqJsonStr();//crypto
 //          auditLogEntity.setReqUrl();///web
-          auditLogEntity.setReqSignature(pjp.getSignature().getName());
+          auditLogEntity.setReqSignature(pjp.getSignature().toLongString());
 //          auditLogEntity.setCached();//cache
 //          auditLogEntity.setRespJsonStr();//crypto
 //          auditLogEntity.setRespJsonStrCtx();
 //          auditLogEntity.setRespJsonStrRaw();
           auditLogEntity.setRespIps(OM3.writeValueAsString(InetAddress0.localHostExactAddress()));
 //          auditLogEntity.setRespDatetime();
-          req.getCtx().setAuditLog(auditLogEntity);
+          req.gnnCtx().setAuditLog(auditLogEntity);
 
           ifExceptionThenInProceed = true;
           rtn = pjp.proceed();
@@ -92,7 +92,7 @@ public class RrAuditAspect {
             if (auditLogEntity != null) {
               auditLogEntity.setLastModifyDateTime(Date0.on().dateTime());
               auditLogEntity.setLastModifyUserId(auditLogEntity.getReqUserId());
-              auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(req.getCtx()));
+              auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(req.gnnCtx()));
               req.setCtx(null);
               if (rtn != null) {
                 auditLogEntity.setRespJsonStrRaw(OM3.writeValueAsString(rtn));
@@ -107,7 +107,7 @@ public class RrAuditAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().getName(), OM3.writeValueAsString(rrAudit)));
+        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAudit)));
         rtn = pjp.proceed();
       }
     } else {

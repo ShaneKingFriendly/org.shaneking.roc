@@ -14,8 +14,8 @@ import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.ApiAccessEntity;
 import org.shaneking.roc.persistence.entity.ChannelEntity;
 import org.shaneking.roc.persistence.entity.TenantEntity;
+import org.shaneking.roc.rr.Pub;
 import org.shaneking.roc.rr.Req;
-import org.shaneking.roc.rr.ReqPub;
 import org.shaneking.roc.rr.annotation.RrAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,25 +59,25 @@ public class RrAccessAspect {
       if (pjp.getArgs().length > rrAccess.reqParamIdx() && pjp.getArgs()[rrAccess.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
         if (req.getPub() == null || String0.isNullOrEmpty(req.getPub().getChannelName())) {
-          rtn = Resp.failed(ReqPub.ERR_CODE__REQUIRED_CHANNEL_NAME, OM3.writeValueAsString(req.getPub()), req);
+          rtn = Resp.failed(Pub.ERR_CODE__REQUIRED_CHANNEL_NAME, OM3.writeValueAsString(req.getPub()), req);
         } else {
           try {
             ChannelEntity channelEntity = cacheableDao.one(channelEntityClass.entityClass(), channelEntityClass.entityClass().newInstance().setName(req.getPub().getChannelName()), true);
             if (channelEntity == null) {
               rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, req.getPub().getChannelName(), req);
             } else {
-              req.getCtx().setChannel(channelEntity);
-              if (req.getCtx().getAuditLog() != null) {
-                req.getCtx().getAuditLog().setChannelId(channelEntity.getId());
+              req.gnnCtx().setChannel(channelEntity);
+              if (req.gnnCtx().getAuditLog() != null) {
+                req.gnnCtx().getAuditLog().setChannelId(channelEntity.getId());
               }
 
               TenantEntity tenantEntity = cacheableDao.one(tenantEntityClass.entityClass(), tenantEntityClass.entityClass().newInstance().setName(String0.nullOrEmptyTo(req.getPub().getTenantName(), req.getPub().getChannelName())), true);
               if (tenantEntity == null) {
                 rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, String.valueOf(req.getPub().getTenantName()), req);
               } else {
-                req.getCtx().setTenant(tenantEntity);
-                if (req.getCtx().getAuditLog() != null) {
-                  req.getCtx().getAuditLog().setTenantId(tenantEntity.getId());
+                req.gnnCtx().setTenant(tenantEntity);
+                if (req.gnnCtx().getAuditLog() != null) {
+                  req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
                 }
 
                 ApiAccessEntity apiAccessEntitySelect = apiAccessEntityClass.entityClass().newInstance();
@@ -86,7 +86,7 @@ public class RrAccessAspect {
                 if (apiAccessEntity == null) {
                   rtn = Resp.failed(ApiAccessEntity.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntitySelect), req);
                 } else {
-                  if (apiAccessEntity.check(req.getCtx().getAuditLog() == null ? null : req.getCtx().getAuditLog().getReqUrl(), pjp.getSignature().getName())) {
+                  if (apiAccessEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString())) {
                     proceedBefore = true;
                     rtn = pjp.proceed();
                     proceedAfter = true;
@@ -109,7 +109,7 @@ public class RrAccessAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().getName(), OM3.writeValueAsString(rrAccess)));
+        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAccess)));
         rtn = pjp.proceed();
       }
     } else {

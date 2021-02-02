@@ -72,7 +72,7 @@ public class EntityCacheableAspect {
               //org.shaneking.roc.persistence.dao.CacheableDao.oneById(java.lang.Class<T>, java.lang.String, boolean)
               String k = String.valueOf(String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheable.pKeyPath()));
               if (String0.isNull2Empty(k)) {
-                log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+                log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
               } else {
                 String cached = cache.hget(clazz.getName(), k);
                 if (!String0.isNullOrEmpty(cached)) {
@@ -129,7 +129,7 @@ public class EntityCacheableAspect {
           }
         }
       } else {
-        log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+        log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
         rtn = pjp.proceed();
       }
     } else {

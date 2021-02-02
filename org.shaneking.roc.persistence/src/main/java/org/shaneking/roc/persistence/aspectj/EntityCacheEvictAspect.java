@@ -51,7 +51,7 @@ public class EntityCacheEvictAspect {
               //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T, java.lang.String)
               String k = String.valueOf(String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheEvict.pKeyPath()));
               if (String0.isNull2Empty(k)) {
-                log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+                log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
               } else {
                 log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), StringCaches.ERR_CODE__CACHE_HIT_PART, cache.hdel(clazz.getName(), k), k));
               }
@@ -61,7 +61,7 @@ public class EntityCacheEvictAspect {
           log.error(String.valueOf(clazz), e);
         }
       } else {
-        log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().getName(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+        log.warn(MessageFormat.format("{0} - {1}", jp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
       }
     }
   }

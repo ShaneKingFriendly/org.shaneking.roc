@@ -13,13 +13,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ToString
 public class Pri<O, R> {
+  @Getter
   @Setter
-  private PriExt ext;//extend settings like table config
-
+  private Ext ext;//extend settings like table config
   @Getter
   @Setter
   private O obj;//main object content
-
   @Getter
   @Setter
   private R rtn;//return, just response, don't request
@@ -37,13 +36,13 @@ public class Pri<O, R> {
     return new Pri<O, R>().setRtn(rtn).setObj(obj);
   }
 
-  public static <O, R> Pri<O, R> build(R rtn, O obj, PriExt ext) {
+  public static <O, R> Pri<O, R> build(R rtn, O obj, Ext ext) {
     return new Pri<O, R>().setRtn(rtn).setObj(obj).setExt(ext);
   }
 
-  public PriExt getExt() {
+  public Ext gnnExt() {
     if (ext == null) {
-      ext = new PriExt();
+      ext = new Ext();
     }
     return ext;
   }
