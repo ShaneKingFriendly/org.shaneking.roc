@@ -12,6 +12,7 @@ import org.shaneking.roc.persistence.hello.entity.HelloUserEntity;
 import org.shaneking.roc.rr.*;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import sktest.roc.rr.biz.impl.UserBizImpl;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,7 +21,7 @@ import java.util.concurrent.Executors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
-public class UserBizImplTest extends SKSpringUnit {
+public class UserBizTest extends SKSpringUnit {
 
   @Autowired
   private UserBizImpl userBiz;

@@ -1,4 +1,4 @@
-package sktest.roc.rr.biz;
+package sktest.roc.rr.biz.impl;
 
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.roc.persistence.dao.TenantedCacheableDao;
@@ -43,7 +43,7 @@ public class UserBizImpl {
     return resp;
   }
 
-  @RrLimiting(prop = "sktest.roc.rr.biz.UserBizImpl.lst", limit = 1)
+  @RrLimiting(prop = "sktest.roc.rr.biz.impl.UserBizImpl.lst", limit = 1)
   @RrAudit
   @RrAccess
   @RrCache

@@ -26,7 +26,7 @@ spring:
     driver-class-name: org.sqlite.JDBC
     password:
     ## absolute
-    #url: jdbc:sqlite:D:/eclipse/xy.db
+    #url: jdbc:sqlite:D:/test/sktest.sqllite
     ## compiled for test(../org.shaneking.roc.persistence/target/test-classes/sktest.sqllite)
     #url: jdbc:sqlite::resource:sktest.sqllite
     ## relative

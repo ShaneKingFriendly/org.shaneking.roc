@@ -57,6 +57,7 @@ public class RrLimitingAspect {
             AtomicLong0.tryDecreaseFailed(atomicLong);
           }
         } else {
+          log.warn(MessageFormat.format("{0} - {1} : {2}", ERR_CODE__BUSY_NOW, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
           throw new ZeroException(ERR_CODE__BUSY_NOW);
         }
       } else {

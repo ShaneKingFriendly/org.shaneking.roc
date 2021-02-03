@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.net.InetAddress0;
@@ -95,6 +96,14 @@ public class RrAuditAspect {
               auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(req.gnnCtx()));
               req.setCtx(null);
               if (rtn != null) {
+                if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
+                  //cached scenario
+                  Req<?, ?> respData = (Req<?, ?>) ((Resp<?>) rtn).getData();
+                  if (OM3.OBJECT_ERROR_STRING.equalsIgnoreCase(auditLogEntity.getRespJsonStrCtx())) {
+                    auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(respData.gnnCtx()));
+                  }
+                  respData.setCtx(null);
+                }
                 auditLogEntity.setRespJsonStrRaw(OM3.writeValueAsString(rtn));
               }
               auditLogEntity.setRespDatetime(Date0.on().datetimes());
