@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ApiAccessEntity extends ChannelizedTenantedEntity {
+public abstract class ApiAccessEntity extends ChannelizedEntity {
   @Transient
   public static final String ERR_CODE__PERMISSION_DENIED = "API_ACCESS__PERMISSION_DENIED";
 

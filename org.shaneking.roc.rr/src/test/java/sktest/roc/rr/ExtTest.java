@@ -14,11 +14,11 @@ class ExtTest {
   @Test
   void testToString() {
     assertAll(
-      () -> assertEquals("Ext(jon=null, tbl=null, userId=null)", new Ext().toString()),
+      () -> assertEquals("Ext(jon=null, tbl=null, userNo=null)", new Ext().toString()),
       () -> assertEquals("Tbl(pagination=null)", new Ext().gnnTbl().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new Ext())),
       () -> assertEquals("{}", OM3.writeValueAsString(new Ext().gnnTbl())),
-      () -> assertEquals("{\"jon\":{},\"tbl\":{\"pagination\":{}},\"userId\":\"userId\"}", OM3.writeValueAsString(new Ext().setJon(OM3.createObjectNode()).setTbl(new Tbl().setPagination(new Pagination())).setUserId("userId")))
+      () -> assertEquals("{\"jon\":{},\"tbl\":{\"pagination\":{}},\"userNo\":\"userNo\"}", OM3.writeValueAsString(new Ext().setJon(OM3.createObjectNode()).setTbl(new Tbl().setPagination(new Pagination())).setUserNo("userNo")))
     );
   }
 }

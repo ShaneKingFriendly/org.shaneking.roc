@@ -31,7 +31,7 @@ public class TenantedCacheableDao {
   public static <T extends TenantedEntity> void protectUpdate(@NonNull T t, String tenantIds) {
     protectInsert(t, tenantIds);
     if (!String0.isNullOrEmpty(tenantIds)) {
-      t.forceWhereCondition(Tenanted.FIELD__TENANT_ID).resetId(tenantIds);
+      t.forceWhereCondition(Tenanted.FIELD__TENANT_ID).resetVal(tenantIds);
     }
   }
 
@@ -40,9 +40,9 @@ public class TenantedCacheableDao {
       List<String> tenantIdList = List0.newArrayList(tenantIds.split(String0.COMMA));
       Condition condition = t.forceWhereCondition(Tenanted.FIELD__TENANT_ID);
       if (tenantIdList.size() == 1) {
-        condition.resetId(tenantIdList.get(0));
+        condition.resetVal(tenantIdList.get(0));
       } else {
-        condition.retainIds(tenantIdList);
+        condition.retainVal(tenantIdList);
       }
     }
   }

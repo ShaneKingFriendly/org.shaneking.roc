@@ -5,10 +5,10 @@ create table if not exists `t_hello_user_entity` (
   `last_modify_date_time` varchar(20) default '',
   `last_modify_user_id` varchar(40) default '',
   `tenant_id` varchar(40) default '',
+  `no` varchar(255) default '',
+  `name` varchar(30) default '',
   `haha` varchar(255) default '',
   `mobile` varchar(20) default '',
-  `name` varchar(30) default '',
   `email` varchar(40) default '',
   primary key (`id`)
 );
-

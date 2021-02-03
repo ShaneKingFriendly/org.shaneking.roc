@@ -92,9 +92,9 @@ public class RrCryptoAspect {
               }
 
 
-              UserEntity userEntity = tenantedCacheableDao.oneById(userEntityClass.entityClass(), userEntityClass.entityClass().newInstance(), req.getPri().gnnExt().getUserId(), true, tenantEntity.getId());
+              UserEntity userEntity = tenantedCacheableDao.one(userEntityClass.entityClass(), userEntityClass.entityClass().newInstance().setNo(req.getPri().gnnExt().getUserNo()), true, tenantEntity.getId());
               if (userEntity == null) {
-                rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserId(), req);
+                rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
               } else {
                 req.gnnCtx().setUser(userEntity);
                 if (req.gnnCtx().getAuditLog() != null) {

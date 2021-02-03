@@ -10,7 +10,7 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ChannelizedEntity extends CacheableEntity implements Channelized {
+public abstract class ChannelizedEntity extends TenantedEntity implements Channelized {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
   @Getter
   @Setter

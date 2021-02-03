@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.persistence.Named;
+import org.shaneking.ling.persistence.Numbered;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 
@@ -11,7 +13,17 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class UserEntity extends TenantedEntity {
+public abstract class UserEntity extends TenantedEntity implements Numbered, Named {
+  @Column(columnDefinition = "default '' COMMENT ''")
+  @Getter
+  @Setter
+  private String no;
+
+  @Column(length = 30, columnDefinition = "default '' COMMENT ''")
+  @Getter
+  @Setter
+  private String name;
+
   @Column(columnDefinition = "default '' COMMENT ''")
   @Setter
   private String haha;
@@ -20,11 +32,6 @@ public abstract class UserEntity extends TenantedEntity {
   @Getter
   @Setter
   private String mobile;
-
-  @Column(length = 30, columnDefinition = "default '' COMMENT ''")
-  @Getter
-  @Setter
-  private String name;
 
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
   @Getter

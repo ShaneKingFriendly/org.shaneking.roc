@@ -9,6 +9,7 @@ import org.shaneking.ling.persistence.sql.entity.IdEntity;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.persistence.Tuple;
+import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.persistence.annotation.EntityCacheEvict;
 import org.shaneking.roc.persistence.annotation.EntityCacheable;
 import org.shaneking.roc.persistence.entity.CacheableEntity;
@@ -77,10 +78,7 @@ public class CacheableDao {
       if (String0.isNullOrEmpty(id)) {
         throw new ZeroException(OM3.p(cacheType, t, id));
       } else {
-        t.forceWhereCondition(IdEntity.FIELD__ID).resetId(id);
-        Tuple.Pair<String, List<Object>> pair = t.deleteSql();
-        log.info(OM3.writeValueAsString(pair));
-        return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
+        return delByIds(cacheType, t, List0.newArrayList(id));
       }
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, t, id), e);
@@ -102,7 +100,7 @@ public class CacheableDao {
       if (ids.size() == 0) {
         return 0;
       } else {
-        t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
+        t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -117,7 +115,7 @@ public class CacheableDao {
     if (ids.size() == 0) {
       throw new ZeroException(OM3.p(cacheType, t, ids));
     } else {
-      t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
+      t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
       Tuple.Pair<String, List<Object>> pair = t.updateSql();
       log.info(OM3.writeValueAsString(pair));
       return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -155,7 +153,7 @@ public class CacheableDao {
   public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
     try {
       T t = cacheType.newInstance();
-      t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
+      t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
       return lst(cacheType, t);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, ids), e);
@@ -167,7 +165,7 @@ public class CacheableDao {
   @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
   public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
-      t.forceWhereCondition(IdEntity.FIELD__ID).resetIds(ids);
+      t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
       return lst(cacheType, t);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, t, ids), e);

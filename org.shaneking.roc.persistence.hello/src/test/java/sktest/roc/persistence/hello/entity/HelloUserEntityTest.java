@@ -28,7 +28,7 @@ class HelloUserEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloUserEntity(super=UserEntity(super=TenantedEntity(super=CacheableEntity(super=IdAdtVerEntity(super=IdAdtEntity(super=IdEntity(id=null), invalid=null, lastModifyDateTime=null, lastModifyUserId=null), version=null)), tenantId=null), haha=null, mobile=null, name=null, email=null))", new HelloUserEntity().toString()),
+      () -> Assertions.assertEquals("HelloUserEntity(super=UserEntity(super=TenantedEntity(super=CacheableEntity(super=IdAdtVerEntity(super=IdAdtEntity(super=IdEntity(id=null), invalid=null, lastModifyDateTime=null, lastModifyUserId=null), version=null)), tenantId=null), no=null, name=null, haha=null, mobile=null, email=null))", new HelloUserEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloUserEntity().nullSetter()))
     );
   }

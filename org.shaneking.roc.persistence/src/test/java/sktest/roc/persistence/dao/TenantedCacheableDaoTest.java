@@ -6,7 +6,7 @@ import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.util.List0;
-import org.shaneking.roc.persistence.dao.ChannelizedTenantedCacheableDao;
+import org.shaneking.roc.persistence.dao.ChannelizedCacheableDao;
 import org.shaneking.roc.persistence.dao.TenantedCacheableDao;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +59,8 @@ class TenantedCacheableDaoTest extends SKSpringUnit {
   @Test
   void protectInsert() {
     HelloAuditLogEntity auditLogEntity = new HelloAuditLogEntity();
-    ChannelizedTenantedCacheableDao.protectInsert(auditLogEntity, "channelId");
-    ChannelizedTenantedCacheableDao.protectInsert(auditLogEntity, "channelId1,channelId2");
+    ChannelizedCacheableDao.protectInsert(auditLogEntity, "channelId");
+    ChannelizedCacheableDao.protectInsert(auditLogEntity, "channelId1,channelId2");
     TenantedCacheableDao.protectInsert(auditLogEntity, "tenantId");
     TenantedCacheableDao.protectInsert(auditLogEntity, "tenantId1,tenantId2");
     assertEquals("{\"tenantId\":\"tenantId1,tenantId2\",\"channelId\":\"channelId1,channelId2\"}", OM3.writeValueAsString(auditLogEntity));
@@ -69,8 +69,8 @@ class TenantedCacheableDaoTest extends SKSpringUnit {
   @Test
   void protectUpdate() {
     HelloAuditLogEntity auditLogEntity = new HelloAuditLogEntity();
-    ChannelizedTenantedCacheableDao.protectUpdate(auditLogEntity, "channelId");
-    ChannelizedTenantedCacheableDao.protectUpdate(auditLogEntity, "channelId1,channelId2");
+    ChannelizedCacheableDao.protectUpdate(auditLogEntity, "channelId");
+    ChannelizedCacheableDao.protectUpdate(auditLogEntity, "channelId1,channelId2");
     TenantedCacheableDao.protectUpdate(auditLogEntity, "tenantId");
     TenantedCacheableDao.protectUpdate(auditLogEntity, "tenantId1,tenantId2");
     assertEquals("{\"whereConditions\":{\"tenantId\":{\"op\":\"=\",\"cs\":\"tenantId1,tenantId2\"},\"channelId\":{\"op\":\"=\",\"cs\":\"channelId1,channelId2\"}},\"tenantId\":\"tenantId1,tenantId2\",\"channelId\":\"channelId1,channelId2\"}", OM3.writeValueAsString(auditLogEntity));
@@ -79,8 +79,8 @@ class TenantedCacheableDaoTest extends SKSpringUnit {
   @Test
   void protectSelect() {
     HelloAuditLogEntity auditLogEntity = new HelloAuditLogEntity();
-    ChannelizedTenantedCacheableDao.protectSelect(auditLogEntity, "channelId");
-    ChannelizedTenantedCacheableDao.protectSelect(auditLogEntity, "channelId1,channelId2");
+    ChannelizedCacheableDao.protectSelect(auditLogEntity, "channelId");
+    ChannelizedCacheableDao.protectSelect(auditLogEntity, "channelId1,channelId2");
     TenantedCacheableDao.protectSelect(auditLogEntity, "tenantId");
     TenantedCacheableDao.protectSelect(auditLogEntity, "tenantId1,tenantId2");
     assertEquals("{\"whereConditions\":{\"tenantId\":{\"op\":\"in\",\"cl\":[\"tenantId1\",\"tenantId2\"],\"cs\":\"tenantId\"},\"channelId\":{\"op\":\"in\",\"cl\":[\"channelId1\",\"channelId2\"],\"cs\":\"channelId\"}}}", OM3.writeValueAsString(auditLogEntity));

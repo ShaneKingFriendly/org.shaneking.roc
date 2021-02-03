@@ -17,7 +17,7 @@ public class Ext {
   private Tbl tbl;
   @Getter
   @Setter
-  private String userId;
+  private String userNo;
 
   public Tbl gnnTbl() {
     if (tbl == null) {

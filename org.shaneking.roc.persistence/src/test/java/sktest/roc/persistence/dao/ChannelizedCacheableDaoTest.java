@@ -6,16 +6,16 @@ import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.ling.zero.util.UUID0;
-import org.shaneking.roc.persistence.dao.ChannelizedTenantedCacheableDao;
+import org.shaneking.roc.persistence.dao.ChannelizedCacheableDao;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import sktest.roc.persistence.entity.HelloAuditLogEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChannelizedTenantedCacheableDaoTest extends SKSpringUnit {
+class ChannelizedCacheableDaoTest extends SKSpringUnit {
   @Autowired
-  private ChannelizedTenantedCacheableDao cacheableDao;
+  private ChannelizedCacheableDao cacheableDao;
 
   @BeforeEach
   void beforeEach() {

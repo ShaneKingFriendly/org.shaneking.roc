@@ -65,7 +65,7 @@ public class UserBizImplTest extends SKSpringUnit {
   }
 
   Ext ext() {
-    return new Ext().setUserId("1612262610216_koFVLCNZrhezbgULWqW");
+    return new Ext().setUserNo("tstuserno");
   }
 
   HelloUserEntity userEntity(String id) {

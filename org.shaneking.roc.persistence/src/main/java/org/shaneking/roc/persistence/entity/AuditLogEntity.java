@@ -10,7 +10,7 @@ import javax.persistence.Lob;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class AuditLogEntity extends ChannelizedTenantedEntity {
+public abstract class AuditLogEntity extends ChannelizedEntity {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
   @Getter
   @Setter
