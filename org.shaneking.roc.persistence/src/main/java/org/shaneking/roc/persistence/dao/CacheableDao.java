@@ -184,6 +184,7 @@ public class CacheableDao {
       return lst.get(0);
     } else {
       if (rtnNullIfNotEqualsOne) {
+        log.warn(OM3.lp(lst, cacheType.getName(), t, rtnNullIfNotEqualsOne));
         return null;
       } else {
         throw new ZeroException(MessageFormat.format(FMT_RESULT_NOT_EQUALS_ONE, cacheType.getName(), OM3.writeValueAsString(t)));

@@ -42,9 +42,9 @@ public class Req<O, R> {
   }
 
   public Ctx gnnCtx() {
-    if (ctx == null) {
-      ctx = new Ctx();
+    if (getCtx() == null) {
+      setCtx(new Ctx());
     }
-    return ctx;
+    return getCtx();
   }
 }

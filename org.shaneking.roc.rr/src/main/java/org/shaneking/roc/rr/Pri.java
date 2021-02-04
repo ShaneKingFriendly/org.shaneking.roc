@@ -41,9 +41,9 @@ public class Pri<O, R> {
   }
 
   public Ext gnnExt() {
-    if (ext == null) {
-      ext = new Ext();
+    if (getExt() == null) {
+      setExt(new Ext());
     }
-    return ext;
+    return getExt();
   }
 }

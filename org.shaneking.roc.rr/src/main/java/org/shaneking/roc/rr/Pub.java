@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.util.UUID0;
 
 import javax.persistence.Transient;
 
@@ -28,4 +30,11 @@ public class Pub {
   @Getter
   @Setter
   private String tracingId;
+
+  public String gnnTracingId() {
+    if (String0.isNullOrEmpty(getTracingId())) {
+      setTracingId(UUID0.cUl33());
+    }
+    return getTracingId();
+  }
 }

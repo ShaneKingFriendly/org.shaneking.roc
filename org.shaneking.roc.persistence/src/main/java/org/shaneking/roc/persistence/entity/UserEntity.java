@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.Named;
-import org.shaneking.ling.persistence.Numbered;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 
@@ -13,12 +12,7 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class UserEntity extends TenantedEntity implements Numbered, Named {
-  @Column(columnDefinition = "default '' COMMENT ''")
-  @Getter
-  @Setter
-  private String no;
-
+public abstract class UserEntity extends NumberedEntity implements Named {
   @Column(length = 30, columnDefinition = "default '' COMMENT ''")
   @Getter
   @Setter

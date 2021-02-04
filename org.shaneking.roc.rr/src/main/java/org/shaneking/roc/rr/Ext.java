@@ -20,9 +20,9 @@ public class Ext {
   private String userNo;
 
   public Tbl gnnTbl() {
-    if (tbl == null) {
-      tbl = new Tbl();
+    if (getTbl() == null) {
+      setTbl(new Tbl());
     }
-    return tbl;
+    return getTbl();
   }
 }

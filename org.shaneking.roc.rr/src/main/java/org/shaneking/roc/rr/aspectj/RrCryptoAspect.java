@@ -14,7 +14,7 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
-import org.shaneking.roc.persistence.dao.TenantedCacheableDao;
+import org.shaneking.roc.persistence.dao.TenantedProtectDao;
 import org.shaneking.roc.persistence.entity.AuditLogEntity;
 import org.shaneking.roc.persistence.entity.ChannelEntity;
 import org.shaneking.roc.persistence.entity.TenantEntity;
@@ -44,7 +44,7 @@ public class RrCryptoAspect {
   private Environment environment;
 
   @Autowired
-  private TenantedCacheableDao tenantedCacheableDao;
+  private TenantedProtectDao tenantedProtectDao;
 
   @Autowired
   private ChannelEntity channelEntityClass;
@@ -91,8 +91,9 @@ public class RrCryptoAspect {
                 req.setPri(OM3.readValue(enc, OM3.om().getTypeFactory().constructParametricType(Pri.class, javaTypes))).setEnc(null);
               }
 
-
-              UserEntity userEntity = tenantedCacheableDao.one(userEntityClass.entityClass(), userEntityClass.entityClass().newInstance().setNo(req.getPri().gnnExt().getUserNo()), true, tenantEntity.getId());
+              UserEntity userEntityOne = userEntityClass.entityClass().newInstance();
+              userEntityOne.setNo(req.getPri().gnnExt().getUserNo());
+              UserEntity userEntity = tenantedProtectDao.one(userEntityClass.entityClass(), userEntityOne, true, tenantEntity.getId());
               if (userEntity == null) {
                 rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
               } else {
