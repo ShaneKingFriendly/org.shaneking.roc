@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 @Slf4j
 public class NumberedCacheDao {
   @Autowired
-  private TenantedProtectDao tenantedProtectDao;
+  private CacheableDao cacheableDao;
   @Autowired
   private StringCaches cache;
   @Value("${sk.roc.persistence.dao.cache.seconds:180}")
@@ -37,7 +37,7 @@ public class NumberedCacheDao {
       rtn = oneByNo(cacheType, no, tenantId, rtnNullIfNotEqualsOne, key);
     } else {
       log.info(MessageFormat.format("{0} - {1} : {2}", StringCaches.ERR_CODE__CACHE_HIT_ALL, key, id));
-      rtn = tenantedProtectDao.getCacheableDao().oneById(cacheType, id, rtnNullIfNotEqualsOne);
+      rtn = cacheableDao.oneById(cacheType, id, rtnNullIfNotEqualsOne);
       if (!eq(no, tenantId, rtn)) {
         log.info(MessageFormat.format("{0} - {1} : {2}, {3}", StringCaches.ERR_CODE__CACHE_HIT_ALL, key, id, OM3.writeValueAsString(rtn)));
         cache.del(key);
@@ -56,7 +56,7 @@ public class NumberedCacheDao {
     try {
       T one = cacheType.newInstance();
       one.setNo(no);
-      rtn = tenantedProtectDao.one(cacheType, one, rtnNullIfNotEqualsOne, tenantId);
+      rtn = cacheableDao.one(cacheType, CacheableDao.pts(one, tenantId), rtnNullIfNotEqualsOne);
       if (rtn != null) {
         cache.set(key, cacheSeconds, rtn.getId());
       }

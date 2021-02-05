@@ -1,5 +1,6 @@
 package org.shaneking.roc.persistence.entity;
 
+import com.github.liaochong.myexcel.core.annotation.ExcelColumn;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,20 +15,24 @@ import javax.persistence.Column;
 @ToString(callSuper = true)
 public abstract class UserEntity extends NumberedEntity implements Named {
   @Column(length = 30, columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Getter
   @Setter
   private String name;
 
   @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Setter
   private String haha;
 
   @Column(length = 20, columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Getter
   @Setter
   private String mobile;
 
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Getter
   @Setter
   private String email;

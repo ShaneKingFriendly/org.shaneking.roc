@@ -1,7 +1,7 @@
 package sktest.roc.rr.biz.impl;
 
 import org.shaneking.ling.rr.Resp;
-import org.shaneking.roc.persistence.dao.TenantedProtectDao;
+import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.hello.entity.HelloUserEntity;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.*;
@@ -14,14 +14,14 @@ import java.util.List;
 public class UserBizImpl {
 
   @Autowired
-  private TenantedProtectDao cacheableDao;
+  private CacheableDao cacheableDao;
 
   @RrAudit
   @RrAccess
   @RrCrypto
   public Resp<Req<HelloUserEntity, Integer>> add(Req<HelloUserEntity, Integer> req) {
     Resp<Req<HelloUserEntity, Integer>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.add(HelloUserEntity.class, req.getPri().getObj(), req.gnnCtx().getTenant().getId()));
+    req.getPri().setRtn(cacheableDao.add(HelloUserEntity.class, CacheableDao.pti(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
     return resp;
   }
 
@@ -30,7 +30,9 @@ public class UserBizImpl {
   @RrCrypto
   public Resp<Req<String, Integer>> delById(Req<String, Integer> req) {
     Resp<Req<String, Integer>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.delById(HelloUserEntity.class, req.getPri().getObj(), req.gnnCtx().getTenant().getId()));
+    HelloUserEntity userEntity = new HelloUserEntity();
+    userEntity.setId(req.getPri().getObj());
+    req.getPri().setRtn(cacheableDao.delById(HelloUserEntity.class, CacheableDao.ptu(userEntity, req.gnnCtx().gnaTenantId())));
     return resp;
   }
 
@@ -39,7 +41,7 @@ public class UserBizImpl {
   @RrCrypto
   public Resp<Req<HelloUserEntity, Integer>> modByIdVer(Req<HelloUserEntity, Integer> req) {
     Resp<Req<HelloUserEntity, Integer>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.modByIdVer(HelloUserEntity.class, req.getPri().getObj(), req.gnnCtx().getTenant().getId()));
+    req.getPri().setRtn(cacheableDao.modByIdVer(HelloUserEntity.class, CacheableDao.ptu(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
     return resp;
   }
 
@@ -50,7 +52,7 @@ public class UserBizImpl {
   @RrCrypto
   public Resp<Req<HelloUserEntity, List<HelloUserEntity>>> lst(Req<HelloUserEntity, List<HelloUserEntity>> req) {
     Resp<Req<HelloUserEntity, List<HelloUserEntity>>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.lst(HelloUserEntity.class, req.getPri().getObj(), req.gnnCtx().getTenant().getId()));
+    req.getPri().setRtn(cacheableDao.lst(HelloUserEntity.class, CacheableDao.pts(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
     return resp;
   }
 }

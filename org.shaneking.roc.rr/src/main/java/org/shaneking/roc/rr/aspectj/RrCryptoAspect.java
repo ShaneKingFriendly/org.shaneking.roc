@@ -14,7 +14,7 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
-import org.shaneking.roc.persistence.dao.TenantedProtectDao;
+import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.AuditLogEntity;
 import org.shaneking.roc.persistence.entity.ChannelEntity;
 import org.shaneking.roc.persistence.entity.TenantEntity;
@@ -44,7 +44,7 @@ public class RrCryptoAspect {
   private Environment environment;
 
   @Autowired
-  private TenantedProtectDao tenantedProtectDao;
+  private CacheableDao cacheableDao;
 
   @Autowired
   private ChannelEntity channelEntityClass;
@@ -93,7 +93,7 @@ public class RrCryptoAspect {
 
               UserEntity userEntityOne = userEntityClass.entityClass().newInstance();
               userEntityOne.setNo(req.getPri().gnnExt().getUserNo());
-              UserEntity userEntity = tenantedProtectDao.one(userEntityClass.entityClass(), userEntityOne, true, tenantEntity.getId());
+              UserEntity userEntity = cacheableDao.one(userEntityClass.entityClass(), CacheableDao.pts(userEntityOne, tenantEntity.getId()), true);
               if (userEntity == null) {
                 rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
               } else {

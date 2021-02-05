@@ -1,5 +1,6 @@
 package org.shaneking.roc.persistence.entity;
 
+import com.github.liaochong.myexcel.core.annotation.ExcelColumn;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,21 +18,25 @@ public abstract class ApiAccessEntity extends ChannelizedEntity {
   public static final String ERR_CODE__PERMISSION_DENIED = "API_ACCESS__PERMISSION_DENIED";
 
   @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Getter
   @Setter
   private String allowUrlRegex;
 
   @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Getter
   @Setter
   private String allowSignatureRegex;
 
   @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Getter
   @Setter
   private String denyUrlRegex;
 
   @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
   @Getter
   @Setter
   private String denySignatureRegex;

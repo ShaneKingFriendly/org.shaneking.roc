@@ -1,6 +1,8 @@
 package org.shaneking.roc.persistence.entity;
 
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.sql.Condition;
@@ -8,6 +10,7 @@ import org.shaneking.ling.persistence.sql.entity.IdAdtVerEntity;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.Map0;
 
+import javax.persistence.Transient;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,6 +19,11 @@ import java.util.stream.Collectors;
 @Accessors(chain = true)
 @ToString(callSuper = true)
 public abstract class CacheableEntity extends IdAdtVerEntity<Map<String, Condition>> {
+  @Getter
+  @Setter
+  @Transient
+  private UserEntity lastModifyUser;
+
   @Override
   public @NonNull List<Condition> findHavingConditions(@NonNull String fieldName) {
     Map<String, Condition> conditionMap = this.getHavingConditions();

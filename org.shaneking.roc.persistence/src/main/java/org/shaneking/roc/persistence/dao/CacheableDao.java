@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.persistence.Channelized;
+import org.shaneking.ling.persistence.Tenanted;
+import org.shaneking.ling.persistence.sql.Condition;
 import org.shaneking.ling.persistence.sql.Keyword;
 import org.shaneking.ling.persistence.sql.entity.IdEntity;
 import org.shaneking.ling.zero.lang.String0;
@@ -29,6 +32,80 @@ public class CacheableDao {
   @Getter
   private JdbcTemplate jdbcTemplate;
 
+  //protectChannelInsert
+  public static <T extends CacheableEntity> T pci(@NonNull T t, String channelIds) {
+    if (t instanceof Channelized) {
+      if (!String0.isNullOrEmpty(channelIds)) {
+        ((Channelized) t).setChannelId(channelIds);
+      }
+    }
+    return t;
+  }
+
+  //protectChannelUpdate
+  public static <T extends CacheableEntity> T pcu(@NonNull T t, String channelIds) {
+    if (t instanceof Channelized) {
+      pci(t, channelIds);
+      if (!String0.isNullOrEmpty(channelIds)) {
+        t.forceWhereCondition(Channelized.FIELD__CHANNEL_ID).resetVal(channelIds);
+      }
+    }
+    return t;
+  }
+
+  //protectChannelSelect
+  public static <T extends CacheableEntity> T pcs(@NonNull T t, String channelIds) {
+    if (t instanceof Channelized) {
+      if (!String0.isNullOrEmpty(channelIds)) {
+        List<String> ChannelIdList = List0.newArrayList(channelIds.split(String0.COMMA));
+        Condition condition = t.forceWhereCondition(Channelized.FIELD__CHANNEL_ID);
+        if (ChannelIdList.size() == 1) {
+          condition.resetVal(ChannelIdList.get(0));
+        } else {
+          condition.retainVal(ChannelIdList);
+        }
+      }
+    }
+    return t;
+  }
+
+  //protectTenantInsert
+  public static <T extends CacheableEntity> T pti(@NonNull T t, String tenantIds) {
+    if (t instanceof Tenanted) {
+      if (!String0.isNullOrEmpty(tenantIds)) {
+        ((Tenanted) t).setTenantId(tenantIds);
+      }
+    }
+    return t;
+  }
+
+  //protectTenantUpdate
+  public static <T extends CacheableEntity> T ptu(@NonNull T t, String tenantIds) {
+    if (t instanceof Tenanted) {
+      pti(t, tenantIds);
+      if (!String0.isNullOrEmpty(tenantIds)) {
+        t.forceWhereCondition(Tenanted.FIELD__TENANT_ID).resetVal(tenantIds);
+      }
+    }
+    return t;
+  }
+
+  //protectTenantSelect
+  public static <T extends CacheableEntity> T pts(@NonNull T t, String tenantIds) {
+    if (t instanceof Tenanted) {
+      if (!String0.isNullOrEmpty(tenantIds)) {
+        List<String> tenantIdList = List0.newArrayList(tenantIds.split(String0.COMMA));
+        Condition condition = t.forceWhereCondition(Tenanted.FIELD__TENANT_ID);
+        if (tenantIdList.size() == 1) {
+          condition.resetVal(tenantIdList.get(0));
+        } else {
+          condition.retainVal(tenantIdList);
+        }
+      }
+    }
+    return t;
+  }
+
   //comment for idea compare
   public <T extends CacheableEntity> int add(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.insertSql();
@@ -36,16 +113,27 @@ public class CacheableDao {
     return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
   }
 
-  public <T extends CacheableEntity> int cnt(@NonNull Class<T> cacheType, @NonNull T t) {
+  public <T extends CacheableEntity> long cnt(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectCountSql();
     log.info(OM3.writeValueAsString(pair));
-    return (int) this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.COUNT_1_);
+    return (long) this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.COUNT_1_);
   }
 
   public <T extends CacheableEntity> String ids(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectIdsSql();
     log.info(OM3.writeValueAsString(pair));
     return String.valueOf(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.GROUP__CONCAT_ID_));
+  }
+
+  @EntityCacheEvict(empty = true)
+  public <T extends CacheableEntity> int rmv(@NonNull Class<T> cacheType, @NonNull T t) {
+    try {
+      Tuple.Pair<String, List<Object>> pair = t.deleteSql();
+      log.info(OM3.writeValueAsString(pair));
+      return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, t), e);
+    }
   }
 
   @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)

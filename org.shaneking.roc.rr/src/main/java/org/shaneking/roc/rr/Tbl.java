@@ -12,4 +12,11 @@ public class Tbl {
   @Getter
   @Setter
   private Pagination pagination;
+
+  public Pagination gnnPagination() {
+    if (getPagination() == null) {
+      setPagination(new Pagination());
+    }
+    return getPagination();
+  }
 }

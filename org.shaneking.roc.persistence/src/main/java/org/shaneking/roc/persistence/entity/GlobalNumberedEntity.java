@@ -1,5 +1,6 @@
 package org.shaneking.roc.persistence.entity;
 
+import com.github.liaochong.myexcel.core.annotation.ExcelColumn;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import javax.persistence.Column;
 @ToString(callSuper = true)
 public abstract class GlobalNumberedEntity extends CacheableEntity implements GlobalNumbered {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
   private String no;

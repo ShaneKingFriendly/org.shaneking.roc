@@ -14,4 +14,6 @@ public @interface EntityCacheEvict {
   int pKeyIdx() default -1;///begin 0, for parameter
 
   String pKeyPath() default String0.EMPTY;//a.b.c, for parameter
+
+  boolean empty() default false;
 }

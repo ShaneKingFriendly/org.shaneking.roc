@@ -31,4 +31,16 @@ public class Ctx {
   @Getter
   @Setter
   private UserEntity user;
+
+  public String gnaChannelId() {
+    return getChannel() == null ? null : getChannel().getId();
+  }
+
+  public String gnaTenantId() {
+    return getTenant() == null ? null : getTenant().getId();
+  }
+
+  public String gnaUserId() {
+    return getUser() == null ? null : getUser().getId();
+  }
 }
