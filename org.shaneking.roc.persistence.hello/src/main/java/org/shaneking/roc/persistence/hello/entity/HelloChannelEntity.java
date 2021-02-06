@@ -1,5 +1,6 @@
 package org.shaneking.roc.persistence.hello.entity;
 
+import com.github.liaochong.myexcel.core.annotation.ExcelModel;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.hello.NullSetter;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 
 @Accessors(chain = true)
 @Component
+@ExcelModel(includeAllField = false, useFieldNameAsTitle = true)
 @Table
 @ToString(callSuper = true)
 public class HelloChannelEntity extends ChannelEntity implements SqlliteDialectSqlEntities, NullSetter {
