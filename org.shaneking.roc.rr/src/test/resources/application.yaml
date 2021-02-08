@@ -26,10 +26,10 @@ spring:
     driver-class-name: org.sqlite.JDBC
     password:
     ## absolute
-    #url: jdbc:sqlite:D:/test/sktest.sqllite
-    ## compiled for test(../org.shaneking.roc.persistence/target/test-classes/sktest.sqllite)
-    #url: jdbc:sqlite::resource:sktest.sqllite
+    #url: jdbc:sqlite:D:/test/sktest.roc.rr.sqllite
+    ## compiled for test(../org.shaneking.roc.persistence/target/test-classes/sktest.roc.rr.sqllite)
+    #url: jdbc:sqlite::resource:sktest.roc.rr.sqllite
     ## relative
-    url: jdbc:sqlite:src/test/resources/sktest.sqllite
+    url: jdbc:sqlite:src/test/resources/sktest.roc.rr.sqllite
     username:
 
