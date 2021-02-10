@@ -1,5 +1,6 @@
 package org.shaneking.roc.persistence.dao;
 
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.cache.StringCaches;
@@ -18,6 +19,7 @@ import java.text.MessageFormat;
 @Slf4j
 public class NumberedCacheDao {
   @Autowired
+  @Getter
   private CacheableDao cacheableDao;
   @Autowired
   private StringCaches cache;

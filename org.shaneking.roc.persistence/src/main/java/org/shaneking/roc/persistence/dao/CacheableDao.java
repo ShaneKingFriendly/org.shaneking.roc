@@ -116,7 +116,7 @@ public class CacheableDao {
   public <T extends CacheableEntity> long cnt(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectCountSql();
     log.info(OM3.writeValueAsString(pair));
-    return (long) this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.COUNT_1_);
+    return Long.parseLong(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.COUNT_1_).toString());
   }
 
   public <T extends CacheableEntity> String ids(@NonNull Class<T> cacheType, @NonNull T t) {

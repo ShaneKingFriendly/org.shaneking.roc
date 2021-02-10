@@ -35,7 +35,7 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @Test
   void cnt() {
-    assertEquals(1, cacheableDao.cnt(HelloCacheableEntity.class, new HelloCacheableEntity()));
+    assertEquals(Long.valueOf(1), cacheableDao.cnt(HelloCacheableEntity.class, new HelloCacheableEntity()));
   }
 
   @Test

@@ -8,6 +8,9 @@ sk:
       entity:
         cache:
           enabled: true
+      dao:
+        cache:
+          enabled: true
 
 ## spring
 spring:

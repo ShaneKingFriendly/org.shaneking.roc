@@ -12,7 +12,7 @@ import javax.persistence.Column;
 @Accessors(chain = true)
 @ToString(callSuper = true)
 public abstract class GlobalNumberedEntity extends CacheableEntity implements GlobalNumbered {
-  @Column(length = 40, columnDefinition = "default '' COMMENT ''")
+  @Column(unique = true, length = 40, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter

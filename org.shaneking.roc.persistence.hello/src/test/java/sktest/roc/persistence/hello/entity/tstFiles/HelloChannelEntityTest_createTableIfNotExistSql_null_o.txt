@@ -1,5 +1,5 @@
 create table if not exists `t_hello_channel_entity` (
-  `version` int not null  default 0,
+  `version` int not null default 0,
   `id` char(40) not null,
   `invalid` varchar(1) default 'N',
   `last_modify_date_time` varchar(20) default '',
