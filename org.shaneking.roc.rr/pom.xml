@@ -14,7 +14,7 @@
 
   <name>org.shaneking.roc.rr</name>
   <description>Request and Response with Spring for ShaneKing</description>
-  <url>https://github.com/ShaneKingOrg/org.shaneking.roc</url>
+  <url>https://github.com/ShaneKingOpen/org.shaneking.roc</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
