@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.persistence.entity.sql.Channelized;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ChannelizedEntity extends TenantedEntity implements Channelized {
+public abstract class ChannelizedEntity extends TenantedEntity implements ChannelizedEntities {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

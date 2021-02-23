@@ -7,7 +7,7 @@ import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.entity.ChannelEntity;
+import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class RrCryptoHelper {
 
   public <O, R> Req<O, R> encrypt(@NonNull Req<O, R> req, String tokenValue, String tokenForce, String tokenAlgorithmType, String tokenValueType) {
     String token = tokenValue;
-    if (!String0.isNullOrEmpty(token) && ChannelEntity.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(tokenValueType)) {
+    if (!String0.isNullOrEmpty(token) && ChannelEntities.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(tokenValueType)) {
       token = environment.getProperty(token, token);
     }
     if (String0.isNullOrEmpty(req.getEnc())) {
@@ -46,7 +46,7 @@ public class RrCryptoHelper {
 
   public <O, R> Req<O, R> decrypt(@NonNull Req<O, R> respData, String tokenValue, String tokenAlgorithmType, String tokenValueType, TypeReference<Pri<O, R>> typeReference) {
     String token = tokenValue;
-    if (!String0.isNullOrEmpty(token) && ChannelEntity.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(tokenValueType)) {
+    if (!String0.isNullOrEmpty(token) && ChannelEntities.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(tokenValueType)) {
       token = environment.getProperty(token, token);
     }
     if (respData.getPri() == null) {

@@ -11,9 +11,9 @@ import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
-import org.shaneking.roc.persistence.entity.ApiAccessEntity;
-import org.shaneking.roc.persistence.entity.ChannelEntity;
-import org.shaneking.roc.persistence.entity.TenantEntity;
+import org.shaneking.roc.persistence.entity.sql.ApiAccessEntities;
+import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
+import org.shaneking.roc.persistence.entity.sql.TenantEntities;
 import org.shaneking.roc.rr.Pub;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAccess;
@@ -38,13 +38,13 @@ public class RrAccessAspect {
   private CacheableDao cacheableDao;
 
   @Autowired
-  private ApiAccessEntity apiAccessEntityClass;
+  private ApiAccessEntities apiAccessEntityClass;
 
   @Autowired
-  private ChannelEntity channelEntityClass;
+  private ChannelEntities channelEntityClass;
 
   @Autowired
-  private TenantEntity tenantEntityClass;
+  private TenantEntities tenantEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
   private void pointcut() {
@@ -62,7 +62,7 @@ public class RrAccessAspect {
           rtn = Resp.failed(Pub.ERR_CODE__REQUIRED_CHANNEL_NAME, OM3.writeValueAsString(req.getPub()), req);
         } else {
           try {
-            ChannelEntity channelEntity = cacheableDao.one(channelEntityClass.entityClass(), channelEntityClass.entityClass().newInstance().setName(req.getPub().getChannelName()), true);
+            ChannelEntities channelEntity = cacheableDao.one(channelEntityClass.entityClass(), channelEntityClass.entityClass().newInstance().setName(req.getPub().getChannelName()), true);
             if (channelEntity == null) {
               rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, req.getPub().getChannelName(), req);
             } else {
@@ -71,7 +71,7 @@ public class RrAccessAspect {
                 req.gnnCtx().getAuditLog().setChannelId(channelEntity.getId());
               }
 
-              TenantEntity tenantEntity = cacheableDao.one(tenantEntityClass.entityClass(), tenantEntityClass.entityClass().newInstance().setName(String0.nullOrEmptyTo(req.getPub().getTenantName(), req.getPub().getChannelName())), true);
+              TenantEntities tenantEntity = cacheableDao.one(tenantEntityClass.entityClass(), tenantEntityClass.entityClass().newInstance().setName(String0.nullOrEmptyTo(req.getPub().getTenantName(), req.getPub().getChannelName())), true);
               if (tenantEntity == null) {
                 rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, String.valueOf(req.getPub().getTenantName()), req);
               } else {
@@ -80,18 +80,19 @@ public class RrAccessAspect {
                   req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
                 }
 
-                ApiAccessEntity apiAccessEntitySelect = apiAccessEntityClass.entityClass().newInstance();
-                apiAccessEntitySelect.setChannelId(channelEntity.getId()).setTenantId(tenantEntity.getId());
-                ApiAccessEntity apiAccessEntity = cacheableDao.one(apiAccessEntityClass.entityClass(), apiAccessEntitySelect, true);
+                ApiAccessEntities apiAccessEntitySelect = apiAccessEntityClass.entityClass().newInstance();
+                apiAccessEntitySelect.setChannelId(channelEntity.getId());
+                apiAccessEntitySelect.setTenantId(tenantEntity.getId());
+                ApiAccessEntities apiAccessEntity = cacheableDao.one(apiAccessEntityClass.entityClass(), apiAccessEntitySelect, true);
                 if (apiAccessEntity == null) {
-                  rtn = Resp.failed(ApiAccessEntity.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntitySelect), req);
+                  rtn = Resp.failed(ApiAccessEntities.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntitySelect), req);
                 } else {
                   if (apiAccessEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString())) {
                     proceedBefore = true;
                     rtn = pjp.proceed();
                     proceedAfter = true;
                   } else {
-                    rtn = Resp.failed(ApiAccessEntity.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntity), req);
+                    rtn = Resp.failed(ApiAccessEntities.ERR_CODE__PERMISSION_DENIED, OM3.writeValueAsString(apiAccessEntity), req);
                   }
                 }
               }

@@ -2,7 +2,7 @@ package sktest.roc.persistence.entity;
 
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteEntities;
+import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
 import org.shaneking.roc.persistence.CacheableEntity;
 
 import javax.persistence.Table;
@@ -10,6 +10,6 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @Table
 @ToString(callSuper = true)
-public class HelloCacheableEntity extends CacheableEntity implements SqlliteEntities {
+public class HelloCacheableEntity extends CacheableEntity implements SqlliteSqlEntities {
 
 }

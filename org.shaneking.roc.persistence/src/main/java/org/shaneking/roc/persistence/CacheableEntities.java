@@ -5,7 +5,7 @@ import org.shaneking.ling.persistence.Condition;
 import org.shaneking.ling.persistence.entity.sql.IdAdtVerSqlEntities;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.Map0;
-import org.shaneking.roc.persistence.entity.UserEntity;
+import org.shaneking.roc.persistence.entity.sql.UserEntities;
 
 import java.util.List;
 import java.util.Map;
@@ -71,7 +71,7 @@ public interface CacheableEntities extends IdAdtVerSqlEntities {
   }
 
   ///
-  UserEntity getLastModifyUser();
+  UserEntities getLastModifyUser();
 
-  <T extends CacheableEntities> T setLastModifyUser(UserEntity userEntity);
+  <T extends CacheableEntities> T setLastModifyUser(UserEntities userEntity);
 }

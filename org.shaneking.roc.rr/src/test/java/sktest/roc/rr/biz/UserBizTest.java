@@ -7,7 +7,7 @@ import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.UUID0;
-import org.shaneking.roc.persistence.entity.ChannelEntity;
+import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.shaneking.roc.persistence.hello.entity.HelloUserEntity;
 import org.shaneking.roc.rr.*;
 import org.shaneking.roc.test.SKSpringUnit;
@@ -55,8 +55,8 @@ public class UserBizTest extends SKSpringUnit {
       log.info(OM3.writeValueAsString(userBiz.add(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(userBiz.modByIdVer(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(cryptoHelper.decrypt(userBiz.delById(cryptoHelper.encrypt(Req.build(pub().setEncoded(String0.Y), Pri.<String, Integer>build().setExt(ext()).setObj(id))
-        , "494c6f7665596f75", String0.N, Crypto0.ALGORITHM_NAME__AES, ChannelEntity.TOKEN_VALUE_TYPE__SELF))
-        , "494c6f7665596f75", Crypto0.ALGORITHM_NAME__AES, ChannelEntity.TOKEN_VALUE_TYPE__SELF, new TypeReference<Pri<String, Integer>>() {
+        , "494c6f7665596f75", String0.N, Crypto0.ALGORITHM_NAME__AES, ChannelEntities.TOKEN_VALUE_TYPE__SELF))
+        , "494c6f7665596f75", Crypto0.ALGORITHM_NAME__AES, ChannelEntities.TOKEN_VALUE_TYPE__SELF, new TypeReference<Pri<String, Integer>>() {
         })));
     }
   }

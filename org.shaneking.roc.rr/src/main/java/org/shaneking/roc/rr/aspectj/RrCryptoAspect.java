@@ -15,10 +15,10 @@ import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.dao.CacheableDao;
-import org.shaneking.roc.persistence.entity.AuditLogEntity;
-import org.shaneking.roc.persistence.entity.ChannelEntity;
-import org.shaneking.roc.persistence.entity.TenantEntity;
-import org.shaneking.roc.persistence.entity.UserEntity;
+import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
+import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
+import org.shaneking.roc.persistence.entity.sql.TenantEntities;
+import org.shaneking.roc.persistence.entity.sql.UserEntities;
 import org.shaneking.roc.rr.Pri;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCrypto;
@@ -47,10 +47,10 @@ public class RrCryptoAspect {
   private CacheableDao cacheableDao;
 
   @Autowired
-  private ChannelEntity channelEntityClass;
+  private ChannelEntities channelEntityClass;
 
   @Autowired
-  private UserEntity userEntityClass;
+  private UserEntities userEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCrypto * *..*.*(..))")
   private void pointcut() {
@@ -65,20 +65,20 @@ public class RrCryptoAspect {
       if (pjp.getArgs().length > rrCrypto.reqParamIdx() && pjp.getArgs()[rrCrypto.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCrypto.reqParamIdx()];
         try {
-          TenantEntity tenantEntity = req.gnnCtx().getTenant();
+          TenantEntities tenantEntity = req.gnnCtx().getTenant();
           if (tenantEntity == null) {
             rtn = Resp.failed(Tenanted.ERR_CODE__NOT_FOUND, OM3.writeValueAsString(req.gnnCtx()), req);
           } else {
-            ChannelEntity channelEntity = req.gnnCtx().getChannel();
+            ChannelEntities channelEntity = req.gnnCtx().getChannel();
             if (channelEntity == null) {
               channelEntity = channelEntityClass.entityClass().newInstance();
-              channelEntity.setTokenForce(String0.N).setTokenAlgorithmType(Crypto0.ALGORITHM_NAME__AES).setTokenValueType(ChannelEntity.TOKEN_VALUE_TYPE__SELF);
+              channelEntity.setTokenForce(String0.N).setTokenAlgorithmType(Crypto0.ALGORITHM_NAME__AES).setTokenValueType(ChannelEntities.TOKEN_VALUE_TYPE__SELF);
             }
             if (String0.Y.equalsIgnoreCase(channelEntity.getTokenForce()) && (!String0.Y.equalsIgnoreCase(req.getPub().getEncoded()) || String0.isNullOrEmpty(req.getEnc()))) {
-              rtn = Resp.failed(ChannelEntity.ERR_CODE__NEED_ENCODING, req.getPub().getEncoded(), req);
+              rtn = Resp.failed(ChannelEntities.ERR_CODE__NEED_ENCODING, req.getPub().getEncoded(), req);
             } else {
               String token = channelEntity.getTokenValue();
-              if (!String0.isNullOrEmpty(token) && ChannelEntity.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(channelEntity.getTokenValueType())) {
+              if (!String0.isNullOrEmpty(token) && ChannelEntities.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(channelEntity.getTokenValueType())) {
                 token = environment.getProperty(token, token);
               }
 
@@ -91,9 +91,9 @@ public class RrCryptoAspect {
                 req.setPri(OM3.readValue(enc, OM3.om().getTypeFactory().constructParametricType(Pri.class, javaTypes))).setEnc(null);
               }
 
-              UserEntity userEntityOne = userEntityClass.entityClass().newInstance();
+              UserEntities userEntityOne = userEntityClass.entityClass().newInstance();
               userEntityOne.setNo(req.getPri().gnnExt().getUserNo());
-              UserEntity userEntity = cacheableDao.one(userEntityClass.entityClass(), CacheableDao.pts(userEntityOne, tenantEntity.getId()), true);
+              UserEntities userEntity = cacheableDao.one(userEntityClass.entityClass(), CacheableDao.pts(userEntityOne, tenantEntity.getId()), true);
               if (userEntity == null) {
                 rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
               } else {
@@ -102,7 +102,7 @@ public class RrCryptoAspect {
                   req.gnnCtx().getAuditLog().setReqUserId(userEntity.getId());
                 }
 
-                AuditLogEntity auditLogEntity = req.gnnCtx().getAuditLog();
+                AuditLogEntities auditLogEntity = req.gnnCtx().getAuditLog();
                 if (auditLogEntity != null) {
                   auditLogEntity.setReqJsonStr(OM3.writeValueAsString(req));
                 }

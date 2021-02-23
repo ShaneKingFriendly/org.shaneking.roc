@@ -5,19 +5,19 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.Condition;
-import org.shaneking.ling.persistence.entity.sql.IdAdtVerSqlEntitiesTemplate;
-import org.shaneking.roc.persistence.entity.UserEntity;
+import org.shaneking.ling.persistence.entity.sql.AbstractIdAdtVerSqlEntity;
+import org.shaneking.roc.persistence.entity.sql.UserEntities;
 
 import javax.persistence.Transient;
 import java.util.Map;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class CacheableEntity extends IdAdtVerSqlEntitiesTemplate<Map<String, Condition>> implements CacheableEntities {
+public abstract class CacheableEntity extends AbstractIdAdtVerSqlEntity<Map<String, Condition>> implements CacheableEntities {
   @Getter
   @Setter
   @Transient
-  private UserEntity lastModifyUser;
+  private UserEntities lastModifyUser;
 
   public void srvHavingConditions(Map<String, Condition> conditionMap) {
     setHavingConditions(conditionMap);

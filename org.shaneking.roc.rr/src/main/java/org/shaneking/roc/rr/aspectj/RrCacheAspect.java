@@ -12,7 +12,7 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.Boolean0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
-import org.shaneking.roc.persistence.entity.AuditLogEntity;
+import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.rr.Ctx;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCache;
@@ -56,7 +56,7 @@ public class RrCacheAspect {
           String key = String.join(String0.MORE, pjp.getSignature().toLongString(), OM3.writeValueAsString(req));
           String respCached = cache.get(key);
 
-          AuditLogEntity auditLogEntity = ctx.getAuditLog();
+          AuditLogEntities auditLogEntity = ctx.getAuditLog();
           if (auditLogEntity != null) {
             auditLogEntity.setCached(Boolean0.yn(!String0.isNullOrEmpty(respCached)));
           }

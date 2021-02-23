@@ -13,7 +13,7 @@ import org.shaneking.ling.zero.net.InetAddress0;
 import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
-import org.shaneking.roc.persistence.entity.AuditLogEntity;
+import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAudit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class RrAuditAspect {
   private CacheableDao cacheableDao;
 
   @Autowired
-  private AuditLogEntity auditLogEntityClass;
+  private AuditLogEntities auditLogEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
   private void pointcut() {
@@ -53,7 +53,7 @@ public class RrAuditAspect {
         log.info(OM3.writeValueAsString(req));
 
         req.getPub().setTracingId(String0.nullOrEmptyTo(req.getPub().getTracingId(), UUID0.cUl33()));
-        AuditLogEntity auditLogEntity = null;
+        AuditLogEntities auditLogEntity = null;
         try {
           auditLogEntity = auditLogEntityClass.entityClass().newInstance();
           auditLogEntity.setId(UUID0.cUl33());

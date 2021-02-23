@@ -5,20 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.entity.AuditLogEntity;
-import org.shaneking.roc.persistence.entity.ChannelEntity;
-import org.shaneking.roc.persistence.entity.TenantEntity;
-import org.shaneking.roc.persistence.entity.UserEntity;
+import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
+import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
+import org.shaneking.roc.persistence.entity.sql.TenantEntities;
+import org.shaneking.roc.persistence.entity.sql.UserEntities;
 
 @Accessors(chain = true)
 @ToString
 public class Ctx {
   @Getter
   @Setter
-  private AuditLogEntity auditLog;
+  private AuditLogEntities auditLog;
   @Getter
   @Setter
-  private ChannelEntity channel;
+  private ChannelEntities channel;
   @Getter
   @Setter
   private ObjectNode jon;//json object node
@@ -27,10 +27,10 @@ public class Ctx {
   private String language;//default zh-CN, ref: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
   @Getter
   @Setter
-  private TenantEntity tenant;
+  private TenantEntities tenant;
   @Getter
   @Setter
-  private UserEntity user;
+  private UserEntities user;
 
   public String gnaChannelId() {
     return getChannel() == null ? null : getChannel().getId();
