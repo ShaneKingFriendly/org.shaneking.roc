@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.persistence.sql.Pagination;
+import org.shaneking.ling.persistence.Pagination;
 
 @Accessors(chain = true)
 @ToString

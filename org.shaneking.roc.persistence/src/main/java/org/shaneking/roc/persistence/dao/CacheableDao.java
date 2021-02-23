@@ -4,18 +4,18 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.jackson.databind.OM3;
-import org.shaneking.ling.persistence.Channelized;
-import org.shaneking.ling.persistence.Tenanted;
-import org.shaneking.ling.persistence.sql.Condition;
-import org.shaneking.ling.persistence.sql.Keyword;
-import org.shaneking.ling.persistence.sql.entity.IdEntity;
+import org.shaneking.ling.persistence.Condition;
+import org.shaneking.ling.persistence.Keyword;
+import org.shaneking.ling.persistence.entity.Identified;
+import org.shaneking.ling.persistence.entity.sql.Channelized;
+import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.persistence.Tuple;
 import org.shaneking.ling.zero.util.List0;
+import org.shaneking.roc.persistence.CacheableEntities;
 import org.shaneking.roc.persistence.annotation.EntityCacheEvict;
 import org.shaneking.roc.persistence.annotation.EntityCacheable;
-import org.shaneking.roc.persistence.entity.CacheableEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -33,7 +33,7 @@ public class CacheableDao {
   private JdbcTemplate jdbcTemplate;
 
   //protectChannelInsert
-  public static <T extends CacheableEntity> T pci(@NonNull T t, String channelIds) {
+  public static <T extends CacheableEntities> T pci(@NonNull T t, String channelIds) {
     if (t instanceof Channelized) {
       if (!String0.isNullOrEmpty(channelIds)) {
         ((Channelized) t).setChannelId(channelIds);
@@ -43,7 +43,7 @@ public class CacheableDao {
   }
 
   //protectChannelUpdate
-  public static <T extends CacheableEntity> T pcu(@NonNull T t, String channelIds) {
+  public static <T extends CacheableEntities> T pcu(@NonNull T t, String channelIds) {
     if (t instanceof Channelized) {
       pci(t, channelIds);
       if (!String0.isNullOrEmpty(channelIds)) {
@@ -54,7 +54,7 @@ public class CacheableDao {
   }
 
   //protectChannelSelect
-  public static <T extends CacheableEntity> T pcs(@NonNull T t, String channelIds) {
+  public static <T extends CacheableEntities> T pcs(@NonNull T t, String channelIds) {
     if (t instanceof Channelized) {
       if (!String0.isNullOrEmpty(channelIds)) {
         List<String> ChannelIdList = List0.newArrayList(channelIds.split(String0.COMMA));
@@ -70,7 +70,7 @@ public class CacheableDao {
   }
 
   //protectTenantInsert
-  public static <T extends CacheableEntity> T pti(@NonNull T t, String tenantIds) {
+  public static <T extends CacheableEntities> T pti(@NonNull T t, String tenantIds) {
     if (t instanceof Tenanted) {
       if (!String0.isNullOrEmpty(tenantIds)) {
         ((Tenanted) t).setTenantId(tenantIds);
@@ -80,7 +80,7 @@ public class CacheableDao {
   }
 
   //protectTenantUpdate
-  public static <T extends CacheableEntity> T ptu(@NonNull T t, String tenantIds) {
+  public static <T extends CacheableEntities> T ptu(@NonNull T t, String tenantIds) {
     if (t instanceof Tenanted) {
       pti(t, tenantIds);
       if (!String0.isNullOrEmpty(tenantIds)) {
@@ -91,7 +91,7 @@ public class CacheableDao {
   }
 
   //protectTenantSelect
-  public static <T extends CacheableEntity> T pts(@NonNull T t, String tenantIds) {
+  public static <T extends CacheableEntities> T pts(@NonNull T t, String tenantIds) {
     if (t instanceof Tenanted) {
       if (!String0.isNullOrEmpty(tenantIds)) {
         List<String> tenantIdList = List0.newArrayList(tenantIds.split(String0.COMMA));
@@ -107,26 +107,26 @@ public class CacheableDao {
   }
 
   //comment for idea compare
-  public <T extends CacheableEntity> int add(@NonNull Class<T> cacheType, @NonNull T t) {
+  public <T extends CacheableEntities> int add(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.insertSql();
     log.info(OM3.writeValueAsString(pair));
     return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
   }
 
-  public <T extends CacheableEntity> long cnt(@NonNull Class<T> cacheType, @NonNull T t) {
+  public <T extends CacheableEntities> long cnt(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectCountSql();
     log.info(OM3.writeValueAsString(pair));
     return Long.parseLong(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.COUNT_1_).toString());
   }
 
-  public <T extends CacheableEntity> String ids(@NonNull Class<T> cacheType, @NonNull T t) {
+  public <T extends CacheableEntities> String ids(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectIdsSql();
     log.info(OM3.writeValueAsString(pair));
     return String.valueOf(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.GROUP__CONCAT_ID_));
   }
 
   @EntityCacheEvict(empty = true)
-  public <T extends CacheableEntity> int rmv(@NonNull Class<T> cacheType, @NonNull T t) {
+  public <T extends CacheableEntities> int rmv(@NonNull Class<T> cacheType, @NonNull T t) {
     try {
       Tuple.Pair<String, List<Object>> pair = t.deleteSql();
       log.info(OM3.writeValueAsString(pair));
@@ -136,8 +136,8 @@ public class CacheableDao {
     }
   }
 
-  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> int delById(@NonNull Class<T> cacheType, @NonNull T t) {
+  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> int delById(@NonNull Class<T> cacheType, @NonNull T t) {
     try {
       if (String0.isNullOrEmpty(t.getId())) {
         throw new ZeroException(OM3.p(cacheType, t));
@@ -152,7 +152,7 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 1)
-  public <T extends CacheableEntity> int delById(@NonNull Class<T> cacheType, @NonNull String id) {
+  public <T extends CacheableEntities> int delById(@NonNull Class<T> cacheType, @NonNull String id) {
     try {
       return delById(cacheType, cacheType.newInstance(), id);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
@@ -161,7 +161,7 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 2)
-  public <T extends CacheableEntity> int delById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
+  public <T extends CacheableEntities> int delById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
     try {
       if (String0.isNullOrEmpty(id)) {
         throw new ZeroException(OM3.p(cacheType, t, id));
@@ -174,7 +174,7 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 1)
-  public <T extends CacheableEntity> int delByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
+  public <T extends CacheableEntities> int delByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
     try {
       return delByIds(cacheType, cacheType.newInstance(), ids);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
@@ -183,12 +183,12 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 2)
-  public <T extends CacheableEntity> int delByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
+  public <T extends CacheableEntities> int delByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
       if (ids.size() == 0) {
         return 0;
       } else {
-        t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
+        t.forceWhereCondition(Identified.FIELD__ID).resetVal(ids);
         Tuple.Pair<String, List<Object>> pair = t.deleteSql();
         log.info(OM3.writeValueAsString(pair));
         return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
@@ -199,19 +199,19 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 2)
-  public <T extends CacheableEntity> int modByIdsVer(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
+  public <T extends CacheableEntities> int modByIdsVer(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     if (ids.size() == 0) {
       throw new ZeroException(OM3.p(cacheType, t, ids));
     } else {
-      t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
+      t.forceWhereCondition(Identified.FIELD__ID).resetVal(ids);
       Tuple.Pair<String, List<Object>> pair = t.updateSql();
       log.info(OM3.writeValueAsString(pair));
       return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
     }
   }
 
-  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> int modByIdVer(@NonNull Class<T> cacheType, @NonNull T t) {
+  @EntityCacheEvict(pKeyIdx = 1, pKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> int modByIdVer(@NonNull Class<T> cacheType, @NonNull T t) {
     if (String0.isNullOrEmpty(t.getId())) {
       throw new ZeroException(OM3.p(cacheType, t));
     } else {
@@ -221,14 +221,14 @@ public class CacheableDao {
     }
   }
 
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> List<T> lst(@NonNull Class<T> cacheType, @NonNull T t) {
+  @EntityCacheable(rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> List<T> lst(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectSql();
     log.info(OM3.writeValueAsString(pair));
     return this.getJdbcTemplate().query(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray(), (resultSet, i) -> {
       try {
         T rst = cacheType.newInstance();
-        rst.setSelectList(t.getSelectList());
+        rst.srvSelectList(t.getSelectList());
         rst.mapRow(resultSet);
         return rst;
       } catch (Exception e) {
@@ -237,11 +237,11 @@ public class CacheableDao {
     });
   }
 
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
+  @EntityCacheable(pKeyIdx = 1, rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
     try {
       T t = cacheType.newInstance();
-      t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
+      t.forceWhereCondition(Identified.FIELD__ID).resetVal(ids);
       return lst(cacheType, t);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, ids), e);
@@ -250,23 +250,23 @@ public class CacheableDao {
 
   ///can't with t. if add t parameter, cache will over
   ///for example: (UserEntity.class, {name:ShaneKing}, [1,2,3])
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
+  @EntityCacheable(rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
-      t.forceWhereCondition(IdEntity.FIELD__ID).resetVal(ids);
+      t.forceWhereCondition(Identified.FIELD__ID).resetVal(ids);
       return lst(cacheType, t);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, t, ids), e);
     }
   }
 
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T one(@NonNull Class<T> cacheType, @NonNull T t) {
+  @EntityCacheable(rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> T one(@NonNull Class<T> cacheType, @NonNull T t) {
     return one(cacheType, t, false);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
   }
 
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T one(@NonNull Class<T> cacheType, @NonNull T t, boolean rtnNullIfNotEqualsOne) {
+  @EntityCacheable(rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> T one(@NonNull Class<T> cacheType, @NonNull T t, boolean rtnNullIfNotEqualsOne) {
     List<T> lst = this.lst(cacheType, t);
     if (lst.size() == 1) {
       return lst.get(0);
@@ -280,8 +280,8 @@ public class CacheableDao {
     }
   }
 
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id) {
+  @EntityCacheable(pKeyIdx = 1, rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> T oneById(@NonNull Class<T> cacheType, @NonNull String id) {
     try {
       return oneById(cacheType, cacheType.newInstance(), id, false);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
@@ -289,8 +289,8 @@ public class CacheableDao {
     }
   }
 
-  @EntityCacheable(pKeyIdx = 1, rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
+  @EntityCacheable(pKeyIdx = 1, rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> T oneById(@NonNull Class<T> cacheType, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
     try {
       return oneById(cacheType, cacheType.newInstance(), id, rtnNullIfNotEqualsOne);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
@@ -298,13 +298,13 @@ public class CacheableDao {
     }
   }
 
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
+  @EntityCacheable(rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> T oneById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
     return oneById(cacheType, t, id, false);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
   }
 
-  @EntityCacheable(rKeyPath = IdEntity.FIELD__ID)
-  public <T extends CacheableEntity> T oneById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
+  @EntityCacheable(rKeyPath = Identified.FIELD__ID)
+  public <T extends CacheableEntities> T oneById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
     try {
       t.setId(id);
       return one(cacheType, t, rtnNullIfNotEqualsOne);

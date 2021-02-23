@@ -23,7 +23,7 @@ class HelloNumberedEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloNumberedEntity(super=NumberedEntity(super=TenantedEntity(super=CacheableEntity(super=IdAdtVerEntity(super=IdAdtEntity(super=IdEntity(id=null), invalid=null, lastModifyDateTime=null, lastModifyUserId=null), version=null), lastModifyUser=null), tenantId=null), no=null))", new HelloNumberedEntity().toString()),
+      () -> Assertions.assertEquals("HelloNumberedEntity(super=NumberedEntity(super=CacheableEntity(super=IdAdtVerSqlEntitiesTemplate(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), no=null))", new HelloNumberedEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloNumberedEntity().nullSetter()))
     );
   }

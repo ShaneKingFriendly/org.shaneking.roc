@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.persistence.Named;
+import org.shaneking.ling.persistence.entity.sql.Named;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
 
@@ -13,7 +13,7 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class UserEntity extends NumberedEntity implements Named {
+public abstract class UserEntity extends TenantNumberedEntity implements Named {
   @Column(length = 30, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.persistence.Channelized;
+import org.shaneking.ling.persistence.entity.sql.Channelized;
 
 import javax.persistence.Column;
 

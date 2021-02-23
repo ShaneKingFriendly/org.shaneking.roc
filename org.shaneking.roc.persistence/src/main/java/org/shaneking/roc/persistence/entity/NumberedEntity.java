@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.persistence.Numbered;
+import org.shaneking.roc.persistence.CacheableEntity;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class NumberedEntity extends TenantedEntity implements Numbered {
-  @Column(length = 40, columnDefinition = "default '' COMMENT ''")
+public abstract class NumberedEntity extends CacheableEntity implements NumberedEntities {
+  @Column(unique = true, length = 40, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter

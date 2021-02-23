@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.persistence.Tenanted;
+import org.shaneking.ling.persistence.entity.sql.Tenanted;
+import org.shaneking.roc.persistence.CacheableEntity;
 
 import javax.persistence.Column;
 

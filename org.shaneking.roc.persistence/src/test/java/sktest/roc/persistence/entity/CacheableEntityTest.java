@@ -1,7 +1,7 @@
 package sktest.roc.persistence.entity;
 
 import org.junit.jupiter.api.Test;
-import org.shaneking.ling.persistence.sql.entity.IdEntity;
+import org.shaneking.ling.persistence.entity.Identified;
 import org.shaneking.ling.test.SKUnit;
 import org.shaneking.ling.zero.lang.String0;
 
@@ -21,26 +21,26 @@ class CacheableEntityTest extends SKUnit {
 
   @Test
   void findHavingConditions() {
-    assertNotNull(new HelloCacheableEntity().findHavingConditions(IdEntity.FIELD__ID));
+    assertNotNull(new HelloCacheableEntity().findHavingConditions(Identified.FIELD__ID));
   }
 
   @Test
   void findWhereConditions() {
-    assertNotNull(new HelloCacheableEntity().findWhereConditions(IdEntity.FIELD__ID));
+    assertNotNull(new HelloCacheableEntity().findWhereConditions(Identified.FIELD__ID));
   }
 
   @Test
   void forceHavingCondition() {
-    assertNotNull(new HelloCacheableEntity().forceHavingCondition(IdEntity.FIELD__ID));
+    assertNotNull(new HelloCacheableEntity().forceHavingCondition(Identified.FIELD__ID));
   }
 
   @Test
   void forceWhereCondition() {
-    assertNotNull(new HelloCacheableEntity().forceWhereCondition(IdEntity.FIELD__ID));
+    assertNotNull(new HelloCacheableEntity().forceWhereCondition(Identified.FIELD__ID));
   }
 
   @Test
   void testToString() {
-    assertEquals("HelloCacheableEntity(super=CacheableEntity(super=IdAdtVerEntity(super=IdAdtEntity(super=IdEntity(id=null), invalid=null, lastModifyDateTime=null, lastModifyUserId=null), version=null), lastModifyUser=null))", new HelloCacheableEntity().toString());
+    assertEquals("HelloCacheableEntity(super=CacheableEntity(super=IdAdtVerSqlEntitiesTemplate(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null))", new HelloCacheableEntity().toString());
   }
 }
