@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.crypto.Crypto0;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.shaneking.roc.persistence.hello.entity.HelloUserEntity;
 import org.shaneking.roc.rr.*;
@@ -50,7 +49,7 @@ public class UserBizTest extends SKSpringUnit {
       }
     });
 
-    String id = UUID0.cUl33();
+    String id = "1612353237501_DcNd45KtJXPmSpz2xRB";
     for (int i = 0; i < 3; i++) {
       log.info(OM3.writeValueAsString(userBiz.add(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(userBiz.modByIdVer(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
