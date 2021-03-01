@@ -1,8 +1,8 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.ChannelizedEntities;
+import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
 
-public interface AuditLogEntities extends ChannelizedEntities {
+public interface AuditLogEntities extends TenantChannelizedEntities {
 
   String getTracingId();
 

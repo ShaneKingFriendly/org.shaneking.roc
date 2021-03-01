@@ -1,8 +1,8 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.ChannelizedEntities;
+import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
 
-public interface ApiAccess2Entities extends ChannelizedEntities {
+public interface ApiAccess2Entities extends TenantChannelizedEntities {
 
   String getAllowUrl();
 

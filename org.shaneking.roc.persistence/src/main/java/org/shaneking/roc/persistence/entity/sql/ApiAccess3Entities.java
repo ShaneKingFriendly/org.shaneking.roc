@@ -1,8 +1,8 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.ChannelizedEntities;
+import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
 
-public interface ApiAccess3Entities extends ChannelizedEntities {
+public interface ApiAccess3Entities extends TenantChannelizedEntities {
 
   String getAllowSignature();
 

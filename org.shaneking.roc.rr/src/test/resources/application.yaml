@@ -5,6 +5,9 @@ sk:
       string:
         enabled: true
     persistence:
+      dao:
+        cache:
+          enabled: true
       entity:
         cache:
           enabled: true

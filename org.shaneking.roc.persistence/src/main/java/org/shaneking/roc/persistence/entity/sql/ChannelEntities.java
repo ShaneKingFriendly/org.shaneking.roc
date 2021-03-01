@@ -1,10 +1,10 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.TenantedEntities;
+import org.shaneking.roc.persistence.entity.NumberedEntities;
 
 import javax.persistence.Transient;
 
-public interface ChannelEntities extends TenantedEntities {
+public interface ChannelEntities extends NumberedEntities {
 
   @Transient
   String ERR_CODE__NEED_ENCODING = "API_ACCESS__NEED_ENCODING";

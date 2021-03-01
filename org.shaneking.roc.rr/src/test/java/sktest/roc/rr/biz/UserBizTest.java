@@ -51,7 +51,7 @@ public class UserBizTest extends SKSpringUnit {
     });
 
     String id = UUID0.cUl33();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 3; i++) {
       log.info(OM3.writeValueAsString(userBiz.add(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(userBiz.modByIdVer(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(cryptoHelper.decrypt(userBiz.delById(cryptoHelper.encrypt(Req.build(pub().setEncoded(String0.Y), Pri.<String, Integer>build().setExt(ext()).setObj(id))
@@ -62,11 +62,11 @@ public class UserBizTest extends SKSpringUnit {
   }
 
   Pub pub() {
-    return new Pub().setTenantName("tsttenant").setChannelName("tstchannel");
+    return new Pub().setTenantNo("tstTenantNo").setChannelNo("tstChannelNo");
   }
 
   Ext ext() {
-    return new Ext().setUserNo("tstuserno");
+    return new Ext().setUserNo("tstUserNo");
   }
 
   HelloUserEntity userEntity(String id) {

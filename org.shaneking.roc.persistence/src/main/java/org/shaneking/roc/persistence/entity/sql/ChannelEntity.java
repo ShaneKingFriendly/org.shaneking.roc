@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.entity.TenantedEntity;
+import org.shaneking.roc.persistence.entity.NumberedEntity;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ChannelEntity extends TenantedEntity implements ChannelEntities {
-  @Column(length = 10, unique = true, columnDefinition = "default '' COMMENT ''")
+public abstract class ChannelEntity extends NumberedEntity implements ChannelEntities {
+  @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter

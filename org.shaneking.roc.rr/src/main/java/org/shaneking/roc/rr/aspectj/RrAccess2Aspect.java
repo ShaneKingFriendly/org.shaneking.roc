@@ -10,9 +10,9 @@ import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
+import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
 import org.shaneking.roc.persistence.entity.sql.ApiAccess2Entities;
 import org.shaneking.roc.persistence.entity.sql.ApiAccessEntities;
-import org.shaneking.roc.rr.Pub;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAccess2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +49,8 @@ public class RrAccess2Aspect {
     if (enabled) {
       if (pjp.getArgs().length > rrAccess2.reqParamIdx() && pjp.getArgs()[rrAccess2.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess2.reqParamIdx()];
-        if (req.getPub() == null || String0.isNullOrEmpty(req.getPub().getChannelName())) {
-          rtn = Resp.failed(Pub.ERR_CODE__REQUIRED_CHANNEL_NAME, OM3.writeValueAsString(req.getPub()), req);
+        if (String0.isNullOrEmpty(req.gnnCtx().gnaChannelId()) || String0.isNullOrEmpty(req.gnnCtx().gnaTenantId())) {
+          rtn = Resp.failed(TenantChannelizedEntities.ERR_CODE__REQUIRED_CHANNEL_ID_AND_TENANT_ID, OM3.writeValueAsString(req.getPub()), req);
         } else {
           try {
             if (req.gnnCtx().getAuditLog() == null || String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {

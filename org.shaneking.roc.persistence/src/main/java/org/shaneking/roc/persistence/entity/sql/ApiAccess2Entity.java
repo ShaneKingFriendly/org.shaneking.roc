@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.entity.ChannelizedEntity;
+import org.shaneking.roc.persistence.entity.TenantChannelizedEntity;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ApiAccess2Entity extends ChannelizedEntity implements ApiAccess2Entities {
+public abstract class ApiAccess2Entity extends TenantChannelizedEntity implements ApiAccess2Entities {
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

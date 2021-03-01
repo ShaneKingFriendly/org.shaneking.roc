@@ -14,10 +14,10 @@ import javax.persistence.Transient;
 @ToString
 public class Pub {
   @Transient
-  public static final String ERR_CODE__REQUIRED_CHANNEL_NAME = "REQ_PUB__REQUIRED_CHANNEL_NAME";
+  public static final String ERR_CODE__REQUIRED_CHANNEL_NUMBER = "REQ_PUB__REQUIRED_CHANNEL_NUMBER";
   @Getter
   @Setter
-  private String channelName;
+  private String channelNo;
   @Getter
   @Setter
   private String encoded;//Y|N(default)
@@ -26,7 +26,7 @@ public class Pub {
   private ObjectNode jon;//json object node
   @Getter
   @Setter
-  private String tenantName;//if null same as channelName
+  private String tenantNo;//if null same as channelNo
   @Getter
   @Setter
   private String tracingId;

@@ -13,7 +13,7 @@ class HelloTenantEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloTenantEntity(super=TenantEntity(super=CacheableEntity(super=AbstractIdAdtVerSqlEntity(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), name=null, description=null))", new HelloTenantEntity().toString()),
+      () -> Assertions.assertEquals("HelloTenantEntity(super=TenantEntity(super=NumberedEntity(super=CacheableEntity(super=AbstractIdAdtVerSqlEntity(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), no=null), name=null, description=null))", new HelloTenantEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloTenantEntity().nullSetter()))
     );
   }

@@ -38,7 +38,7 @@ class HelloApiAccessEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloApiAccessEntity(super=ApiAccessEntity(super=ChannelizedEntity(super=TenantedEntity(super=CacheableEntity(super=AbstractIdAdtVerSqlEntity(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), tenantId=null), channelId=null), allowUrlRegex=null, allowSignatureRegex=null, denyUrlRegex=null, denySignatureRegex=null))", new HelloApiAccessEntity().toString()),
+      () -> Assertions.assertEquals("HelloApiAccessEntity(super=ApiAccessEntity(super=TenantChannelizedEntity(super=TenantedEntity(super=CacheableEntity(super=AbstractIdAdtVerSqlEntity(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), tenantId=null), channelId=null), allowUrlRegex=null, allowSignatureRegex=null, denyUrlRegex=null, denySignatureRegex=null))", new HelloApiAccessEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloApiAccessEntity().nullSetter()))
     );
   }

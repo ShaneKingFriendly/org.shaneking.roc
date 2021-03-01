@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
-import org.shaneking.ling.persistence.entity.sql.Named;
+import org.shaneking.ling.persistence.entity.sql.Numbered;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
@@ -14,6 +14,7 @@ import org.shaneking.ling.zero.net.InetAddress0;
 import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
+import org.shaneking.roc.persistence.dao.NumberedCacheableDao;
 import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.shaneking.roc.persistence.entity.sql.TenantEntities;
@@ -39,6 +40,9 @@ public class RrAuditAspect {
 
   @Autowired
   private CacheableDao cacheableDao;
+
+  @Autowired
+  private NumberedCacheableDao numberedCacheableDao;
 
   @Autowired
   private AuditLogEntities auditLogEntityClass;
@@ -89,21 +93,21 @@ public class RrAuditAspect {
 //          auditLogEntity.setRespDatetime();
           req.gnnCtx().setAuditLog(auditLogEntity);
 
-          if (req.getPub() == null || String0.isNullOrEmpty(req.getPub().getChannelName())) {
-            rtn = Resp.failed(Pub.ERR_CODE__REQUIRED_CHANNEL_NAME, OM3.writeValueAsString(req.getPub()), req);
+          if (req.getPub() == null || String0.isNullOrEmpty(req.getPub().getChannelNo())) {
+            rtn = Resp.failed(Pub.ERR_CODE__REQUIRED_CHANNEL_NUMBER, OM3.writeValueAsString(req.getPub()), req);
           } else {
-            ChannelEntities channelEntity = cacheableDao.one(channelEntityClass.entityClass(), channelEntityClass.entityClass().newInstance().setName(req.getPub().getChannelName()), true);
+            ChannelEntities channelEntity = numberedCacheableDao.oneByNo(channelEntityClass.entityClass(), req.getPub().getChannelNo(), true);
             if (channelEntity == null) {
-              rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, req.getPub().getChannelName(), req);
+              rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, req.getPub().getChannelNo(), req);
             } else {
               req.gnnCtx().setChannel(channelEntity);
               if (req.gnnCtx().getAuditLog() != null) {
                 req.gnnCtx().getAuditLog().setChannelId(channelEntity.getId());
               }
 
-              TenantEntities tenantEntity = cacheableDao.one(tenantEntityClass.entityClass(), tenantEntityClass.entityClass().newInstance().setName(String0.nullOrEmptyTo(req.getPub().getTenantName(), req.getPub().getChannelName())), true);
+              TenantEntities tenantEntity = numberedCacheableDao.oneByNo(tenantEntityClass.entityClass(), String0.nullOrEmptyTo(req.getPub().getTenantNo(), req.getPub().getChannelNo()), true);
               if (tenantEntity == null) {
-                rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, String.valueOf(req.getPub().getTenantName()), req);
+                rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, String.valueOf(req.getPub().getTenantNo()), req);
               } else {
                 req.gnnCtx().setTenant(tenantEntity);
                 if (req.gnnCtx().getAuditLog() != null) {
