@@ -7,12 +7,22 @@ import org.shaneking.ling.test.SKUnit;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.entity.sql.ApiAccessEntity;
 
+import java.util.regex.Pattern;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class HelloApiAccessEntityTest extends SKUnit {
 
   @Test
   void check() {
+    assertAll(
+      () -> assertTrue(Pattern.matches("^[\\s\\S]*(user/mod|user/delById)[\\s\\S]*$", "/user/mod")),
+      () -> assertTrue(Pattern.matches("^[\\s\\S]*(user/mod|user/delById)[\\s\\S]*$", "/user/delById")),
+      () -> assertTrue(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.add(String s)")),
+      () -> assertTrue(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.mge(String s)")),
+      () -> assertTrue(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.lst(String s)")),
+      () -> assertFalse(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.ls(String s)"))
+    );
     ApiAccessEntity apiAccessEntity = new HelloApiAccessEntity();
     assertAll(
       () -> assertFalse(apiAccessEntity.check(null, null)),

@@ -14,6 +14,18 @@ public class RrCfg {
   }
 
   @Bean
+  @ConditionalOnMissingBean(ApiAccess2Entities.class)
+  public HelloApiAccess2Entity helloApiAccess2Entity() {
+    return new HelloApiAccess2Entity();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(ApiAccess3Entities.class)
+  public HelloApiAccess3Entity helloApiAccess3Entity() {
+    return new HelloApiAccess3Entity();
+  }
+
+  @Bean
   @ConditionalOnMissingBean(AuditLogEntities.class)
   public HelloAuditLogEntity helloAuditLogEntity() {
     return new HelloAuditLogEntity();

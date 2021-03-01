@@ -57,8 +57,8 @@ select 0,
        '',
        '1612262610215_LoHqeZBGrVYm3MlYmpH',
        '1612263653223_oGFvE5Hyndf0njoFhyK',
-       '',
-       '^[\s\S]*[add|delById|lst]\([\s\S]*$',
+       '^[\s\S]*(user/mod|user/delById)\([\s\S]*$',
+       '^[\s\S]*(add|mge|lst)\([\s\S]*$',
        '',
        '';
 

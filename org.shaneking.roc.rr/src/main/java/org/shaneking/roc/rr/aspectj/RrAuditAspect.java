@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.persistence.entity.sql.Named;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
@@ -14,6 +15,9 @@ import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
+import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
+import org.shaneking.roc.persistence.entity.sql.TenantEntities;
+import org.shaneking.roc.rr.Pub;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAudit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,12 @@ public class RrAuditAspect {
 
   @Autowired
   private AuditLogEntities auditLogEntityClass;
+
+  @Autowired
+  private ChannelEntities channelEntityClass;
+
+  @Autowired
+  private TenantEntities tenantEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
   private void pointcut() {
@@ -79,8 +89,32 @@ public class RrAuditAspect {
 //          auditLogEntity.setRespDatetime();
           req.gnnCtx().setAuditLog(auditLogEntity);
 
-          ifExceptionThenInProceed = true;
-          rtn = pjp.proceed();
+          if (req.getPub() == null || String0.isNullOrEmpty(req.getPub().getChannelName())) {
+            rtn = Resp.failed(Pub.ERR_CODE__REQUIRED_CHANNEL_NAME, OM3.writeValueAsString(req.getPub()), req);
+          } else {
+            ChannelEntities channelEntity = cacheableDao.one(channelEntityClass.entityClass(), channelEntityClass.entityClass().newInstance().setName(req.getPub().getChannelName()), true);
+            if (channelEntity == null) {
+              rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, req.getPub().getChannelName(), req);
+            } else {
+              req.gnnCtx().setChannel(channelEntity);
+              if (req.gnnCtx().getAuditLog() != null) {
+                req.gnnCtx().getAuditLog().setChannelId(channelEntity.getId());
+              }
+
+              TenantEntities tenantEntity = cacheableDao.one(tenantEntityClass.entityClass(), tenantEntityClass.entityClass().newInstance().setName(String0.nullOrEmptyTo(req.getPub().getTenantName(), req.getPub().getChannelName())), true);
+              if (tenantEntity == null) {
+                rtn = Resp.failed(Named.ERR_CODE__NOT_FOUND_BY_NAME, String.valueOf(req.getPub().getTenantName()), req);
+              } else {
+                req.gnnCtx().setTenant(tenantEntity);
+                if (req.gnnCtx().getAuditLog() != null) {
+                  req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
+                }
+
+                ifExceptionThenInProceed = true;
+                rtn = pjp.proceed();
+              }
+            }
+          }
         } catch (Throwable throwable) {
           log.error(OM3.lp(rtn, req, auditLogEntity), throwable);
           if (ifExceptionThenInProceed) {
