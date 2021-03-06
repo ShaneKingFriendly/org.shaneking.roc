@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.ling.zero.crypto.Crypto0;
+import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.entity.TenantNumberedEntity;
 
@@ -38,10 +38,10 @@ public abstract class UserEntity extends TenantNumberedEntity implements UserEnt
   private String email;
 
   public String getHaha() {
-    if (String0.isNullOrEmpty(haha) || haha.startsWith(Crypto0.ENCRYPTED_PREFIX)) {
+    if (String0.isNullOrEmpty(haha) || haha.startsWith(SKC1.ENCRYPTED_PREFIX)) {
       return haha;
     } else {
-      return Crypto0.ENCRYPTED_PREFIX + Crypto0.aesEncrypt(haha);
+      return SKC1.ENCRYPTED_PREFIX + SKC1.encrypt(haha);
     }
   }
 }

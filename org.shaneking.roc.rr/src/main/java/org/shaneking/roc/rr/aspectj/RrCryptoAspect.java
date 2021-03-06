@@ -11,7 +11,7 @@ import org.shaneking.ling.persistence.AbstractEntity;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
-import org.shaneking.ling.zero.crypto.Crypto0;
+import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.dao.CacheableDao;
@@ -72,7 +72,7 @@ public class RrCryptoAspect {
             ChannelEntities channelEntity = req.gnnCtx().getChannel();
             if (channelEntity == null) {
               channelEntity = channelEntityClass.entityClass().newInstance();
-              channelEntity.setTokenForce(String0.N).setTokenAlgorithmType(Crypto0.ALGORITHM_NAME__AES).setTokenValueType(ChannelEntities.TOKEN_VALUE_TYPE__SELF);
+              channelEntity.setTokenForce(String0.N).setTokenAlgorithmType(SKC1.SK__CRYPTO__ALGORITHM_NAME).setTokenValueType(ChannelEntities.TOKEN_VALUE_TYPE__SELF);
             }
             if (String0.Y.equalsIgnoreCase(channelEntity.getTokenForce()) && (!String0.Y.equalsIgnoreCase(req.getPub().getEncoded()) || String0.isNullOrEmpty(req.getEnc()))) {
               rtn = Resp.failed(ChannelEntities.ERR_CODE__NEED_ENCODING, req.getPub().getEncoded(), req);
@@ -85,8 +85,8 @@ public class RrCryptoAspect {
               if (String0.Y.equalsIgnoreCase(req.getPub().getEncoded()) && !String0.isNullOrEmpty(req.getEnc())) {
                 String enc = req.getEnc();
                 JavaType[] javaTypes = JavaType3.resolveArgJavaTypes(pjp, rrCrypto.reqParamIdx());
-                if (Crypto0.ALGORITHM_NAME__AES.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
-                  enc = Crypto0.aesDecrypt(enc, token);
+                if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
+                  enc = SKC1.decrypt(enc, token);
                 }
                 req.setPri(OM3.readValue(enc, OM3.om().getTypeFactory().constructParametricType(Pri.class, javaTypes))).setEnc(null);
               }
@@ -120,8 +120,8 @@ public class RrCryptoAspect {
 
                     if (String0.Y.equalsIgnoreCase(respReq.getPub().getEncoded()) && respReq.getPri() != null) {
                       String enc = OM3.writeValueAsString(respReq.getPri());
-                      if (Crypto0.ALGORITHM_NAME__AES.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
-                        enc = Crypto0.aesEncrypt(enc, token);
+                      if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
+                        enc = SKC1.encrypt(enc, token);
                       }
                       respReq.setEnc(enc).setPri(null);
                     }

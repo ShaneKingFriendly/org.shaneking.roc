@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.test.SKUnit;
 import org.shaneking.ling.test.crypto.Crypto0Unit;
-import org.shaneking.ling.zero.crypto.Crypto0;
+import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.roc.persistence.entity.sql.UserEntity;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -17,9 +17,9 @@ class HelloUserEntityTest extends SKUnit {
   void getHaha() {
     UserEntity userEntity = new HelloUserEntity();
     userEntity.setHaha(Crypto0Unit.I_LOVE_YOU);
-    assertEquals(Crypto0.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU__ENCRYPTED, userEntity.getHaha());
-    userEntity.setHaha(Crypto0.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU);
-    assertEquals(Crypto0.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU, userEntity.getHaha());
+    assertEquals(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU__ENCRYPTED, userEntity.getHaha());
+    userEntity.setHaha(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU);
+    assertEquals(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU, userEntity.getHaha());
   }
 
   @Test

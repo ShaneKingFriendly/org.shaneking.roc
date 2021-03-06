@@ -5,7 +5,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.rr.Resp;
-import org.shaneking.ling.zero.crypto.Crypto0;
+import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class RrCryptoHelper {
         throw new IllegalArgumentException(OM3.p(req, req, tokenValue, tokenForce, tokenAlgorithmType, tokenValueType));
       }
       log.info(OM3.writeValueAsString(req));
-      if (Crypto0.ALGORITHM_NAME__AES.equalsIgnoreCase(tokenAlgorithmType)) {
-        req.setEnc(Crypto0.aesEncrypt(OM3.writeValueAsString(req.getPri()), token)).setPri(null).getPub().setEncoded(String0.Y);
+      if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(tokenAlgorithmType)) {
+        req.setEnc(SKC1.encrypt(OM3.writeValueAsString(req.getPri()), token)).setPri(null).getPub().setEncoded(String0.Y);
       } else if (String0.Y.equalsIgnoreCase(tokenForce)) {
         throw new IllegalArgumentException(OM3.p(req, tokenValue, tokenForce, tokenAlgorithmType, tokenValueType));
       }
@@ -54,8 +54,8 @@ public class RrCryptoHelper {
         throw new IllegalArgumentException(OM3.p(respData, tokenValue, tokenAlgorithmType, tokenValueType));
       }
       log.info(OM3.writeValueAsString(respData));
-      if (Crypto0.ALGORITHM_NAME__AES.equalsIgnoreCase(tokenAlgorithmType)) {
-        respData.setPri(OM3.readValue(Crypto0.aesDecrypt(respData.getEnc(), token), typeReference)).setEnc(null);
+      if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(tokenAlgorithmType)) {
+        respData.setPri(OM3.readValue(SKC1.decrypt(respData.getEnc(), token), typeReference)).setEnc(null);
       } else if (String0.Y.equalsIgnoreCase(respData.getPub().getEncoded())) {
         throw new IllegalArgumentException(OM3.p(respData, tokenValue, tokenAlgorithmType, tokenValueType));
       }
