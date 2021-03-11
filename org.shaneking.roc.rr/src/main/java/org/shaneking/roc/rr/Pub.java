@@ -29,12 +29,12 @@ public class Pub {
   private String tenantNo;//if null same as channelNo
   @Getter
   @Setter
-  private String tracingId;
+  private String tracingNo;
 
-  public String gnnTracingId() {
-    if (String0.isNullOrEmpty(getTracingId())) {
-      setTracingId(UUID0.cUl33());
+  public String gnnTracingNo() {
+    if (String0.isNullOrEmpty(getTracingNo())) {
+      setTracingNo(UUID0.cUl33());
     }
-    return getTracingId();
+    return getTracingNo();
   }
 }

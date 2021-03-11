@@ -4,9 +4,9 @@ import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
 
 public interface AuditLogEntities extends TenantChannelizedEntities {
 
-  String getTracingId();
+  String getTracingNo();
 
-  <T extends AuditLogEntities> T setTracingId(String tracingId);
+  <T extends AuditLogEntities> T setTracingNo(String tracingNo);
 
   String getReqDatetime();
 

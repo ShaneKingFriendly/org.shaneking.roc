@@ -49,9 +49,9 @@ public class RrCacheAspect {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
         Ctx ctx = req.gnnCtx();
-        String tracingId = req.getPub().getTracingId();
+        String tracingNo = req.getPub().getTracingNo();
         try {
-          req.setCtx(null).getPub().setTracingId(null);
+          req.setCtx(null).getPub().setTracingNo(null);
 
           String key = String.join(String0.MORE, pjp.getSignature().toLongString(), OM3.writeValueAsString(req));
           String respCached = cache.get(key);
@@ -63,7 +63,7 @@ public class RrCacheAspect {
 
           if (String0.isNullOrEmpty(respCached)) {
             log.info(MessageFormat.format("{0} - {1}", StringCaches.ERR_CODE__CACHE_HIT_MISS, key));
-            req.setCtx(ctx).getPub().setTracingId(tracingId);
+            req.setCtx(ctx).getPub().setTracingNo(tracingNo);
             proceedBefore = true;
             rtn = pjp.proceed();
             proceedAfter = true;
@@ -76,12 +76,12 @@ public class RrCacheAspect {
           } else {
             log.info(MessageFormat.format("{0} - {1} : {2}", StringCaches.ERR_CODE__CACHE_HIT_ALL, key, respCached));
             Resp<?> resp = OM3.readValue(respCached, OM3.om().getTypeFactory().constructParametricType(Resp.class, JavaType3.resolveRtnJavaTypes(pjp)));
-            ((Req<?, ?>) resp.getData()).setCtx(ctx).getPub().setTracingId(tracingId);
+            ((Req<?, ?>) resp.getData()).setCtx(ctx).getPub().setTracingNo(tracingNo);
             rtn = resp;
           }
         } catch (Throwable throwable) {
           log.error(OM3.writeValueAsString(req), throwable);
-          req.setCtx(ctx).getPub().setTracingId(tracingId);
+          req.setCtx(ctx).getPub().setTracingNo(tracingNo);
           if (proceedBefore && !proceedAfter) {
             throw throwable;//process error
           } else {

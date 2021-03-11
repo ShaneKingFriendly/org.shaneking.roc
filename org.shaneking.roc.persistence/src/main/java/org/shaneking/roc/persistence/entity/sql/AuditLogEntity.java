@@ -17,7 +17,7 @@ public abstract class AuditLogEntity extends TenantChannelizedEntity implements 
   @ExcelColumn
   @Getter
   @Setter
-  private String tracingId;
+  private String tracingNo;
 
   @Column(length = 20, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
