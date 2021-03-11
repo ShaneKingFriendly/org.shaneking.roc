@@ -73,7 +73,7 @@
 
 ### Context
 
-- `ctx`：为本次请求的上下文信息。适合于业务处理分层较少的场景。可使用 `InheritableThreadLocal` 替代。不建议直接使用 `ThreadLocal`，因为不适合 `子线程` 及 `流（JDK8+的Stream）` 场景。
+- `ctx`：为本次请求的上下文信息。适合于业务处理分层较少的六边形架构场景。可使用 `InheritableThreadLocal` 替代。不建议直接使用 `ThreadLocal`，因为不适合 `子线程` 及 `流（JDK8+的Stream）` 场景。
   - `auditLog`：审计日志
   - `channel`：渠道对象
   - `jon`：扩展的 `Json Object Node`
