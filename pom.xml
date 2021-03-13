@@ -19,8 +19,8 @@
   <inceptionYear>2011-2021</inceptionYear>
 
   <organization>
-    <name>ShaneKingOrg</name>
-    <url>https://github.com/ShaneKingOrg</url>
+    <name>ShaneKingFriendly</name>
+    <url>https://github.com/ShaneKingFriendly</url>
   </organization>
   <licenses>
     <license>
@@ -77,8 +77,8 @@
   </contributors>
 
   <scm>
-    <connection>scm:git:git@github.com:ShaneKingOrg/org.shaneking.roc.git</connection>
-    <developerConnection>scm:git:git@github.com:ShaneKingOrg/org.shaneking.roc.git</developerConnection>
+    <connection>scm:git:git@github.com:ShaneKingFriendly/org.shaneking.roc.git</connection>
+    <developerConnection>scm:git:git@github.com:ShaneKingFriendly/org.shaneking.roc.git</developerConnection>
     <url>https://github.com/ShaneKingFriendly/org.shaneking.roc</url>
   </scm>
   <issueManagement>
