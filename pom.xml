@@ -15,7 +15,7 @@
 
   <name>org.shaneking.roc</name>
   <description>ShaneKing Java Spring Library</description>
-  <url>https://github.com/ShaneKingOpen/org.shaneking.roc</url>
+  <url>https://github.com/ShaneKingFriendly/org.shaneking.roc</url>
   <inceptionYear>2011-2021</inceptionYear>
 
   <organization>
@@ -79,15 +79,15 @@
   <scm>
     <connection>scm:git:git@github.com:ShaneKingOrg/org.shaneking.roc.git</connection>
     <developerConnection>scm:git:git@github.com:ShaneKingOrg/org.shaneking.roc.git</developerConnection>
-    <url>https://github.com/ShaneKingOpen/org.shaneking.roc</url>
+    <url>https://github.com/ShaneKingFriendly/org.shaneking.roc</url>
   </scm>
   <issueManagement>
     <system>Github</system>
-    <url>https://github.com/ShaneKingOpen/org.shaneking.roc/issues</url>
+    <url>https://github.com/ShaneKingFriendly/org.shaneking.roc/issues</url>
   </issueManagement>
   <ciManagement>
     <system>Travis-CI</system>
-    <url>https://travis-ci.org/ShaneKingOpen/org.shaneking.roc</url>
+    <url>https://travis-ci.org/ShaneKingFriendly/org.shaneking.roc</url>
   </ciManagement>
 
   <properties>
