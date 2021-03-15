@@ -116,13 +116,13 @@ public class CacheableDao {
   public <T extends CacheableEntities> long cnt(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectCountSql();
     log.info(OM3.writeValueAsString(pair));
-    return Long.parseLong(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.COUNT_1_).toString());
+    return Long.parseLong(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.parenthesis(Keyword.FN__COUNT, 1)).toString());
   }
 
   public <T extends CacheableEntities> String ids(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectIdsSql();
     log.info(OM3.writeValueAsString(pair));
-    return String.valueOf(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.GROUP__CONCAT_ID_));
+    return String.valueOf(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.parenthesis(Keyword.FN__GROUP_CONCAT, Identified.FIELD__ID)));
   }
 
   @EntityCacheEvict(empty = true)
