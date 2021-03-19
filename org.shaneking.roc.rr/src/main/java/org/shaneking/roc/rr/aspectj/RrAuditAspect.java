@@ -150,6 +150,7 @@ public class RrAuditAspect {
               cacheableDao.add(auditLogEntity.entityClass(), auditLogEntity);
             }
           } catch (Throwable throwable) {
+            ///ignore exception : just audit log error, business succeeded
             log.error(OM3.lp(rtn, req, auditLogEntity), throwable);
           }
         }

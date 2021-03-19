@@ -62,6 +62,7 @@ public class EntityCacheEvictAspect {
             }
           }
         } catch (Throwable e) {
+          ///ignore exception : if exception, what do you want?
           log.error(String.valueOf(clazz), e);
         }
       } else {

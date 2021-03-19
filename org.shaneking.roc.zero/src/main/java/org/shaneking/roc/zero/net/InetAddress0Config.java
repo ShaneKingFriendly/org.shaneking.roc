@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.net.InetAddress0;
 import org.shaneking.ling.zero.util.Map0;
 import org.shaneking.ling.zero.util.Regex0;
@@ -27,6 +28,9 @@ public class InetAddress0Config {
   @Getter
   @Setter
   private boolean enabled = true;
+  @Getter
+  @Setter
+  private boolean quietly = true;
   @Getter
   @Setter
   private String extHostsPath;
@@ -58,6 +62,9 @@ public class InetAddress0Config {
           }
         } catch (Exception e) {
           log.error(this.getExtPropsPath(), e);
+          if (!quietly) {
+            throw new ZeroException(this.getExtHostsPath(), e);
+          }
         }
       }
       if (!String0.isNullOrEmpty(this.getExtPropsPath())) {
@@ -70,6 +77,9 @@ public class InetAddress0Config {
           }
         } catch (Exception e) {
           log.error(this.getExtPropsPath(), e);
+          if (!quietly) {
+            throw new ZeroException(this.getExtPropsPath(), e);
+          }
         }
       }
       this.getVhosts().forEach(InetAddress0::putCustomHost);

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.cache.StringCaches;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.roc.persistence.entity.TenantNumberedEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,7 +64,10 @@ public class TenantNumberedCacheableDao {
         cache.set(key, cacheSeconds, rtn.getId());
       }
     } catch (Exception e) {
-      log.error(OM3.lp(rtn, cacheType.getName(), no, tenantId, rtnNullIfNotEqualsOne));
+      log.error(OM3.lp(rtn, cacheType.getName(), no, tenantId, rtnNullIfNotEqualsOne, key), e);
+      if (!rtnNullIfNotEqualsOne) {
+        throw new ZeroException(OM3.lp(rtn, cacheType, no, tenantId, rtnNullIfNotEqualsOne, key), e);
+      }
     }
     return rtn;
   }

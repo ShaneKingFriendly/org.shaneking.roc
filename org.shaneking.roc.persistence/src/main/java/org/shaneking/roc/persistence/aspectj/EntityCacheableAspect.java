@@ -83,6 +83,7 @@ public class EntityCacheableAspect {
             }
           }
         } catch (Throwable e) {
+          ///ignore exception : if exception then proceed
           log.error(String.valueOf(clazz), e);
         }
         if (rtn == null) {
