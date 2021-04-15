@@ -119,6 +119,8 @@ public class CacheableDao {
     return Long.parseLong(this.getJdbcTemplate().queryForMap(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray()).get(Keyword.parenthesis(Keyword.FN__COUNT, 1)).toString());
   }
 
+  ///show variables like 'group_concat_max_len'; -- default 1024 chars
+  ///SET GLOBAL group_concat_max_len = 41861160; -- need set by root, 1023*1023*40
   public <T extends CacheableEntities> String ids(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectIdsSql();
     log.info(OM3.writeValueAsString(pair));
@@ -248,8 +250,7 @@ public class CacheableDao {
     }
   }
 
-  ///can't with t. if add t parameter, cache will over
-  ///for example: (UserEntity.class, {name:ShaneKing}, [1,2,3])
+  ///if add `t` parameter, can't set `pKeyIdx = 2`. because cache will over, for example: (UserEntity.class, {name:ShaneKing}, [1,2,3])
   @EntityCacheable(rKeyPath = Identified.FIELD__ID)
   public <T extends CacheableEntities> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
@@ -258,6 +259,12 @@ public class CacheableDao {
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, t, ids), e);
     }
+  }
+
+  public <T extends CacheableEntities> List<String> lstIds(@NonNull Class<T> cacheType, @NonNull T t) {
+    Tuple.Pair<List<String>, List<Object>> pair = t.selectSql(List0.newArrayList(Identified.COLUMN__ID), List0.newArrayList());
+    log.info(OM3.writeValueAsString(pair));
+    return this.getJdbcTemplate().query(String.join(String0.BLANK, Tuple.getFirst(pair)), Tuple.getSecond(pair).toArray(), (resultSet, i) -> resultSet.getString(Identified.COLUMN__ID));
   }
 
   @EntityCacheable(rKeyPath = Identified.FIELD__ID)
