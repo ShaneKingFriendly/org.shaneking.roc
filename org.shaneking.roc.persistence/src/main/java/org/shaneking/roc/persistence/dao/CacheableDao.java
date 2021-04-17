@@ -121,6 +121,7 @@ public class CacheableDao {
 
   ///show variables like 'group_concat_max_len'; -- default 1024 chars
   ///SET GLOBAL group_concat_max_len = 41861160; -- need set by root, 1023*1023*40
+  @Deprecated
   public <T extends CacheableEntities> String ids(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectIdsSql();
     log.info(OM3.writeValueAsString(pair));
@@ -168,7 +169,7 @@ public class CacheableDao {
       if (String0.isNullOrEmpty(id)) {
         throw new ZeroException(OM3.p(cacheType, t, id));
       } else {
-        return delByIds(cacheType, t, List0.newArrayList(id));
+        return delByIds(cacheType, t, List0.newArrayList(id));///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
       }
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, t, id), e);
@@ -200,15 +201,25 @@ public class CacheableDao {
     }
   }
 
+  ///!BeCareful: if no whereConditions, will update all
+  @EntityCacheEvict(empty = true)
+  public <T extends CacheableEntities> int mod(@NonNull Class<T> cacheType, @NonNull T t) {
+    try {
+      Tuple.Pair<String, List<Object>> pair = t.updateSql();
+      log.info(OM3.writeValueAsString(pair));
+      return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
+    } catch (Exception e) {
+      throw new ZeroException(OM3.p(cacheType, t), e);
+    }
+  }
+
   @EntityCacheEvict(pKeyIdx = 2)
   public <T extends CacheableEntities> int modByIdsVer(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     if (ids.size() == 0) {
       throw new ZeroException(OM3.p(cacheType, t, ids));
     } else {
       t.forceWhereCondition(Identified.FIELD__ID).resetVal(ids);
-      Tuple.Pair<String, List<Object>> pair = t.updateSql();
-      log.info(OM3.writeValueAsString(pair));
-      return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
+      return mod(cacheType, t);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     }
   }
 
@@ -217,9 +228,7 @@ public class CacheableDao {
     if (String0.isNullOrEmpty(t.getId())) {
       throw new ZeroException(OM3.p(cacheType, t));
     } else {
-      Tuple.Pair<String, List<Object>> pair = t.updateSql();
-      log.info(OM3.writeValueAsString(pair));
-      return this.getJdbcTemplate().update(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray());
+      return mod(cacheType, t);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     }
   }
 
@@ -274,7 +283,7 @@ public class CacheableDao {
 
   @EntityCacheable(rKeyPath = Identified.FIELD__ID)
   public <T extends CacheableEntities> T one(@NonNull Class<T> cacheType, @NonNull T t, boolean rtnNullIfNotEqualsOne) {
-    List<T> lst = this.lst(cacheType, t);
+    List<T> lst = lst(cacheType, t);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     if (lst.size() == 1) {
       return lst.get(0);
     } else {
@@ -314,7 +323,7 @@ public class CacheableDao {
   public <T extends CacheableEntities> T oneById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id, boolean rtnNullIfNotEqualsOne) {
     try {
       t.setId(id);
-      return one(cacheType, t, rtnNullIfNotEqualsOne);
+      return one(cacheType, t, rtnNullIfNotEqualsOne);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, t, id, rtnNullIfNotEqualsOne), e);
     }
