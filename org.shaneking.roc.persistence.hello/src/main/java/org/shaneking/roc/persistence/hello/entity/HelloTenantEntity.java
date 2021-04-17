@@ -18,6 +18,6 @@ import javax.persistence.Table;
 public class HelloTenantEntity extends TenantEntity implements SqlliteSqlEntities, NullSetter {
   @Override
   public Class<? extends HelloTenantEntity> entityClass() {
-    return HelloTenantEntity.class;
+    return this.getClass();
   }
 }

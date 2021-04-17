@@ -16,6 +16,6 @@ import javax.persistence.Table;
 public class HelloChannelEntity extends ChannelEntity implements SqlliteSqlEntities, NullSetter {
   @Override
   public Class<? extends HelloChannelEntity> entityClass() {
-    return HelloChannelEntity.class;
+    return this.getClass();
   }
 }

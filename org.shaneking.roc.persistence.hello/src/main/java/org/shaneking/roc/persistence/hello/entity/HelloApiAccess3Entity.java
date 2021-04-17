@@ -18,6 +18,6 @@ import javax.persistence.Table;
 public class HelloApiAccess3Entity extends ApiAccess3Entity implements SqlliteSqlEntities, NullSetter {
   @Override
   public Class<? extends HelloApiAccess3Entity> entityClass() {
-    return HelloApiAccess3Entity.class;
+    return this.getClass();
   }
 }
