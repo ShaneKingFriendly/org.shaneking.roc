@@ -16,8 +16,8 @@ class HelloApiAccessEntityTest extends SKUnit {
   @Test
   void check() {
     assertAll(
-      () -> assertTrue(Pattern.matches("^[\\s\\S]*(user/mod|user/delById)[\\s\\S]*$", "/user/mod")),
-      () -> assertTrue(Pattern.matches("^[\\s\\S]*(user/mod|user/delById)[\\s\\S]*$", "/user/delById")),
+      () -> assertTrue(Pattern.matches("^[\\s\\S]*(user/mod|user/rmvById)[\\s\\S]*$", "/user/mod")),
+      () -> assertTrue(Pattern.matches("^[\\s\\S]*(user/mod|user/rmvById)[\\s\\S]*$", "/user/rmvById")),
       () -> assertTrue(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.add(String s)")),
       () -> assertTrue(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.mge(String s)")),
       () -> assertTrue(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.lst(String s)")),

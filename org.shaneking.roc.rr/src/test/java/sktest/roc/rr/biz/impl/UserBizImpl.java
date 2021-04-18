@@ -28,11 +28,11 @@ public class UserBizImpl {
   @RrAudit
   @RrAccess
   @RrCrypto
-  public Resp<Req<String, Integer>> delById(Req<String, Integer> req) {
+  public Resp<Req<String, Integer>> rmvById(Req<String, Integer> req) {
     Resp<Req<String, Integer>> resp = Resp.success(req);
     HelloUserEntity userEntity = new HelloUserEntity();
     userEntity.setId(req.getPri().getObj());
-    req.getPri().setRtn(cacheableDao.delById(HelloUserEntity.class, CacheableDao.ptu(userEntity, req.gnnCtx().gnaTenantId())));
+    req.getPri().setRtn(cacheableDao.rmvById(HelloUserEntity.class, CacheableDao.ptu(userEntity, req.gnnCtx().gnaTenantId())));
     return resp;
   }
 

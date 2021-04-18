@@ -140,7 +140,7 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 1, pKeyPath = Identified.FIELD__ID)
-  public <T extends CacheableEntities> int delById(@NonNull Class<T> cacheType, @NonNull T t) {
+  public <T extends CacheableEntities> int rmvById(@NonNull Class<T> cacheType, @NonNull T t) {
     try {
       if (String0.isNullOrEmpty(t.getId())) {
         throw new ZeroException(OM3.p(cacheType, t));
@@ -155,21 +155,21 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 1)
-  public <T extends CacheableEntities> int delById(@NonNull Class<T> cacheType, @NonNull String id) {
+  public <T extends CacheableEntities> int rmvById(@NonNull Class<T> cacheType, @NonNull String id) {
     try {
-      return delById(cacheType, cacheType.newInstance(), id);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
+      return rmvById(cacheType, cacheType.newInstance(), id);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, id), e);
     }
   }
 
   @EntityCacheEvict(pKeyIdx = 2)
-  public <T extends CacheableEntities> int delById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
+  public <T extends CacheableEntities> int rmvById(@NonNull Class<T> cacheType, @NonNull T t, @NonNull String id) {
     try {
       if (String0.isNullOrEmpty(id)) {
         throw new ZeroException(OM3.p(cacheType, t, id));
       } else {
-        return delByIds(cacheType, t, List0.newArrayList(id));///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
+        return rmvByIds(cacheType, t, List0.newArrayList(id));///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
       }
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, t, id), e);
@@ -177,16 +177,16 @@ public class CacheableDao {
   }
 
   @EntityCacheEvict(pKeyIdx = 1)
-  public <T extends CacheableEntities> int delByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
+  public <T extends CacheableEntities> int rmvByIds(@NonNull Class<T> cacheType, @NonNull List<String> ids) {
     try {
-      return delByIds(cacheType, cacheType.newInstance(), ids);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
+      return rmvByIds(cacheType, cacheType.newInstance(), ids);///https://shaneking.org/2019/11/16/aop-invalid-for-inner-calling-in-class/
     } catch (Exception e) {
       throw new ZeroException(OM3.p(cacheType, ids), e);
     }
   }
 
   @EntityCacheEvict(pKeyIdx = 2)
-  public <T extends CacheableEntities> int delByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
+  public <T extends CacheableEntities> int rmvByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
       if (ids.size() == 0) {
         return 0;

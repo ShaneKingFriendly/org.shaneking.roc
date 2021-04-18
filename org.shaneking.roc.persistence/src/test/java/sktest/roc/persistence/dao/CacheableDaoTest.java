@@ -19,7 +19,7 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @BeforeEach
   void beforeEach() {
-    cacheableDao.delByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(cacheableDao.ids(HelloCacheableEntity.class, new HelloCacheableEntity()).split(String0.COMMA)));
+    cacheableDao.rmvByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(cacheableDao.ids(HelloCacheableEntity.class, new HelloCacheableEntity()).split(String0.COMMA)));
 
     HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
     helloCacheableEntity.initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
@@ -45,22 +45,22 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @Test
   void delById() {
-    assertEquals(0, cacheableDao.delById(HelloCacheableEntity.class, String0.ARY_DEC));
-    assertEquals(0, cacheableDao.delById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_DEC));
-    assertThrows(NullPointerException.class, () -> cacheableDao.delById(HelloCacheableEntity.class, new HelloCacheableEntity(), null));
-    assertThrows(ZeroException.class, () -> cacheableDao.delById(HelloCacheableEntity.class, new HelloCacheableEntity()));
+    assertEquals(0, cacheableDao.rmvById(HelloCacheableEntity.class, String0.ARY_DEC));
+    assertEquals(0, cacheableDao.rmvById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_DEC));
+    assertThrows(NullPointerException.class, () -> cacheableDao.rmvById(HelloCacheableEntity.class, new HelloCacheableEntity(), null));
+    assertThrows(ZeroException.class, () -> cacheableDao.rmvById(HelloCacheableEntity.class, new HelloCacheableEntity()));
 
     HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
     helloCacheableEntity.setId(String0.ARY_HEX);
-    assertEquals(1, cacheableDao.delById(HelloCacheableEntity.class, helloCacheableEntity));
+    assertEquals(1, cacheableDao.rmvById(HelloCacheableEntity.class, helloCacheableEntity));
   }
 
   @Test
   void delByIds() {
-    assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, List0.newArrayList(String0.ARY_DEC)));
-    assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, List0.newArrayList()));
-    assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(String0.ARY_DEC)));
-    assertEquals(0, cacheableDao.delByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList()));
+    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, List0.newArrayList(String0.ARY_DEC)));
+    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, List0.newArrayList()));
+    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(String0.ARY_DEC)));
+    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList()));
   }
 
   @Test

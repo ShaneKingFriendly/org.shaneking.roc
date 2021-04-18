@@ -19,7 +19,7 @@ class NumberedCacheableDaoTest extends SKSpringUnit {
 
   @BeforeEach
   void beforeEach() {
-    numberedCacheableDao.getCacheableDao().delByIds(HelloNumberedEntity.class, new HelloNumberedEntity(), List0.newArrayList(numberedCacheableDao.getCacheableDao().ids(HelloNumberedEntity.class, new HelloNumberedEntity()).split(String0.COMMA)));
+    numberedCacheableDao.getCacheableDao().rmvByIds(HelloNumberedEntity.class, new HelloNumberedEntity(), List0.newArrayList(numberedCacheableDao.getCacheableDao().ids(HelloNumberedEntity.class, new HelloNumberedEntity()).split(String0.COMMA)));
 
     HelloNumberedEntity helloGlobalNumberedEntity = new HelloNumberedEntity();
     helloGlobalNumberedEntity.setNo(String0.ARY_HEX).initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
