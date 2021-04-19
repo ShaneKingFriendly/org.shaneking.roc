@@ -7,6 +7,7 @@ import org.shaneking.ling.cache.StringCaches;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
+import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.persistence.entity.TenantNumberedEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +60,7 @@ public class TenantNumberedCacheableDao {
     try {
       T one = cacheType.newInstance();
       one.setNo(no);
-      rtn = cacheableDao.one(cacheType, CacheableDao.pts(one, tenantId), rtnNullIfNotEqualsOne);
+      rtn = cacheableDao.one(cacheType, CacheableDao.pts(one, List0.newArrayList(tenantId)), rtnNullIfNotEqualsOne);
       if (rtn != null) {
         cache.set(key, cacheSeconds, rtn.getId());
       }

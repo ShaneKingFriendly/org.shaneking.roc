@@ -33,20 +33,20 @@ public class CacheableDao {
   private JdbcTemplate jdbcTemplate;
 
   //protectChannelInsert
-  public static <T extends CacheableEntities> T pci(@NonNull T t, String channelIds) {
+  public static <T extends CacheableEntities> T pci(@NonNull T t, List<String> channelIds) {
     if (t instanceof Channelized) {
-      if (!String0.isNullOrEmpty(channelIds)) {
-        ((Channelized) t).setChannelId(channelIds);
+      if (channelIds != null && channelIds.size() == 1) {
+        ((Channelized) t).setChannelId(channelIds.get(0));
       }
     }
     return t;
   }
 
   //protectChannelUpdate
-  public static <T extends CacheableEntities> T pcu(@NonNull T t, String channelIds) {
+  public static <T extends CacheableEntities> T pcu(@NonNull T t, List<String> channelIds) {
     if (t instanceof Channelized) {
       pci(t, channelIds);
-      if (!String0.isNullOrEmpty(channelIds)) {
+      if (channelIds != null && channelIds.size() > 0) {
         t.forceWhereCondition(Channelized.FIELD__CHANNEL_ID).resetVal(channelIds);
       }
     }
@@ -54,15 +54,14 @@ public class CacheableDao {
   }
 
   //protectChannelSelect
-  public static <T extends CacheableEntities> T pcs(@NonNull T t, String channelIds) {
+  public static <T extends CacheableEntities> T pcs(@NonNull T t, List<String> channelIds) {
     if (t instanceof Channelized) {
-      if (!String0.isNullOrEmpty(channelIds)) {
-        List<String> ChannelIdList = List0.newArrayList(channelIds.split(String0.COMMA));
+      if (channelIds != null && channelIds.size() > 0) {
         Condition condition = t.forceWhereCondition(Channelized.FIELD__CHANNEL_ID);
-        if (ChannelIdList.size() == 1) {
-          condition.resetVal(ChannelIdList.get(0));
+        if (channelIds.size() == 1) {
+          condition.resetVal(channelIds.get(0));
         } else {
-          condition.retainVal(ChannelIdList);
+          condition.retainVal(channelIds);
         }
       }
     }
@@ -70,20 +69,20 @@ public class CacheableDao {
   }
 
   //protectTenantInsert
-  public static <T extends CacheableEntities> T pti(@NonNull T t, String tenantIds) {
+  public static <T extends CacheableEntities> T pti(@NonNull T t, List<String> tenantIds) {
     if (t instanceof Tenanted) {
-      if (!String0.isNullOrEmpty(tenantIds)) {
-        ((Tenanted) t).setTenantId(tenantIds);
+      if (tenantIds != null && tenantIds.size() == 1) {
+        ((Tenanted) t).setTenantId(tenantIds.get(0));
       }
     }
     return t;
   }
 
   //protectTenantUpdate
-  public static <T extends CacheableEntities> T ptu(@NonNull T t, String tenantIds) {
+  public static <T extends CacheableEntities> T ptu(@NonNull T t, List<String> tenantIds) {
     if (t instanceof Tenanted) {
       pti(t, tenantIds);
-      if (!String0.isNullOrEmpty(tenantIds)) {
+      if (tenantIds != null && tenantIds.size() > 0) {
         t.forceWhereCondition(Tenanted.FIELD__TENANT_ID).resetVal(tenantIds);
       }
     }
@@ -91,15 +90,14 @@ public class CacheableDao {
   }
 
   //protectTenantSelect
-  public static <T extends CacheableEntities> T pts(@NonNull T t, String tenantIds) {
+  public static <T extends CacheableEntities> T pts(@NonNull T t, List<String> tenantIds) {
     if (t instanceof Tenanted) {
-      if (!String0.isNullOrEmpty(tenantIds)) {
-        List<String> tenantIdList = List0.newArrayList(tenantIds.split(String0.COMMA));
+      if (tenantIds != null && tenantIds.size() > 0) {
         Condition condition = t.forceWhereCondition(Tenanted.FIELD__TENANT_ID);
-        if (tenantIdList.size() == 1) {
-          condition.resetVal(tenantIdList.get(0));
+        if (tenantIds.size() == 1) {
+          condition.resetVal(tenantIds.get(0));
         } else {
-          condition.retainVal(tenantIdList);
+          condition.retainVal(tenantIds);
         }
       }
     }

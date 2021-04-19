@@ -13,6 +13,7 @@ import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
@@ -93,7 +94,7 @@ public class RrCryptoAspect {
 
               UserEntities userEntityOne = userEntityClass.entityClass().newInstance();
               userEntityOne.setNo(req.getPri().gnnExt().getUserNo());
-              UserEntities userEntity = cacheableDao.one(userEntityClass.entityClass(), CacheableDao.pts(userEntityOne, tenantEntity.getId()), true);
+              UserEntities userEntity = cacheableDao.one(userEntityClass.entityClass(), CacheableDao.pts(userEntityOne, List0.newArrayList(tenantEntity.getId())), true);
               if (userEntity == null) {
                 rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
               } else {
