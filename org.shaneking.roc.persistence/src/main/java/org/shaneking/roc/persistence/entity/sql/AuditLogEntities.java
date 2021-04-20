@@ -4,6 +4,10 @@ import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
 
 public interface AuditLogEntities extends TenantChannelizedEntities {
 
+  String getProxyChannelId();
+
+  <T extends AuditLogEntities> T setProxyChannelId(String proxyChannelId);
+
   String getTracingNo();
 
   <T extends AuditLogEntities> T setTracingNo(String tracingNo);

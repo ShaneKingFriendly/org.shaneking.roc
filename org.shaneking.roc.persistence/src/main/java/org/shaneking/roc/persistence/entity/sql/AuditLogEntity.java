@@ -17,6 +17,12 @@ public abstract class AuditLogEntity extends TenantChannelizedEntity implements 
   @ExcelColumn
   @Getter
   @Setter
+  private String proxyChannelId;
+
+  @Column(length = 40, columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
+  @Getter
+  @Setter
   private String tracingNo;
 
   @Column(length = 20, columnDefinition = "default '' COMMENT ''")

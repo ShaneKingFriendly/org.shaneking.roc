@@ -105,6 +105,16 @@ public class RrAuditAspect {
                 req.gnnCtx().getAuditLog().setChannelId(channelEntity.getId());
               }
 
+              if (!String0.isNullOrEmpty(req.getPub().getProxyChannelNo())) {
+                ChannelEntities proxyChannelEntity = numberedCacheableDao.oneByNo(channelEntityClass.entityClass(), req.getPub().getProxyChannelNo(), true);
+                if (proxyChannelEntity != null) {
+                  req.gnnCtx().setProxyChannel(proxyChannelEntity);
+                  if (req.gnnCtx().getAuditLog() != null) {
+                    req.gnnCtx().getAuditLog().setProxyChannelId(proxyChannelEntity.getId());
+                  }
+                }
+              }
+
               TenantEntities tenantEntity = numberedCacheableDao.oneByNo(tenantEntityClass.entityClass(), String0.nullOrEmptyTo(req.getPub().getTenantNo(), req.getPub().getChannelNo()), true);
               if (tenantEntity == null) {
                 rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, String.valueOf(req.getPub().getTenantNo()), req);
