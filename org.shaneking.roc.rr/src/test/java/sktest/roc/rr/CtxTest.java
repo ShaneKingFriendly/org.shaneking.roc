@@ -13,7 +13,7 @@ class CtxTest {
   @Test
   void testToString() {
     assertAll(
-      () -> assertEquals("Ctx(auditLog=null, channel=null, proxyChannel=null, jon=null, language=null, tenant=null, user=null)", new Ctx().toString()),
+      () -> assertEquals("Ctx(auditLog=null, channel=null, proxyChannel=null, jon=null, language=null, tenant=null, user=null, rtuMap=null)", new Ctx().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new Ctx())),
       () -> assertEquals("{\"jon\":{},\"language\":\"language\",\"user\":{}}", OM3.writeValueAsString(new Ctx().setJon(OM3.createObjectNode()).setLanguage("language").setUser(new HelloUserEntity())))
     );

@@ -10,6 +10,8 @@ import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.shaneking.roc.persistence.entity.sql.TenantEntities;
 import org.shaneking.roc.persistence.entity.sql.UserEntities;
 
+import java.util.Map;
+
 @Accessors(chain = true)
 @ToString
 public class Ctx {
@@ -34,6 +36,9 @@ public class Ctx {
   @Getter
   @Setter
   private UserEntities user;
+  @Getter
+  @Setter
+  private Map<String, UserEntities> rtuMap;//readable tenant user map
 
   public String gnaChannelId() {
     return getChannel() == null ? null : getChannel().getId();
