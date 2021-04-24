@@ -11,9 +11,7 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.TenantedChannelizedEntities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccess2Entities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccess3Entities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessEntities;
+import org.shaneking.roc.persistence.entity.sql.*;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,10 @@ public class RrAccessAspect {
   private ApiAccess2Entities apiAccess2EntityClass;
   @Autowired(required = false)
   private ApiAccess3Entities apiAccess3EntityClass;
+  @Autowired(required = false)
+  private ApiAccess4Entities apiAccess4EntityClass;
+  @Autowired(required = false)
+  private ApiAccess5Entities apiAccess5EntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
   private void pointcut() {
@@ -51,7 +53,7 @@ public class RrAccessAspect {
   public Object around(ProceedingJoinPoint pjp, RrAccess rrAccess) throws Throwable {
     Object rtn = null;
     boolean ifExceptionThenInProceed = false;
-    if (enabled && (apiAccessEntityClass != null || apiAccess2EntityClass != null || apiAccess3EntityClass != null)) {
+    if (enabled && (apiAccessEntityClass != null || apiAccess2EntityClass != null || apiAccess3EntityClass != null || apiAccess4EntityClass != null || apiAccess5EntityClass != null)) {
       if (pjp.getArgs().length > rrAccess.reqParamIdx() && pjp.getArgs()[rrAccess.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
         if (String0.isNullOrEmpty(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId())) || String0.isNullOrEmpty(req.gnnCtx().gnaTenantId())) {
@@ -61,11 +63,15 @@ public class RrAccessAspect {
             int paas1 = 0;
             int paas2 = 0;
             int paas3 = 0;
+            int paas4 = 0;
+            int paas5 = 0;
             ApiAccessEntities apiAccessEntity = null;
             long apiAccess2EntityAllow = 0;
             long apiAccess2EntityDeny = 0;
             long apiAccess3EntityAllow = 0;
             long apiAccess3EntityDeny = 0;
+            ApiAccess4Entities apiAccess4Entity = null;
+            ApiAccess5Entities apiAccess5Entity = null;
             if (apiAccessEntityClass != null) {
               ApiAccessEntities apiAccessEntitySelect = apiAccessEntityClass.entityClass().newInstance();
               apiAccessEntitySelect.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
@@ -103,11 +109,27 @@ public class RrAccessAspect {
               apiAccess3EntityDeny = cacheableDao.cnt(apiAccess3EntityClass.entityClass(), apiAccess3EntitySelectDeny);
               paas3 = paas3 + (apiAccess3EntityDeny == 0 ? 0 : -10);
             }
-            if (paas1 + paas2 + paas3 > 0) {
+            if (apiAccess4EntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {
+              ApiAccess4Entities apiAccess4EntitySelect = apiAccess4EntityClass.entityClass().newInstance();
+              apiAccess4EntitySelect.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
+              apiAccess4EntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
+              apiAccess4EntitySelect.setUrl(req.getCtx().getAuditLog().getReqUrl());
+              apiAccess4Entity = cacheableDao.one(apiAccess4EntityClass.entityClass(), apiAccess4EntitySelect, true);
+              paas4 = paas4 + (apiAccess4Entity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(apiAccess4Entity.getOp()) ? 1 : (ApiAccessOpEntities.OP__DENY.equals(apiAccess4Entity.getOp()) ? -10 : 0)));
+            }
+            if (apiAccess5EntityClass != null) {
+              ApiAccess5Entities apiAccess5EntitySelect = apiAccess5EntityClass.entityClass().newInstance();
+              apiAccess5EntitySelect.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
+              apiAccess5EntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
+              apiAccess5EntitySelect.setSignature(pjp.getSignature().toLongString());
+              apiAccess5Entity = cacheableDao.one(apiAccess5EntityClass.entityClass(), apiAccess5EntitySelect, true);
+              paas3 = paas3 + (apiAccess5Entity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(apiAccess5Entity.getOp()) ? 1 : (ApiAccessOpEntities.OP__DENY.equals(apiAccess5Entity.getOp()) ? -10 : 0)));
+            }
+            if (paas1 + paas2 + paas3 + paas4 + paas5 > 0) {
               ifExceptionThenInProceed = true;
               rtn = pjp.proceed();
             } else {
-              rtn = Resp.failed(ApiAccessEntities.ERR_CODE__PERMISSION_DENIED, OM3.p(apiAccessEntity, apiAccess2EntityAllow, apiAccess2EntityDeny, apiAccess3EntityAllow, apiAccess3EntityDeny), req);
+              rtn = Resp.failed(ApiAccessEntities.ERR_CODE__PERMISSION_DENIED, OM3.p(apiAccessEntity, apiAccess2EntityAllow, apiAccess2EntityDeny, apiAccess3EntityAllow, apiAccess3EntityDeny, apiAccess4Entity, apiAccess5Entity), req);
             }
           } catch (Throwable throwable) {
             log.error(OM3.writeValueAsString(req), throwable);
