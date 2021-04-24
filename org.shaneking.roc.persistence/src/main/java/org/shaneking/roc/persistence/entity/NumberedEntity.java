@@ -12,7 +12,7 @@ import javax.persistence.Column;
 @Accessors(chain = true)
 @ToString(callSuper = true)
 public abstract class NumberedEntity extends CacheableEntity implements NumberedEntities {
-  @Column(unique = true, length = 40, columnDefinition = "default '' COMMENT ''")
+  @Column(length = 40, columnDefinition = "default '' COMMENT 'serial number'")
   @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter

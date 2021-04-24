@@ -13,7 +13,7 @@ import javax.persistence.Column;
 @ToString(callSuper = true)
 public abstract class ChannelizedEntity extends CacheableEntity implements ChannelizedEntities {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
+  @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
   private String channelId;

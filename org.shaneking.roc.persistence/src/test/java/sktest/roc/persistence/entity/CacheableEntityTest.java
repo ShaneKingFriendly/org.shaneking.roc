@@ -15,7 +15,7 @@ class CacheableEntityTest extends SKUnit {
 
   @Test
   void createTableIfNotExistSql() throws IOException {
-//    Files.write(tstOFiles().toPath(), new HelloCacheableEntity().createTableIfNotExistSql().getBytes());
+    Files.write(tstOFiles().toPath(), new HelloCacheableEntity().createTableIfNotExistSql().getBytes());
     assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloCacheableEntity().createTableIfNotExistSql().trim());
   }
 

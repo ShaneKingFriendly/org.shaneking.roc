@@ -8,7 +8,7 @@ import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.util.List0;
-import org.shaneking.roc.persistence.entity.TenantNumberedEntities;
+import org.shaneking.roc.persistence.entity.TenantedNumberedEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +19,7 @@ import java.text.MessageFormat;
 @ConditionalOnProperty(prefix = "sk.roc.persistence.dao.cache", value = "enabled")
 @Repository
 @Slf4j
-public class TenantNumberedCacheableDao {
+public class TenantedNumberedCacheableDao {
   @Autowired
   @Getter
   private CacheableDao cacheableDao;
@@ -28,11 +28,11 @@ public class TenantNumberedCacheableDao {
   @Value("${sk.roc.persistence.dao.cache.seconds:180}")
   private int cacheSeconds;
 
-  public <T extends TenantNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId) {
+  public <T extends TenantedNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId) {
     return oneByNo(cacheType, no, tenantId, true);
   }
 
-  public <T extends TenantNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne) {
+  public <T extends TenantedNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne) {
     T rtn = null;
     String key = String.join(String0.MORE, cacheType.getName(), tenantId, no);
     String id = cache.get(key);
@@ -51,11 +51,11 @@ public class TenantNumberedCacheableDao {
     return rtn;
   }
 
-  private <T extends TenantNumberedEntities> boolean eq(@NonNull String no, @NonNull String tenantId, T t) {
+  private <T extends TenantedNumberedEntities> boolean eq(@NonNull String no, @NonNull String tenantId, T t) {
     return t != null && no.equals(t.getNo()) && tenantId.equals(t.getTenantId());
   }
 
-  private <T extends TenantNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne, String key) {
+  private <T extends TenantedNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne, String key) {
     T rtn = null;
     try {
       T one = cacheType.newInstance();

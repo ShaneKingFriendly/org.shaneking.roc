@@ -10,7 +10,7 @@ import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
-import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
+import org.shaneking.roc.persistence.entity.TenantedChannelizedEntities;
 import org.shaneking.roc.persistence.entity.sql.ApiAccess2Entities;
 import org.shaneking.roc.persistence.entity.sql.ApiAccess3Entities;
 import org.shaneking.roc.persistence.entity.sql.ApiAccessEntities;
@@ -55,7 +55,7 @@ public class RrAccessAspect {
       if (pjp.getArgs().length > rrAccess.reqParamIdx() && pjp.getArgs()[rrAccess.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
         if (String0.isNullOrEmpty(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId())) || String0.isNullOrEmpty(req.gnnCtx().gnaTenantId())) {
-          rtn = Resp.failed(TenantChannelizedEntities.ERR_CODE__REQUIRED_CHANNEL_ID_AND_TENANT_ID, OM3.writeValueAsString(req.getPub()), req);
+          rtn = Resp.failed(TenantedChannelizedEntities.ERR_CODE__REQUIRED_CHANNEL_ID_AND_TENANT_ID, OM3.writeValueAsString(req.getPub()), req);
         } else {
           try {
             int paas1 = 0;

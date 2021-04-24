@@ -1,8 +1,18 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
+import org.shaneking.roc.persistence.entity.TenantedChannelizedEntities;
 
-public interface ApiAccess3Entities extends TenantChannelizedEntities {
+import javax.persistence.Transient;
+
+public interface ApiAccess3Entities extends TenantedChannelizedEntities {
+  @Transient
+  String COLUMN__ALLOW_SIGNATURE = "allow_signature";
+  @Transient
+  String FIELD__ALLOW_SIGNATURE = "allowSignature";
+  @Transient
+  String COLUMN__DENY_SIGNATURE = "deny_signature";
+  @Transient
+  String FIELD__DENY_SIGNATURE = "denySignature";
 
   String getAllowSignature();
 

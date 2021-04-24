@@ -16,7 +16,7 @@ class HelloChannelEntityTest extends SKUnit {
 
   @Test
   void createTableIfNotExistSql() throws IOException {
-//    Files.write(tstOFiles().toPath(), new HelloChannelEntity().createTableIfNotExistSql().getBytes());
+    Files.write(tstOFiles().toPath(), new HelloChannelEntity().createTableIfNotExistSql().getBytes());
     Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloChannelEntity().createTableIfNotExistSql().trim());
   }
 

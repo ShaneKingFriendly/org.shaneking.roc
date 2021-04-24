@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.entity.TenantChannelizedEntity;
+import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class AuditLogEntity extends TenantChannelizedEntity implements AuditLogEntities {
+public abstract class AuditLogEntity extends TenantedChannelizedEntity implements AuditLogEntities {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

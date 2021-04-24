@@ -1,8 +1,8 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.TenantNumberedEntities;
+import org.shaneking.roc.persistence.entity.TenantedNumberedEntities;
 
-public interface UserEntities extends TenantNumberedEntities {
+public interface UserEntities extends TenantedNumberedEntities {
 
   String getName();
 

@@ -4,8 +4,8 @@ create table if not exists `t_hello_audit_log_entity` (
   `invalid` varchar(1) default 'N',
   `last_modify_date_time` varchar(20) default '',
   `last_modify_user_id` varchar(40) default '',
-  `tenant_id` varchar(40) default '',
   `channel_id` varchar(40) default '',
+  `tenant_id` varchar(40) default '',
   `proxy_channel_id` varchar(40) default '',
   `tracing_no` varchar(40) default '',
   `req_datetime` varchar(20) default '',
@@ -23,3 +23,4 @@ create table if not exists `t_hello_audit_log_entity` (
   `resp_datetime` varchar(20) default '',
   primary key (`id`)
 );
+

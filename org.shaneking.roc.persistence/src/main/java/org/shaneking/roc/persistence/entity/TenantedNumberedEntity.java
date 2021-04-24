@@ -10,10 +10,10 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class TenantChannelizedEntity extends TenantedEntity implements TenantChannelizedEntities {
+public abstract class TenantedNumberedEntity extends NumberedEntity implements TenantedNumberedEntities {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
+  @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
-  private String channelId;
+  private String tenantId;
 }

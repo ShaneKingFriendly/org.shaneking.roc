@@ -16,7 +16,7 @@ class HelloNumberedEntityTest extends SKUnit {
 
   @Test
   void createTableIfNotExistSql() throws IOException {
-//    Files.write(tstOFiles().toPath(), new HelloNumberedEntity().createTableIfNotExistSql().getBytes());
+    Files.write(tstOFiles().toPath(), new HelloNumberedEntity().createTableIfNotExistSql().getBytes());
     assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloNumberedEntity().createTableIfNotExistSql().trim());
   }
 

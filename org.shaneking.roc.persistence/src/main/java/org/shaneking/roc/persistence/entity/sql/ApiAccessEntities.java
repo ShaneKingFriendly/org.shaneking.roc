@@ -1,12 +1,12 @@
 package org.shaneking.roc.persistence.entity.sql;
 
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.entity.TenantChannelizedEntities;
+import org.shaneking.roc.persistence.entity.TenantedChannelizedEntities;
 
 import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
-public interface ApiAccessEntities extends TenantChannelizedEntities {
+public interface ApiAccessEntities extends TenantedChannelizedEntities {
   @Transient
   String ERR_CODE__PERMISSION_DENIED = "API_ACCESS__PERMISSION_DENIED";
 

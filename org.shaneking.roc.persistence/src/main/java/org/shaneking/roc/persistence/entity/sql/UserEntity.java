@@ -7,13 +7,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.entity.TenantNumberedEntity;
+import org.shaneking.roc.persistence.entity.TenantedNumberedEntity;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class UserEntity extends TenantNumberedEntity implements UserEntities {
+public abstract class UserEntity extends TenantedNumberedEntity implements UserEntities {
   @Column(length = 30, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

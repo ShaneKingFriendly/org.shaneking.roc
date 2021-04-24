@@ -16,7 +16,7 @@ class HelloApiAccess2EntityTest extends SKUnit {
 
   @Test
   void createTableIfNotExistSql() throws IOException {
-//    Files.write(tstOFiles().toPath(), new HelloApiAccessEntity().createTableIfNotExistSql().getBytes());
+    Files.write(tstOFiles().toPath(), new HelloApiAccess2Entity().createTableIfNotExistSql().getBytes());
     Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloApiAccess2Entity().createTableIfNotExistSql().trim());
   }
 
@@ -28,7 +28,7 @@ class HelloApiAccess2EntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloApiAccess2Entity(super=ApiAccess2Entity(super=TenantChannelizedEntity(super=TenantedEntity(super=CacheableEntity(super=AbstractIdAdtVerSqlEntity(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), tenantId=null), channelId=null), allowUrl=null, denyUrl=null))", new HelloApiAccess2Entity().toString()),
+      () -> Assertions.assertEquals("HelloApiAccess2Entity(super=ApiAccess2Entity(super=TenantedChannelizedEntity(super=ChannelizedEntity(super=CacheableEntity(super=AbstractIdAdtVerSqlEntity(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), channelId=null), tenantId=null), allowUrl=null, denyUrl=null))", new HelloApiAccess2Entity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloApiAccess2Entity().nullSetter()))
     );
   }
