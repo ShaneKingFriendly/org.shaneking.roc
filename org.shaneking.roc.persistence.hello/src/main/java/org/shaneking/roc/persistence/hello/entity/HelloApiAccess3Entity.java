@@ -17,8 +17,7 @@ import javax.persistence.UniqueConstraint;
 @Accessors(chain = true)
 @Component
 @ExcelModel(includeAllField = false, useFieldNameAsTitle = true)
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID, ApiAccess3Entities.COLUMN__ALLOW_SIGNATURE})
-  , @UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID, ApiAccess3Entities.COLUMN__DENY_SIGNATURE})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID, ApiAccess3Entities.COLUMN__ALLOW_SIGNATURE, ApiAccess3Entities.COLUMN__DENY_SIGNATURE})})
 @ToString(callSuper = true)
 public class HelloApiAccess3Entity extends ApiAccess3Entity implements SqlliteSqlEntities, NullSetter {
   @Override

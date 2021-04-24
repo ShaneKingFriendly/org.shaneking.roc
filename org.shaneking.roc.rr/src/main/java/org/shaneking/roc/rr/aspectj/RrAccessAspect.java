@@ -62,10 +62,10 @@ public class RrAccessAspect {
             int paas2 = 0;
             int paas3 = 0;
             ApiAccessEntities apiAccessEntity = null;
-            ApiAccess2Entities apiAccess2EntityAllow = null;
-            ApiAccess2Entities apiAccess2EntityDeny = null;
-            ApiAccess3Entities apiAccess3EntityAllow = null;
-            ApiAccess3Entities apiAccess3EntityDeny = null;
+            long apiAccess2EntityAllow = 0;
+            long apiAccess2EntityDeny = 0;
+            long apiAccess3EntityAllow = 0;
+            long apiAccess3EntityDeny = 0;
             if (apiAccessEntityClass != null) {
               ApiAccessEntities apiAccessEntitySelect = apiAccessEntityClass.entityClass().newInstance();
               apiAccessEntitySelect.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
@@ -78,30 +78,30 @@ public class RrAccessAspect {
               apiAccess2EntitySelectAllow.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
               apiAccess2EntitySelectAllow.setTenantId(req.gnnCtx().gnaTenantId());
               apiAccess2EntitySelectAllow.setAllowUrl(req.getCtx().getAuditLog().getReqUrl());
-              apiAccess2EntityAllow = cacheableDao.one(apiAccess2EntityClass.entityClass(), apiAccess2EntitySelectAllow, true);
-              paas2 = paas2 + (apiAccess2EntityAllow == null ? 0 : 1);
+              apiAccess2EntityAllow = cacheableDao.cnt(apiAccess2EntityClass.entityClass(), apiAccess2EntitySelectAllow);
+              paas2 = paas2 + (apiAccess2EntityAllow == 0 ? 0 : 1);
 
               ApiAccess2Entities apiAccess2EntitySelectDeny = apiAccess2EntityClass.entityClass().newInstance();
               apiAccess2EntitySelectDeny.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
               apiAccess2EntitySelectDeny.setTenantId(req.gnnCtx().gnaTenantId());
               apiAccess2EntitySelectDeny.setDenyUrl(req.getCtx().getAuditLog().getReqUrl());
-              apiAccess2EntityDeny = cacheableDao.one(apiAccess2EntityClass.entityClass(), apiAccess2EntitySelectDeny, true);
-              paas2 = paas2 + (apiAccess2EntityDeny == null ? 0 : -10);
+              apiAccess2EntityDeny = cacheableDao.cnt(apiAccess2EntityClass.entityClass(), apiAccess2EntitySelectDeny);
+              paas2 = paas2 + (apiAccess2EntityDeny == 0 ? 0 : -10);
             }
             if (apiAccess3EntityClass != null) {
               ApiAccess3Entities apiAccess3EntitySelectAllow = apiAccess3EntityClass.entityClass().newInstance();
               apiAccess3EntitySelectAllow.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
               apiAccess3EntitySelectAllow.setTenantId(req.gnnCtx().gnaTenantId());
               apiAccess3EntitySelectAllow.setAllowSignature(pjp.getSignature().toLongString());
-              apiAccess3EntityAllow = cacheableDao.one(apiAccess3EntityClass.entityClass(), apiAccess3EntitySelectAllow, true);
-              paas3 = paas3 + (apiAccess3EntityAllow == null ? 0 : 1);
+              apiAccess3EntityAllow = cacheableDao.cnt(apiAccess3EntityClass.entityClass(), apiAccess3EntitySelectAllow);
+              paas3 = paas3 + (apiAccess3EntityAllow == 0 ? 0 : 1);
 
               ApiAccess3Entities apiAccess3EntitySelectDeny = apiAccess3EntityClass.entityClass().newInstance();
               apiAccess3EntitySelectDeny.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
               apiAccess3EntitySelectDeny.setTenantId(req.gnnCtx().gnaTenantId());
               apiAccess3EntitySelectDeny.setDenySignature(pjp.getSignature().toLongString());
-              apiAccess3EntityDeny = cacheableDao.one(apiAccess3EntityClass.entityClass(), apiAccess3EntitySelectDeny, true);
-              paas3 = paas3 + (apiAccess3EntityDeny == null ? 0 : -10);
+              apiAccess3EntityDeny = cacheableDao.cnt(apiAccess3EntityClass.entityClass(), apiAccess3EntitySelectDeny);
+              paas3 = paas3 + (apiAccess3EntityDeny == 0 ? 0 : -10);
             }
             if (paas1 + paas2 + paas3 > 0) {
               ifExceptionThenInProceed = true;

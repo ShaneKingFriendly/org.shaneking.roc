@@ -21,8 +21,7 @@ create table if not exists `t_hello_api_access_2_entity` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_channel_id_tenant_id_deny_url on t_hello_api_access_2_entity(`channel_id`,`tenant_id`,`deny_url`);
-create unique index if not exists u_idx_channel_id_tenant_id_allow_url on t_hello_api_access_2_entity(`channel_id`,`tenant_id`,`allow_url`);
+create unique index if not exists u_idx_channel_id_tenant_id_allow_url_deny_url on t_hello_api_access_2_entity(`channel_id`,`tenant_id`,`allow_url`,`deny_url`);
 
 -- HelloApiAccess3EntityTest_createTableIfNotExistSql_null_o.txt
 create table if not exists `t_hello_api_access_3_entity` (
@@ -38,8 +37,7 @@ create table if not exists `t_hello_api_access_3_entity` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_channel_id_tenant_id_allow_signature on t_hello_api_access_3_entity(`channel_id`,`tenant_id`,`allow_signature`);
-create unique index if not exists u_idx_channel_id_tenant_id_deny_signature on t_hello_api_access_3_entity(`channel_id`,`tenant_id`,`deny_signature`);
+create unique index if not exists u_idx_channel_id_tenant_id_allow_signature_deny_signature on t_hello_api_access_3_entity(`channel_id`,`tenant_id`,`allow_signature`,`deny_signature`);
 
 -- HelloApiAccessEntityTest_createTableIfNotExistSql_null_o.txt
 create table if not exists `t_hello_api_access_entity` (

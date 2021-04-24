@@ -11,5 +11,4 @@ create table if not exists `t_hello_api_access_2_entity` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_channel_id_tenant_id_deny_url on t_hello_api_access_2_entity(`channel_id`,`tenant_id`,`deny_url`);
-create unique index if not exists u_idx_channel_id_tenant_id_allow_url on t_hello_api_access_2_entity(`channel_id`,`tenant_id`,`allow_url`);
+create unique index if not exists u_idx_channel_id_tenant_id_allow_url_deny_url on t_hello_api_access_2_entity(`channel_id`,`tenant_id`,`allow_url`,`deny_url`);
