@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 
+//@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Numbered.COLUMN__NO})})
 @Accessors(chain = true)
 @ToString(callSuper = true)
 public abstract class TenantNumberedEntity extends NumberedEntity implements TenantNumberedEntities {
