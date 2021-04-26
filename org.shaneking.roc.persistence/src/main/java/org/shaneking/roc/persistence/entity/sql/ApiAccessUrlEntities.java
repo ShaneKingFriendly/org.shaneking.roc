@@ -12,6 +12,6 @@ public interface ApiAccessUrlEntities extends ApiAccessOpEntities {
 
   <T extends ApiAccessUrlEntities> T setUrl(String url);
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccess4Entity
+  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessUrlEntity
   <T extends ApiAccessUrlEntities> Class<T> entityClass();
 }

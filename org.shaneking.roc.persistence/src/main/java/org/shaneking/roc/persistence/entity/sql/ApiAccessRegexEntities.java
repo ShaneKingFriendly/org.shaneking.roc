@@ -60,6 +60,6 @@ public interface ApiAccessRegexEntities extends CacheableEntities, Tenanted, Cha
     return (urlAllow || signatureAllow) && !(urlDeny || signatureDeny);
   }
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessEntity
+  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessRegexEntity
   <T extends ApiAccessRegexEntities> Class<T> entityClass();
 }

@@ -12,6 +12,6 @@ public interface ApiAccessSignatureEntities extends ApiAccessOpEntities {
 
   <T extends ApiAccessSignatureEntities> T setSignature(String signature);
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccess5Entity
+  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessSignatureEntity
   <T extends ApiAccessSignatureEntities> Class<T> entityClass();
 }
