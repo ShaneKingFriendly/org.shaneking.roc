@@ -8,21 +8,9 @@ import org.springframework.context.annotation.Bean;
 public class RrCfg {
 
   @Bean
-  @ConditionalOnMissingBean(ApiAccessEntities.class)
-  public HelloApiAccessEntity helloApiAccessEntity() {
-    return new HelloApiAccessEntity();
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(ApiAccess2Entities.class)
-  public HelloApiAccess2Entity helloApiAccess2Entity() {
-    return new HelloApiAccess2Entity();
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(ApiAccess3Entities.class)
-  public HelloApiAccess3Entity helloApiAccess3Entity() {
-    return new HelloApiAccess3Entity();
+  @ConditionalOnMissingBean(ApiAccessRegexEntities.class)
+  public HelloApiAccessRegexEntity helloApiAccessRegexEntity() {
+    return new HelloApiAccessRegexEntity();
   }
 
   @Bean
