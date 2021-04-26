@@ -19,12 +19,12 @@ public abstract class TenantedChannelizedEntity extends CacheableEntity implemen
   public static final String ERR_CODE__REQUIRED_CHANNEL_ID_AND_TENANT_ID = "TENANTED_CHANNELIZED_ENTITY__REQUIRED_CHANNEL_ID_AND_TENANT_ID";
 
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn(style = {"title->background-color:red"})
+  @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
   private String channelId;
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn(style = {"title->background-color:red"})
+  @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
   private String tenantId;
