@@ -28,7 +28,7 @@ class HelloAuditLogEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloAuditLogEntity(super=AuditLogEntity(super=TenantedChannelizedEntity(super=ChannelizedEntity(super=CacheableEntity(super=AbstractIdAdtVerSqlEntity(id=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), channelId=null), tenantId=null), proxyChannelId=null, tracingNo=null, reqDatetime=null, reqIps=null, reqUserId=null, reqJsonStrRaw=null, reqJsonStr=null, reqUrl=null, reqSignature=null, cached=null, respJsonStr=null, respJsonStrCtx=null, respJsonStrRaw=null, respIps=null, respDatetime=null))", new HelloAuditLogEntity().toString()),
+      () -> Assertions.assertEquals("HelloAuditLogEntity(super=AuditLogEntity(super=TenantedChannelizedEntity(super=CacheableEntity(super=AbstractIdNoAdtVerSqlEntity(id=null, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), channelId=null, tenantId=null), proxyChannelId=null, tracingNo=null, reqDatetime=null, reqIps=null, reqUserId=null, reqJsonStrRaw=null, reqJsonStr=null, reqUrl=null, reqSignature=null, cached=null, respJsonStr=null, respJsonStrCtx=null, respJsonStrRaw=null, respIps=null, respDatetime=null))", new HelloAuditLogEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloAuditLogEntity().nullSetter()))
     );
   }
