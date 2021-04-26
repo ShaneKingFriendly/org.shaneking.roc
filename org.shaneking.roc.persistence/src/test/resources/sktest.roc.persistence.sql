@@ -3,10 +3,11 @@ drop table if exists t_hello_numbered_entity;
 drop table if exists t_hello_tenanted_numbered_entity;
 
 
--- CacheableEntityTest_createTableIfNotExistSql_null_o.txt
+-- HelloCacheableEntityTest_createTableIfNotExistSql_null_o.txt
 create table if not exists `t_hello_cacheable_entity` (
   `version` int not null default 0,
   `id` char(40) not null,
+  `no` varchar(40) default '',
   `invalid` varchar(1) default 'N',
   `last_modify_date_time` varchar(20) default '',
   `last_modify_user_id` varchar(40) default '',

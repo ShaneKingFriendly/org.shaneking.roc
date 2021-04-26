@@ -5,46 +5,34 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.CacheableEntity;
+import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ChannelEntity extends CacheableEntity implements ChannelEntities {
+public abstract class ApiAccessRegexEntity extends TenantedChannelizedEntity implements ApiAccessRegexEntities {
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
-  private String name;
+  private String allowUrlRegex;
 
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
-  private String description;
+  private String allowSignatureRegex;
 
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
-  private String tokenValue;
+  private String denyUrlRegex;
 
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
-  private String tokenForce;
-
-  @Column(columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
-  @Getter
-  @Setter
-  private String tokenAlgorithmType;
-
-  @Column(columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
-  @Getter
-  @Setter
-  private String tokenValueType;
+  private String denySignatureRegex;
 }

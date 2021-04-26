@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.Condition;
-import org.shaneking.ling.persistence.entity.sql.AbstractIdAdtVerSqlEntity;
+import org.shaneking.ling.persistence.entity.sql.AbstractIdNoAdtVerSqlEntity;
 import org.shaneking.roc.persistence.entity.sql.UserEntities;
 
 import javax.persistence.Transient;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class CacheableEntity extends AbstractIdAdtVerSqlEntity<Map<String, Condition>> implements CacheableEntities {
+public abstract class CacheableEntity extends AbstractIdNoAdtVerSqlEntity<Map<String, Condition>> implements CacheableEntities {
   @Getter
   @Setter
   @Transient

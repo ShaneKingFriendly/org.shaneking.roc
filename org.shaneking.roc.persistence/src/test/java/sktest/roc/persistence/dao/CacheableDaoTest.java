@@ -9,7 +9,7 @@ import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import sktest.roc.persistence.entity.HelloCacheableEntity;
+import sktest.roc.persistence.HelloCacheableEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,8 +1,8 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.NumberedEntities;
+import org.shaneking.roc.persistence.CacheableEntities;
 
-public interface TenantEntities extends NumberedEntities {
+public interface TenantEntities extends CacheableEntities {
 
   String getName();
 
