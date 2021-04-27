@@ -2,7 +2,7 @@ package org.shaneking.roc.persistence;
 
 import lombok.NonNull;
 import org.shaneking.ling.persistence.Condition;
-import org.shaneking.ling.persistence.entity.sql.IdNoAdtVerSqlEntities;
+import org.shaneking.ling.persistence.entity.sql.DialectSqlEntities;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.Map0;
 import org.shaneking.roc.persistence.entity.sql.UserEntities;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public interface CacheableEntities extends IdNoAdtVerSqlEntities {
+public interface CacheableEntities extends DialectSqlEntities {
 
   Map<String, Condition> getHavingConditions();
 

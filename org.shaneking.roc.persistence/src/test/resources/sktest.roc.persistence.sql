@@ -7,6 +7,7 @@ drop table if exists t_hello_tenanted_numbered_entity;
 create table if not exists `t_hello_cacheable_entity` (
   `version` int not null default 0,
   `id` char(40) not null,
+  `dd` varchar(40) default 'N',
   `no` varchar(40) default '',
   `invalid` varchar(1) default 'N',
   `last_modify_date_time` varchar(20) default '',
@@ -18,10 +19,11 @@ create table if not exists `t_hello_cacheable_entity` (
 create table if not exists `t_hello_numbered_entity` (
   `version` int not null default 0,
   `id` char(40) not null,
+  `dd` varchar(40) default 'N',
+  `no` varchar(40) default '',
   `invalid` varchar(1) default 'N',
   `last_modify_date_time` varchar(20) default '',
   `last_modify_user_id` varchar(40) default '',
-  `no` varchar(40) default '',
   primary key (`id`)
 );
 
@@ -31,10 +33,11 @@ create unique index if not exists u_idx_no on t_hello_numbered_entity(`no`);
 create table if not exists `t_hello_tenanted_numbered_entity` (
   `version` int not null default 0,
   `id` char(40) not null,
+  `dd` varchar(40) default 'N',
+  `no` varchar(40) default '',
   `invalid` varchar(1) default 'N',
   `last_modify_date_time` varchar(20) default '',
   `last_modify_user_id` varchar(40) default '',
-  `no` varchar(40) default '',
   `tenant_id` varchar(40) default '',
   primary key (`id`)
 );

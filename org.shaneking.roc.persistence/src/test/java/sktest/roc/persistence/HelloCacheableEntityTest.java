@@ -41,6 +41,6 @@ class HelloCacheableEntityTest extends SKUnit {
 
   @Test
   void testToString() {
-    assertEquals("HelloCacheableEntity(super=CacheableEntity(super=AbstractIdNoAdtVerSqlEntity(id=null, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null))", new HelloCacheableEntity().toString());
+    assertEquals("HelloCacheableEntity(super=CacheableEntity(super=AbstractDialectSqlEntity(id=null, dd=N, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null))", new HelloCacheableEntity().toString());
   }
 }
