@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.zero.util.Map0;
 import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.shaneking.roc.persistence.entity.sql.TenantEntities;
@@ -38,7 +39,7 @@ public class Ctx {
   private UserEntities user;
   @Getter
   @Setter
-  private Map<String, UserEntities> rtuMap;//readable tenant user map
+  private Map<String, UserEntities> rtuMap = Map0.newHashMap();//readable tenant user map
 
   public String gnaChannelId() {
     return getChannel() == null ? null : getChannel().getId();
