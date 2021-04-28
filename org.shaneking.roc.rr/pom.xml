@@ -5,11 +5,11 @@
   <parent>
     <groupId>org.shaneking.roc</groupId>
     <artifactId>org.shaneking.roc</artifactId>
-    <version>0.241.3.Friendly-SNAPSHOT</version>
+    <version>0.241.5.Friendly-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.shaneking.roc.rr</artifactId>
-  <version>0.241.3.Friendly-SNAPSHOT</version>
+  <version>0.241.5.Friendly-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>org.shaneking.roc.rr</name>
@@ -46,6 +46,11 @@
     </dependency>
     <dependency>
       <groupId>org.shaneking.roc</groupId>
+      <artifactId>org.shaneking.roc.cache</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.shaneking.roc</groupId>
       <artifactId>org.shaneking.roc.persistence</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
@@ -58,12 +63,6 @@
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.shaneking.roc</groupId>
-      <artifactId>org.shaneking.roc.cache</artifactId>
-      <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
