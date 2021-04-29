@@ -6,7 +6,6 @@ import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
-import org.shaneking.ling.persistence.hello.NullSetter;
 import org.shaneking.roc.persistence.entity.sql.ApiAccessUrlEntity;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ import javax.persistence.UniqueConstraint;
 @ExcelModel(includeAllField = false, useFieldNameAsTitle = true)
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID, ApiAccessUrlEntity.COLUMN__URL})})
 @ToString(callSuper = true)
-public class HelloApiAccessUrlEntity extends ApiAccessUrlEntity implements SqlliteSqlEntities, NullSetter {
+public class HelloApiAccessUrlEntity extends ApiAccessUrlEntity implements SqlliteSqlEntities {
   @Override
   public Class<? extends HelloApiAccessUrlEntity> entityClass() {
     return this.getClass();

@@ -28,8 +28,10 @@ import java.text.MessageFormat;
 @Component
 @ConditionalOnProperty(prefix = "sk.roc.rr.cache", value = "enabled")
 @Slf4j
-@Order(600)
+@Order(RrCacheAspect.ORDER)
 public class RrCacheAspect {
+  public static final int ORDER = 40000;
+
   @Value("${sk.roc.rr.cache.enabled:false}")
   private boolean enabled;
 

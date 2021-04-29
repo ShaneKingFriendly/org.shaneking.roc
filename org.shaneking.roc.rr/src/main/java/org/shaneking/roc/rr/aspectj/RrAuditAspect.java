@@ -33,8 +33,10 @@ import java.text.MessageFormat;
 @Component
 @ConditionalOnProperty(prefix = "sk.roc.rr.audit", value = "enabled")
 @Slf4j
-@Order(400)///small will first
+@Order(RrAuditAspect.ORDER)///small will first
 public class RrAuditAspect {
+  public static final int ORDER = 40000;
+
   @Value("${sk.roc.rr.audit.enabled:false}")
   private boolean enabled;
 

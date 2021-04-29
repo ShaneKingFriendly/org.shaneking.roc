@@ -17,15 +17,19 @@ public class CacheTransactionEventListener {
   @Autowired(required = false)
   private RocCaches cache;
 
-  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION, fallbackExecution = true)
-  public void afterCompletion(PayloadApplicationEvent<String> event) {
-    RocCaches.NEW_MAP.get().remove(event.getPayload());
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+  public void afterCommit(PayloadApplicationEvent<CacheTransactionEventObject> event) {
+    String transactionName = event.getPayload().getTransactionName();
+    if (String0.isNullOrEmpty(transactionName)) {
+      RocCaches.HDEL_MAP.get().remove(transactionName);
+    }
   }
 
   @TransactionalEventListener(phase = TransactionPhase.AFTER_ROLLBACK)
-  public void afterRollback(PayloadApplicationEvent<String> event) {
-    if (cache != null) {
-      for (Map.Entry<String, List<String>> entry : RocCaches.NEW_MAP.get().getOrDefault(String0.nullToEmpty(event.getPayload()), Map0.newHashMap()).entrySet()) {
+  public void afterRollback(PayloadApplicationEvent<CacheTransactionEventObject> event) {
+    String transactionName = event.getPayload().getTransactionName();
+    if (cache != null && !String0.isNullOrEmpty(transactionName)) {
+      for (Map.Entry<String, List<String>> entry : RocCaches.HDEL_MAP.get().getOrDefault(transactionName, Map0.newHashMap()).entrySet()) {
         if (entry.getValue() == null) {
           cache.del(entry.getKey());
         } else {
@@ -33,6 +37,6 @@ public class CacheTransactionEventListener {
         }
       }
     }
-    RocCaches.NEW_MAP.get().remove(event.getPayload());
+    RocCaches.HDEL_MAP.get().remove(transactionName);
   }
 }

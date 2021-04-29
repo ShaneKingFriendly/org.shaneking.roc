@@ -5,7 +5,6 @@ import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
-import org.shaneking.ling.persistence.hello.NullSetter;
 import org.shaneking.roc.persistence.entity.sql.ApiAccessRegexEntity;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ import javax.persistence.UniqueConstraint;
 @Component
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID})})
 @ToString(callSuper = true)
-public class HelloApiAccessRegexEntity extends ApiAccessRegexEntity implements SqlliteSqlEntities, NullSetter {
+public class HelloApiAccessRegexEntity extends ApiAccessRegexEntity implements SqlliteSqlEntities {
   @Override
   public Class<? extends HelloApiAccessRegexEntity> entityClass() {
     return this.getClass();

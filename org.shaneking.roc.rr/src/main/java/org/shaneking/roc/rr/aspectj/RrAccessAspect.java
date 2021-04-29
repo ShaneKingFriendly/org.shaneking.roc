@@ -29,8 +29,10 @@ import java.text.MessageFormat;
 @Component
 @ConditionalOnProperty(prefix = "sk.roc.rr.access", value = "enabled")
 @Slf4j
-@Order(500)
+@Order(RrAccessAspect.ORDER)
 public class RrAccessAspect {
+  public static final int ORDER = 50000;
+
   @Value("${sk.roc.rr.access.enabled:false}")
   private boolean enabled;
 

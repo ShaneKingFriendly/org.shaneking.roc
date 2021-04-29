@@ -36,8 +36,10 @@ import java.text.MessageFormat;
 @Component
 @ConditionalOnProperty(prefix = "sk.roc.rr.crypto", value = "enabled")
 @Slf4j
-@Order(700)
+@Order(RrCryptoAspect.ORDER)
 public class RrCryptoAspect {
+  public static final int ORDER = 70000;
+
   @Value("${sk.roc.rr.crypto.enabled:false}")
   private boolean enabled;
 

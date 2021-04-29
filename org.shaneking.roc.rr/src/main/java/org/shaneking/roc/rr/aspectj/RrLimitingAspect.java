@@ -27,8 +27,10 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 @ConditionalOnProperty(prefix = "sk.roc.rr.limiting", value = "enabled")
 @Slf4j
-@Order(300)
+@Order(RrLimitingAspect.ORDER)
 public class RrLimitingAspect {
+  public static final int ORDER = 30000;
+
   public static final String ERR_CODE__BUSY_NOW = "RR_LIMITING_ASPECT__BUSY_NOW";
   private final Map<String, AtomicLong> map = Map0.newConcurrentHashMap();
   @Value("${sk.roc.rr.limiting.enabled:false}")
