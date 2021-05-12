@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.CacheableEntity;
+import org.shaneking.roc.persistence.AbstractCacheableEntity;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ChannelEntity extends CacheableEntity implements ChannelEntities {
+public abstract class ChannelExample extends AbstractCacheableEntity implements ChannelEntities {
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

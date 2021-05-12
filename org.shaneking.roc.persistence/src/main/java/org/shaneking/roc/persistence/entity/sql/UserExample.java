@@ -13,7 +13,7 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class UserEntity extends TenantedEntity implements UserEntities {
+public abstract class UserExample extends TenantedEntity implements UserEntities {
   @Column(length = 30, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

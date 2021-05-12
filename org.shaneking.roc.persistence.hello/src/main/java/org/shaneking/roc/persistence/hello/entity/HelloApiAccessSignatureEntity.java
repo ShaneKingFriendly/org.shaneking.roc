@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessSignatureEntity;
+import org.shaneking.roc.persistence.entity.sql.ApiAccessSignatureExample;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Table;
@@ -15,9 +15,9 @@ import javax.persistence.UniqueConstraint;
 @Accessors(chain = true)
 @Component
 @ExcelModel(includeAllField = false, useFieldNameAsTitle = true)
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID, ApiAccessSignatureEntity.COLUMN__SIGNATURE})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID, ApiAccessSignatureExample.COLUMN__SIGNATURE})})
 @ToString(callSuper = true)
-public class HelloApiAccessSignatureEntity extends ApiAccessSignatureEntity implements SqlliteSqlEntities {
+public class HelloApiAccessSignatureEntity extends ApiAccessSignatureExample implements SqlliteSqlEntities {
   @Override
   public Class<? extends HelloApiAccessSignatureEntity> entityClass() {
     return this.getClass();

@@ -11,10 +11,11 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ApiAccessOpEntity extends TenantedChannelizedEntity implements ApiAccessOpEntities {
-  @Column(length = 1, columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
+public abstract class ChannelReadableTenantExample extends TenantedChannelizedEntity implements ChannelReadableTenantEntities {
+
+  @Column(nullable = false, length = 1, columnDefinition = "default 'Y' COMMENT ''")
+  @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
-  private String op;
+  private String defaultReadable;
 }

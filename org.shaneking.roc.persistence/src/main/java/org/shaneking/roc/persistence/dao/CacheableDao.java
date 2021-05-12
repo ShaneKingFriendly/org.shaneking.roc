@@ -234,7 +234,7 @@ public class CacheableDao {
   public <T extends CacheableEntities> List<T> lst(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<String, List<Object>> pair = t.selectSql();
     log.info(OM3.writeValueAsString(pair));
-    return this.getJdbcTemplate().query(Tuple.getFirst(pair), Tuple.getSecond(pair).toArray(), (resultSet, i) -> {
+    return this.getJdbcTemplate().query(Tuple.getFirst(pair), (resultSet, i) -> {
       try {
         T rst = cacheType.newInstance();
         rst.srvSelectList(t.getSelectList());
@@ -243,7 +243,7 @@ public class CacheableDao {
       } catch (Exception e) {
         throw new ZeroException(OM3.p(cacheType, t), e);
       }
-    });
+    }, Tuple.getSecond(pair).toArray());
   }
 
   @EntityCacheable(pKeyIdx = 1, rKeyPath = Identified.FIELD__ID)
@@ -257,7 +257,7 @@ public class CacheableDao {
     }
   }
 
-  ///if add `t` parameter, can't set `pKeyIdx = 2`. because cache will over, for example: (UserEntity.class, {name:ShaneKing}, [1,2,3])
+  ///if add `t` parameter, can't set `pKeyIdx = 2`. because cache will over, for example: (UserExample.class, {name:ShaneKing}, [1,2,3])
   @EntityCacheable(rKeyPath = Identified.FIELD__ID)
   public <T extends CacheableEntities> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
@@ -271,7 +271,7 @@ public class CacheableDao {
   public <T extends CacheableEntities> List<String> lstIds(@NonNull Class<T> cacheType, @NonNull T t) {
     Tuple.Pair<List<String>, List<Object>> pair = t.selectSql(List0.newArrayList(Identified.COLUMN__ID), List0.newArrayList());
     log.info(OM3.writeValueAsString(pair));
-    return this.getJdbcTemplate().query(String.join(String0.BLANK, Tuple.getFirst(pair)), Tuple.getSecond(pair).toArray(), (resultSet, i) -> resultSet.getString(Identified.COLUMN__ID));
+    return this.getJdbcTemplate().query(String.join(String0.BLANK, Tuple.getFirst(pair)), (resultSet, i) -> resultSet.getString(Identified.COLUMN__ID), Tuple.getSecond(pair).toArray());
   }
 
   @EntityCacheable(rKeyPath = Identified.FIELD__ID)

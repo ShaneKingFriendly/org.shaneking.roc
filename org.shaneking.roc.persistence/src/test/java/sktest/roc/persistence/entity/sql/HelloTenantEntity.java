@@ -4,7 +4,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.entity.Numbered;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
-import org.shaneking.roc.persistence.entity.sql.TenantEntity;
+import org.shaneking.roc.persistence.entity.sql.TenantExample;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Table;
@@ -14,7 +14,7 @@ import javax.persistence.UniqueConstraint;
 @Component
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Numbered.COLUMN__NO})})
 @ToString(callSuper = true)
-public class HelloTenantEntity extends TenantEntity implements SqlliteSqlEntities {
+public class HelloTenantEntity extends TenantExample implements SqlliteSqlEntities {
   @Override
   public Class<? extends HelloTenantEntity> entityClass() {
     return this.getClass();

@@ -15,3 +15,4 @@ create table if not exists `t_hello_user_entity` (
 );
 
 create unique index if not exists u_idx_no_tenant_id on t_hello_user_entity(`no`,`tenant_id`);
+create index if not exists dd on t_hello_user_entity(dd);

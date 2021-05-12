@@ -13,7 +13,7 @@ class HelloApiAccessUrlEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloApiAccessUrlEntity(super=ApiAccessUrlEntity(super=ApiAccessOpEntity(super=TenantedChannelizedEntity(super=CacheableEntity(super=AbstractDialectSqlEntity(id=null, dd=N, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), channelId=null, tenantId=null), op=null), url=null))", new HelloApiAccessUrlEntity().toString()),
+      () -> Assertions.assertEquals("HelloApiAccessUrlEntity(super=ApiAccessUrlExample(super=TenantedChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, dd=N, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), channelId=null, tenantId=null), op=null, url=null))", new HelloApiAccessUrlEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloApiAccessUrlEntity().nullSetter()))
     );
   }

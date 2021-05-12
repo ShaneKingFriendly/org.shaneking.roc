@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.test.SKUnit;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessRegexEntity;
+import org.shaneking.roc.persistence.entity.sql.ApiAccessRegexExample;
 
 import java.util.regex.Pattern;
 
@@ -23,7 +23,7 @@ class HelloApiAccessRegexEntityTest extends SKUnit {
       () -> assertTrue(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.lst(String s)")),
       () -> assertFalse(Pattern.matches("^[\\s\\S]*(add|mge|lst)\\([\\s\\S]*$", "user.ls(String s)"))
     );
-    ApiAccessRegexEntity apiAccessEntity = new HelloApiAccessRegexEntity();
+    ApiAccessRegexExample apiAccessEntity = new HelloApiAccessRegexEntity();
     assertAll(
       () -> assertFalse(apiAccessEntity.check(null, null)),
       () -> assertTrue(apiAccessEntity.check(String0.ARY_L62, String0.ARY_L62))
@@ -38,7 +38,7 @@ class HelloApiAccessRegexEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloApiAccessRegexEntity(super=ApiAccessRegexEntity(super=TenantedChannelizedEntity(super=CacheableEntity(super=AbstractDialectSqlEntity(id=null, dd=N, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), channelId=null, tenantId=null), allowUrlRegex=null, allowSignatureRegex=null, denyUrlRegex=null, denySignatureRegex=null))", new HelloApiAccessRegexEntity().toString()),
+      () -> Assertions.assertEquals("HelloApiAccessRegexEntity(super=ApiAccessRegexExample(super=TenantedChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, dd=N, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), channelId=null, tenantId=null), allowUrlRegex=null, allowSignatureRegex=null, denyUrlRegex=null, denySignatureRegex=null))", new HelloApiAccessRegexEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloApiAccessRegexEntity().nullSetter()))
     );
   }

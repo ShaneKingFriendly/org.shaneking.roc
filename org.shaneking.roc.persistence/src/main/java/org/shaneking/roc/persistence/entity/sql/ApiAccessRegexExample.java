@@ -11,7 +11,7 @@ import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ApiAccessRegexEntity extends TenantedChannelizedEntity implements ApiAccessRegexEntities {
+public abstract class ApiAccessRegexExample extends TenantedChannelizedEntity implements ApiAccessRegexEntities {
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

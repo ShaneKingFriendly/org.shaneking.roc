@@ -22,6 +22,16 @@ public interface CacheableEntities extends DialectSqlEntities {
 
   void srvWhereConditions(Map<String, Condition> conditionMap);
 
+  default <T extends CacheableEntities> T filedToCondition() throws Exception {
+    T t = (T) this.getClass().newInstance();
+    t.nullSetter();
+    t.srvWhereConditions(this.getWhereConditions());
+    for (Map.Entry<String, Object> e : t.fieldNameValues().entrySet()) {
+      t.forceWhereCondition(e.getKey() + String0.UNDERLINE + String0.UNDERLINE + System.currentTimeMillis()).resetVal(String.valueOf(e.getValue()));
+    }
+    return t;
+  }
+
   ///
   @Override
   default @NonNull List<Condition> findHavingConditions(@NonNull String fieldName) {

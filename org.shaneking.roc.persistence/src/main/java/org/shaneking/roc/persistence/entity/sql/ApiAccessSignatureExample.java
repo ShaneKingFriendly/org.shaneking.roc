@@ -5,22 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.CacheableEntity;
+import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class TenantEntity extends CacheableEntity implements TenantEntities {
-  @Column(columnDefinition = "default '' COMMENT ''")
+public abstract class ApiAccessSignatureExample extends TenantedChannelizedEntity implements ApiAccessSignatureEntities {
+  @Column(length = 1, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
-  private String name;
+  private String op;
 
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
-  private String description;
+  private String signature;
 }

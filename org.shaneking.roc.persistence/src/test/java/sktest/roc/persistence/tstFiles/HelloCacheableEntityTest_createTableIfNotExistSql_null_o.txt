@@ -9,3 +9,4 @@ create table if not exists `t_hello_cacheable_entity` (
   primary key (`id`)
 );
 
+create index if not exists dd on t_hello_cacheable_entity(dd);

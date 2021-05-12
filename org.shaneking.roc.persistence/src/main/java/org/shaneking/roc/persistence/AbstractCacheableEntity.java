@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class CacheableEntity extends AbstractDialectSqlEntity<Map<String, Condition>> implements CacheableEntities {
+public abstract class AbstractCacheableEntity extends AbstractDialectSqlEntity<Map<String, Condition>> implements CacheableEntities {
   @Getter
   @Setter
   @Transient
