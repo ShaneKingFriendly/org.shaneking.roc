@@ -6,6 +6,7 @@ import org.shaneking.ling.zero.util.Map0;
 import org.shaneking.roc.cache.RocCaches;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import sktest.roc.cache.trans.CacheTrans;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,8 +15,11 @@ class RocCacheTest extends SKSpringUnit {
   @Autowired
   private RocCaches cache;
 
+  @Autowired
+  private CacheTrans cacheTrans;
+
   @Test
-  void test() {
+  void testCache() {
     cache.hmset("1", Map0.newHashMap("2", "3"));
     assertAll(
       () -> assertTrue(cache.del("A")),
@@ -30,6 +34,14 @@ class RocCacheTest extends SKSpringUnit {
 
       () -> cache.hmset("1", Map0.newHashMap("22", "33")),
       () -> cache.hset("1", "22", "33")
+    );
+  }
+
+  @Test
+  void testTrans() {
+    assertAll(
+      () -> assertDoesNotThrow(() -> cacheTrans.test(false)),
+      () -> assertThrows(RuntimeException.class, () -> cacheTrans.test(true))
     );
   }
 }

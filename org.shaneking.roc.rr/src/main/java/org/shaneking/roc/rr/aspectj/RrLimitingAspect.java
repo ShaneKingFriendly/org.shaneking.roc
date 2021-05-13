@@ -48,7 +48,7 @@ public class RrLimitingAspect {
     if (enabled) {
       if (!String0.isNullOrEmpty(rrLimiting.prop()) && rrLimiting.limit() > 0) {
         Integer limit = environment.getProperty(rrLimiting.prop(), Integer.class, rrLimiting.limit());
-        AtomicLong atomicLong = map.putIfAbsent(rrLimiting.prop(), new AtomicLong(0));
+        AtomicLong atomicLong = map.computeIfAbsent(rrLimiting.prop(), k -> new AtomicLong(0));
         if (AtomicLong0.tryIncreaseFailed(atomicLong, limit)) {
           try {
             rtn = pjp.proceed();

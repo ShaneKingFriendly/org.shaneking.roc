@@ -16,7 +16,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.cache", value = "enabled")
+@ConditionalOnProperty(prefix = "sk.roc.cache.transactional", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(CacheTransactionAspect.ORDER)//@EnableTransactionManagement(order = <this)
 public class CacheTransactionAspect {

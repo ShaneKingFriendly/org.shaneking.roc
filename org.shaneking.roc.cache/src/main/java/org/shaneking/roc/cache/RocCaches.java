@@ -33,7 +33,7 @@ public interface RocCaches {
     String transactionName = TransactionSynchronizationManager.getCurrentTransactionName();
     if (!withoutTransactional && !String0.isNullOrEmpty(transactionName) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
       //need record operation key in transactional
-      DEL_MAP.get().getOrDefault(transactionName, List0.newArrayList()).add(key);
+      DEL_MAP.get().computeIfAbsent(transactionName, k -> List0.newArrayList()).add(key);
     }
     CACHE.invalidate(key);
     return true;
@@ -51,7 +51,7 @@ public interface RocCaches {
     String transactionName = TransactionSynchronizationManager.getCurrentTransactionName();
     if (!withoutTransactional && !String0.isNullOrEmpty(transactionName) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
       //need record operation key in transactional
-      HDEL_MAP.get().getOrDefault(transactionName, Map0.newHashMap()).getOrDefault(key, List0.newArrayList()).addAll(List0.newArrayList(fields));
+      HDEL_MAP.get().computeIfAbsent(transactionName, k -> Map0.newHashMap()).computeIfAbsent(key, k -> List0.newArrayList()).addAll(List0.newArrayList(fields));
     }
     CACHE.invalidateAll(Arrays.stream(fields).map(field -> key + String0.MORE + field).filter(Objects::nonNull).collect(Collectors.toList()));
     return 0L;
@@ -70,8 +70,8 @@ public interface RocCaches {
     String transactionName = TransactionSynchronizationManager.getCurrentTransactionName();
     if (!String0.isNullOrEmpty(transactionName) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
       //in transactional, if key in record operation key list, can not cache
-      contain = DEL_MAP.get().getOrDefault(transactionName, List0.newArrayList()).contains(key);
-      List<String> list = HDEL_MAP.get().getOrDefault(transactionName, Map0.newHashMap()).getOrDefault(key, List0.newArrayList());
+      contain = DEL_MAP.get().computeIfAbsent(transactionName, k -> List0.newArrayList()).contains(key);
+      List<String> list = HDEL_MAP.get().computeIfAbsent(transactionName, k -> Map0.newHashMap()).computeIfAbsent(key, k -> List0.newArrayList());
       if (!contain && list.size() > 0) {
         for (String s : map.keySet()) {
           if (list.contains(s)) {
@@ -91,7 +91,7 @@ public interface RocCaches {
     String transactionName = TransactionSynchronizationManager.getCurrentTransactionName();
     if (!String0.isNullOrEmpty(transactionName) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
       //in transactional, if key in record operation key list, can not cache
-      contain = DEL_MAP.get().getOrDefault(transactionName, List0.newArrayList()).contains(key) || HDEL_MAP.get().getOrDefault(transactionName, Map0.newHashMap()).getOrDefault(key, List0.newArrayList()).contains(field);
+      contain = DEL_MAP.get().computeIfAbsent(transactionName, k -> List0.newArrayList()).contains(key) || HDEL_MAP.get().computeIfAbsent(transactionName, k -> Map0.newHashMap()).computeIfAbsent(key, k -> List0.newArrayList()).contains(field);
     }
     if (!contain) {
       CACHE.put(key + String0.MORE + field, value);
@@ -103,7 +103,7 @@ public interface RocCaches {
     String transactionName = TransactionSynchronizationManager.getCurrentTransactionName();
     if (!String0.isNullOrEmpty(transactionName) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
       //in transactional, if key in record operation key list, can not cache
-      contain = DEL_MAP.get().getOrDefault(transactionName, List0.newArrayList()).contains(key);
+      contain = DEL_MAP.get().computeIfAbsent(transactionName, k -> List0.newArrayList()).contains(key);
     }
     if (!contain) {
       CACHE.put(key, value);
