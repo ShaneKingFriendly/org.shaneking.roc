@@ -92,7 +92,6 @@
   </ciManagement>
 
   <modules>
-    <module>org.shaneking.roc.cache</module>
     <module>org.shaneking.roc.jackson</module>
     <module>org.shaneking.roc.persistence</module>
     <module>org.shaneking.roc.persistence.hello</module>

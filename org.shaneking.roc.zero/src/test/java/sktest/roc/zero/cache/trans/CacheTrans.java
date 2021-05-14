@@ -1,8 +1,8 @@
-package sktest.roc.cache.trans;
+package sktest.roc.zero.cache.trans;
 
 
-import org.shaneking.roc.cache.RocCaches;
-import org.shaneking.roc.cache.aspectj.CacheTransactionAspect;
+import org.shaneking.ling.zero.cache.ZeroCache;
+import org.shaneking.roc.zero.cache.aspectj.CacheTransactionAspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CacheTrans {
 
   @Autowired
-  private RocCaches cache;
+  private ZeroCache cache;
 
   @Transactional(rollbackFor = Exception.class)
   public void test(boolean throwException) {

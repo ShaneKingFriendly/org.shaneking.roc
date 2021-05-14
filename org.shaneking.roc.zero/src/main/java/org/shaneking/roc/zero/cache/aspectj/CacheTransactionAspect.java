@@ -1,11 +1,11 @@
-package org.shaneking.roc.cache.aspectj;
+package org.shaneking.roc.zero.cache.aspectj;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.shaneking.roc.cache.listener.CacheTransactionEventObject;
+import org.shaneking.roc.zero.cache.listener.CacheTransactionEventObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
@@ -16,7 +16,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.cache.transactional", value = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "sk.roc.zero.cache.transactional", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(CacheTransactionAspect.ORDER)//@EnableTransactionManagement(order = <this)
 public class CacheTransactionAspect {

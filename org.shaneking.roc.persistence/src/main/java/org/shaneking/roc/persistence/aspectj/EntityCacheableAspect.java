@@ -7,9 +7,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
+import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.Object0;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.cache.RocCaches;
 import org.shaneking.roc.persistence.annotation.EntityCacheable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ public class EntityCacheableAspect {
   @Value("${sk.roc.persistence.entity.cache.enabled:false}")
   private boolean enabled;
   @Autowired
-  private RocCaches cache;
+  private ZeroCache cache;
 
   @Pointcut("execution(@org.shaneking.roc.persistence.annotation.EntityCacheable * *..*.*(..))")
   private void pointcut() {
@@ -76,7 +76,7 @@ public class EntityCacheableAspect {
               } else {
                 String cached = cache.hget(clazz.getName(), k);
                 if (!String0.isNullOrEmpty(cached)) {
-                  log.info(MessageFormat.format("{0} - {1} : {2}", clazz.getName(), RocCaches.ERR_CODE__CACHE_HIT_ALL, cached));
+                  log.info(MessageFormat.format("{0} - {1} : {2}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_ALL, cached));
                   rtn = OM3.readValue(cached, clazz, true);
                 }
               }
@@ -88,16 +88,16 @@ public class EntityCacheableAspect {
         }
         if (rtn == null) {
           if (argList != null && argList.size() == 0) {
-            log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), RocCaches.ERR_CODE__CACHE_HIT_ALL, rtnList.size(), OM3.writeValueAsString(rtnList)));
+            log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_ALL, rtnList.size(), OM3.writeValueAsString(rtnList)));
             rtn = rtnList;
           } else {
             if (argList != null && argList.size() > 0 && entityCacheable.pKeyIdx() > -1) {
-              log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), RocCaches.ERR_CODE__CACHE_HIT_PART, rtnList.size(), OM3.writeValueAsString(rtnList)));
+              log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_PART, rtnList.size(), OM3.writeValueAsString(rtnList)));
               pjp.getArgs()[entityCacheable.pKeyIdx()] = argList;
               rtn = pjp.proceed(pjp.getArgs());
             } else {
               if (entityCacheable.pKeyIdx() > -1) {
-                log.warn(MessageFormat.format("{0} - {1}", clazz.getName(), RocCaches.ERR_CODE__CACHE_HIT_MISS));
+                log.warn(MessageFormat.format("{0} - {1}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_MISS));
               }
               rtn = pjp.proceed();
             }

@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.util.List0;
-import org.shaneking.roc.cache.RocCaches;
 import org.shaneking.roc.persistence.entity.TenantedNumberedEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public class TenantedNumberedCacheableDao {
   @Getter
   private CacheableDao cacheableDao;
   @Autowired
-  private RocCaches cache;
+  private ZeroCache cache;
   @Value("${sk.roc.persistence.dao.cache.seconds:180}")
   private int cacheSeconds;
 
@@ -37,13 +37,13 @@ public class TenantedNumberedCacheableDao {
     String key = String.join(String0.MORE, cacheType.getName(), tenantId, no);
     String id = cache.get(key);
     if (String0.isNullOrEmpty(id)) {
-      log.info(MessageFormat.format("{0} : {1}", RocCaches.ERR_CODE__CACHE_HIT_MISS, key));
+      log.info(MessageFormat.format("{0} : {1}", ZeroCache.ERR_CODE__CACHE_HIT_MISS, key));
       rtn = oneByNo(cacheType, no, tenantId, rtnNullIfNotEqualsOne, key);
     } else {
-      log.info(MessageFormat.format("{0} - {1} : {2}", RocCaches.ERR_CODE__CACHE_HIT_ALL, key, id));
+      log.info(MessageFormat.format("{0} - {1} : {2}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, id));
       rtn = cacheableDao.oneById(cacheType, id, rtnNullIfNotEqualsOne);
       if (!eq(no, tenantId, rtn)) {
-        log.info(MessageFormat.format("{0} - {1} : {2}, {3}", RocCaches.ERR_CODE__CACHE_HIT_ALL, key, id, OM3.writeValueAsString(rtn)));
+        log.info(MessageFormat.format("{0} - {1} : {2}, {3}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, id, OM3.writeValueAsString(rtn)));
         cache.del(key);
         rtn = oneByNo(cacheType, no, tenantId, rtnNullIfNotEqualsOne, key);
       }

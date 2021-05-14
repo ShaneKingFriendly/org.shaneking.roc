@@ -1,6 +1,9 @@
 sk:
   roc:
     zero:
+      cache:
+        transactional:
+          enabled: true
       net:
         address:
           enabled: true
@@ -9,3 +12,16 @@ sk:
           vhosts:
             inet.address.test1: 44.44.44.44
             inet.address.test2: 44.44.44.45,44.44.44.46
+
+## spring
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    password:
+    ## absolute
+    #url: jdbc:sqlite:D:/test/sktest.roc.zero.sqllite
+    ## compiled for test(../org.shaneking.roc.zero/target/test-classes/sktest.roc.zero.sqllite)
+    #url: jdbc:sqlite::resource:sktest.roc.zero.sqllite
+    ## relative
+    url: jdbc:sqlite:src/test/resources/sktest.roc.zero.sqllite
+    username:

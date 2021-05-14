@@ -49,7 +49,7 @@
     </dependency>
     <dependency>
       <groupId>org.shaneking.roc</groupId>
-      <artifactId>org.shaneking.roc.cache</artifactId>
+      <artifactId>org.shaneking.roc.zero</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <!-- test(spring default logback, so not need dependency logback) -->

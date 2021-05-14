@@ -1,19 +1,19 @@
-package sktest.roc.cache;
+package sktest.roc.zero.cache;
 
 import org.junit.jupiter.api.Test;
+import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.ling.zero.util.Map0;
-import org.shaneking.roc.cache.RocCaches;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import sktest.roc.cache.trans.CacheTrans;
+import sktest.roc.zero.cache.trans.CacheTrans;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RocCacheTest extends SKSpringUnit {
 
   @Autowired
-  private RocCaches cache;
+  private ZeroCache cache;
 
   @Autowired
   private CacheTrans cacheTrans;

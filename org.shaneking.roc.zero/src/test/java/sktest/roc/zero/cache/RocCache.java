@@ -1,4 +1,4 @@
-package sktest.roc.cache;
+package sktest.roc.zero.cache;
 
 import org.shaneking.ling.zero.cache.ZeroCache;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
-package org.shaneking.roc.cache.listener;
+package org.shaneking.roc.zero.cache.listener;
 
+import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.ling.zero.util.Map0;
-import org.shaneking.roc.cache.RocCaches;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.stereotype.Component;
@@ -16,14 +16,14 @@ import java.util.Map;
 @Component
 public class CacheTransactionEventListener {
   @Autowired(required = false)
-  private RocCaches cache;
+  private ZeroCache cache;
 
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
   public void afterCommit(PayloadApplicationEvent<CacheTransactionEventObject> event) {
     String transactionName = event.getPayload().getTransactionName();
     if (!String0.isNullOrEmpty(transactionName)) {
-      RocCaches.DEL_MAP.get().remove(transactionName);
-      RocCaches.HDEL_MAP.get().remove(transactionName);
+      ZeroCache.DEL_MAP.get().remove(transactionName);
+      ZeroCache.DEL_MAP2.get().remove(transactionName);
     }
   }
 
@@ -33,10 +33,10 @@ public class CacheTransactionEventListener {
     if (!String0.isNullOrEmpty(transactionName)) {
       if (cache != null) {
         //need remove other thread re-cache
-        for (String key : RocCaches.DEL_MAP.get().computeIfAbsent(transactionName, k -> List0.newArrayList())) {
+        for (String key : ZeroCache.DEL_MAP.get().computeIfAbsent(transactionName, k -> List0.newArrayList())) {
           cache.del(true, key);
         }
-        for (Map.Entry<String, List<String>> entry : RocCaches.HDEL_MAP.get().computeIfAbsent(transactionName, k -> Map0.newHashMap()).entrySet()) {
+        for (Map.Entry<String, List<String>> entry : ZeroCache.DEL_MAP2.get().computeIfAbsent(transactionName, k -> Map0.newHashMap()).entrySet()) {
           if (entry.getValue() == null) {
             cache.del(true, entry.getKey());
           } else {
@@ -44,8 +44,8 @@ public class CacheTransactionEventListener {
           }
         }
       }
-      RocCaches.DEL_MAP.get().remove(transactionName);
-      RocCaches.HDEL_MAP.get().remove(transactionName);
+      ZeroCache.DEL_MAP.get().remove(transactionName);
+      ZeroCache.DEL_MAP2.get().remove(transactionName);
     }
   }
 }

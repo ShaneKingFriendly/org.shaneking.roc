@@ -46,11 +46,6 @@
     </dependency>
     <dependency>
       <groupId>org.shaneking.roc</groupId>
-      <artifactId>org.shaneking.roc.cache</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.shaneking.roc</groupId>
       <artifactId>org.shaneking.roc.persistence</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
