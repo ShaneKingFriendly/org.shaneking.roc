@@ -10,19 +10,17 @@ import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.roc.persistence.entity.NumberedEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 import java.text.MessageFormat;
 
-@ConditionalOnProperty(prefix = "sk.roc.persistence.dao.cache", value = "enabled")
 @Repository
 @Slf4j
 public class NumberedCacheableDao {
   @Autowired
   @Getter
   private CacheableDao cacheableDao;
-  @Autowired
+  @Autowired(required = false)
   private ZeroCache cache;
   @Value("${sk.roc.persistence.dao.cache.seconds:180}")
   private int cacheSeconds;
@@ -34,7 +32,7 @@ public class NumberedCacheableDao {
   public <T extends NumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, boolean rtnNullIfNotEqualsOne) {
     T rtn = null;
     String key = String.join(String0.MORE, cacheType.getName(), no);
-    String id = cache.get(key);
+    String id = cache == null ? null : cache.get(key);
     if (String0.isNullOrEmpty(id)) {
       log.info(MessageFormat.format("{0} : {1}", ZeroCache.ERR_CODE__CACHE_HIT_MISS, key));
       rtn = oneByNo(cacheType, no, rtnNullIfNotEqualsOne, key);
@@ -43,7 +41,9 @@ public class NumberedCacheableDao {
       rtn = cacheableDao.oneById(cacheType, id, rtnNullIfNotEqualsOne);
       if (!eq(no, rtn)) {
         log.info(MessageFormat.format("{0} - {1} : {2}, {3}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, id, OM3.writeValueAsString(rtn)));
-        cache.del(key);
+        if (cache != null) {
+          cache.del(key);
+        }
         rtn = oneByNo(cacheType, no, rtnNullIfNotEqualsOne, key);
       }
     }
@@ -60,7 +60,7 @@ public class NumberedCacheableDao {
       T one = cacheType.newInstance();
       one.setNo(no);
       rtn = cacheableDao.one(cacheType, one, rtnNullIfNotEqualsOne);
-      if (rtn != null) {
+      if (rtn != null && cache != null) {
         cache.set(key, cacheSeconds, rtn.getId());
       }
     } catch (Exception e) {

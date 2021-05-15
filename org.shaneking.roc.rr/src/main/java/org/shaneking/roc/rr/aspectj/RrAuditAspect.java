@@ -31,13 +31,13 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.rr.audit", value = "enabled")
+@ConditionalOnProperty(prefix = "sk.roc.rr.audit", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(RrAuditAspect.ORDER)///small will first
 public class RrAuditAspect {
   public static final int ORDER = 40000;
 
-  @Value("${sk.roc.rr.audit.enabled:false}")
+  @Value("${sk.roc.rr.audit.enabled:true}")
   private boolean enabled;
 
   @Autowired
@@ -46,13 +46,11 @@ public class RrAuditAspect {
   @Autowired
   private NumberedCacheableDao numberedCacheableDao;
 
-  @Autowired
+  @Autowired(required = false)
   private AuditLogEntities auditLogEntityClass;
-
-  @Autowired
+  @Autowired(required = false)
   private ChannelEntities channelEntityClass;
-
-  @Autowired
+  @Autowired(required = false)
   private TenantEntities tenantEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
@@ -63,7 +61,7 @@ public class RrAuditAspect {
   public Object around(ProceedingJoinPoint pjp, RrAudit rrAudit) throws Throwable {
     Object rtn = null;
     boolean ifExceptionThenInProceed = false;
-    if (enabled) {
+    if (enabled && auditLogEntityClass != null && channelEntityClass != null && tenantEntityClass != null) {
       if (pjp.getArgs().length > rrAudit.reqParamIdx() && pjp.getArgs()[rrAudit.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAudit.reqParamIdx()];
         log.info(OM3.writeValueAsString(req));

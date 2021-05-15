@@ -26,16 +26,16 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.rr.cache", value = "enabled")
+@ConditionalOnProperty(prefix = "sk.roc.rr.cache", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(RrCacheAspect.ORDER)
 public class RrCacheAspect {
   public static final int ORDER = 40000;
 
-  @Value("${sk.roc.rr.cache.enabled:false}")
+  @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;
 
-  @Autowired
+  @Autowired(required = false)
   private ZeroCache cache;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCache * *..*.*(..))")
@@ -47,7 +47,7 @@ public class RrCacheAspect {
     Object rtn = null;
     boolean proceedBefore = false;
     boolean proceedAfter = false;
-    if (enabled) {
+    if (enabled && cache != null) {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
         Ctx ctx = req.gnnCtx();

@@ -34,13 +34,13 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.rr.crypto", value = "enabled")
+@ConditionalOnProperty(prefix = "sk.roc.rr.crypto", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(RrCryptoAspect.ORDER)
 public class RrCryptoAspect {
   public static final int ORDER = 70000;
 
-  @Value("${sk.roc.rr.crypto.enabled:false}")
+  @Value("${sk.roc.rr.crypto.enabled:true}")
   private boolean enabled;
 
   @Autowired
@@ -49,10 +49,9 @@ public class RrCryptoAspect {
   @Autowired
   private CacheableDao cacheableDao;
 
-  @Autowired
+  @Autowired(required = false)
   private ChannelEntities channelEntityClass;
-
-  @Autowired
+  @Autowired(required = false)
   private UserEntities userEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCrypto * *..*.*(..))")
@@ -64,7 +63,7 @@ public class RrCryptoAspect {
     Object rtn = null;
     boolean proceedBefore = false;
     boolean proceedAfter = false;
-    if (enabled) {
+    if (enabled && channelEntityClass != null && userEntityClass != null) {
       if (pjp.getArgs().length > rrCrypto.reqParamIdx() && pjp.getArgs()[rrCrypto.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCrypto.reqParamIdx()];
         try {

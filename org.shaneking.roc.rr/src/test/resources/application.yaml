@@ -9,9 +9,6 @@ sk:
         cache:
           enabled: true
     persistence:
-      dao:
-        cache:
-          enabled: true
       entity:
         cache:
           enabled: true

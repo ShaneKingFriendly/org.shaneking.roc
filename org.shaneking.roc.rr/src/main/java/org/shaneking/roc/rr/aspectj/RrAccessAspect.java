@@ -27,13 +27,13 @@ import java.text.MessageFormat;
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.rr.access", value = "enabled")
+@ConditionalOnProperty(prefix = "sk.roc.rr.access", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(RrAccessAspect.ORDER)
 public class RrAccessAspect {
   public static final int ORDER = 50000;
 
-  @Value("${sk.roc.rr.access.enabled:false}")
+  @Value("${sk.roc.rr.access.enabled:true}")
   private boolean enabled;
 
   @Autowired
