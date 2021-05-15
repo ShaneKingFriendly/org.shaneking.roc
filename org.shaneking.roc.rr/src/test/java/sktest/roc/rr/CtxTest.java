@@ -2,7 +2,7 @@ package sktest.roc.rr;
 
 import org.junit.jupiter.api.Test;
 import org.shaneking.ling.jackson.databind.OM3;
-import org.shaneking.roc.persistence.hello.entity.HelloUserEntity;
+import org.shaneking.roc.persistence.hello.HelloUserEntity;
 import org.shaneking.roc.rr.Ctx;
 
 import static org.junit.jupiter.api.Assertions.assertAll;

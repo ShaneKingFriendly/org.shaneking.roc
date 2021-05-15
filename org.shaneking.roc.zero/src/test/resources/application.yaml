@@ -4,6 +4,9 @@ sk:
       cache:
         transactional:
           enabled: true
+      hello:
+        cache:
+          enabled: true
       net:
         address:
           enabled: true

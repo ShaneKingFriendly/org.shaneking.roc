@@ -1,7 +1,7 @@
 package sktest.roc.rr.cfg;
 
 import org.shaneking.roc.persistence.entity.sql.*;
-import org.shaneking.roc.persistence.hello.entity.*;
+import org.shaneking.roc.persistence.hello.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 

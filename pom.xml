@@ -5,13 +5,13 @@
   <parent>
     <groupId>org.shaneking</groupId>
     <artifactId>org.shaneking</artifactId>
-    <version>0.241.6.Friendly-SNAPSHOT</version>
+    <version>0.241.7.Friendly-SNAPSHOT</version>
     <relativePath>../org.shaneking</relativePath>
   </parent>
 
   <groupId>org.shaneking.roc</groupId>
   <artifactId>org.shaneking.roc</artifactId>
-  <version>0.241.6.Friendly-SNAPSHOT</version>
+  <version>0.241.7.Friendly-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>org.shaneking.roc</name>
@@ -94,7 +94,6 @@
   <modules>
     <module>org.shaneking.roc.jackson</module>
     <module>org.shaneking.roc.persistence</module>
-    <module>org.shaneking.roc.persistence.hello</module>
     <module>org.shaneking.roc.rr</module>
     <module>org.shaneking.roc.test</module>
     <module>org.shaneking.roc.zero</module>

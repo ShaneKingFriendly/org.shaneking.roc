@@ -7,7 +7,7 @@ import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
-import org.shaneking.roc.persistence.hello.entity.HelloUserEntity;
+import org.shaneking.roc.persistence.hello.HelloUserEntity;
 import org.shaneking.roc.rr.*;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
