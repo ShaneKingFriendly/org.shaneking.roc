@@ -16,13 +16,16 @@ import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.dao.CacheableDao;
+import org.shaneking.roc.persistence.entity.ReadableTenantEntities;
 import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.shaneking.roc.persistence.entity.sql.TenantEntities;
 import org.shaneking.roc.persistence.entity.sql.UserEntities;
+import org.shaneking.roc.rr.Ctx;
 import org.shaneking.roc.rr.Pri;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCrypto;
+import org.shaneking.roc.rr.service.RrAutoCreateUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -31,6 +34,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.stream.Collectors;
 
 @Aspect
 @Component
@@ -53,6 +57,9 @@ public class RrCryptoAspect {
   private ChannelEntities channelEntityClass;
   @Autowired(required = false)
   private UserEntities userEntityClass;
+
+  @Autowired(required = false)
+  private RrAutoCreateUserService autoCreateUserService;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCrypto * *..*.*(..))")
   private void pointcut() {
@@ -96,6 +103,9 @@ public class RrCryptoAspect {
               UserEntities userEntityOne = userEntityClass.entityClass().newInstance();
               userEntityOne.setNo(req.getPri().gnnExt().getUserNo());
               UserEntities userEntity = cacheableDao.one(userEntityClass.entityClass(), CacheableDao.pts(userEntityOne, List0.newArrayList(tenantEntity.getId())), true);
+              if (userEntity == null && autoCreateUserService != null) {
+                userEntity = autoCreateUserService.create(req.getPri().gnnExt().getUserNo(), tenantEntity, channelEntity, req.getCtx().getProxyChannel());
+              }
               if (userEntity == null) {
                 rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
               } else {
@@ -108,6 +118,7 @@ public class RrCryptoAspect {
                 if (auditLogEntity != null) {
                   auditLogEntity.setReqJsonStr(OM3.writeValueAsString(req));
                 }
+                initReadableTenantUserCtx(req.gnnCtx());
                 proceedBefore = true;
                 rtn = pjp.proceed();
                 proceedAfter = true;
@@ -149,5 +160,16 @@ public class RrCryptoAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  private void initReadableTenantUserCtx(Ctx ctx) {
+    try {
+      UserEntities lstUser = userEntityClass.entityClass().newInstance();
+      lstUser.setNo(ctx.getUser().getNo());
+      lstUser.forceWhereCondition(Tenanted.FIELD__TENANT_ID).resetVal(ReadableTenantEntities.calc(ctx.getCrtList(), userEntityClass.entityClass().getName(), List0.newArrayList(ctx.getUser().getTenantId())));
+      ctx.getRtuMap().putAll(cacheableDao.lst(userEntityClass.entityClass(), lstUser).stream().collect(Collectors.toMap(UserEntities::getTenantId, u -> u)));
+    } catch (Throwable throwable) {
+      log.error(OM3.p(ctx), throwable);
+    }
   }
 }

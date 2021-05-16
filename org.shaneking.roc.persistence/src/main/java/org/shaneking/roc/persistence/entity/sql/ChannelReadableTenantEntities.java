@@ -5,4 +5,6 @@ import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.roc.persistence.entity.ReadableTenantEntities;
 
 public interface ChannelReadableTenantEntities extends ReadableTenantEntities, Tenanted, Channelized {
+
+  <T extends ChannelReadableTenantEntities> Class<T> entityClass();
 }

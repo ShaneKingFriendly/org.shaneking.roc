@@ -30,7 +30,7 @@ import java.text.MessageFormat;
 @Slf4j
 @Order(RrCacheAspect.ORDER)
 public class RrCacheAspect {
-  public static final int ORDER = 40000;
+  public static final int ORDER = 60000;
 
   @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;

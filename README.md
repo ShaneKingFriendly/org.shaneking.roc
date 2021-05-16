@@ -42,3 +42,21 @@ sk:
       crypto:
         enabled: true
 ```
+
+## ConditionalOnMissingBean
+
+- persistence
+  - ApiAccessRegexEntities(**recommended**)
+  - ApiAccessSignatureEntities(optional)
+  - ApiAccessUrlEntities(**recommended**)
+  - AuditLogEntities(`required`)
+  - ChannelEntities(`required`)
+  - ChannelReadableTenantEntities(optional)
+  - TenantEntities(`required`)
+  - TenantReadableTenantEntities(optional)
+  - UserEntities(`required`)
+- rr
+  - RrAutoCreateUserService(optional)
+- zero
+  - ZeroCache(optional)
+  

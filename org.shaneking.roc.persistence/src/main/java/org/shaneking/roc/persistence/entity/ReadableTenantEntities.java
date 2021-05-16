@@ -1,27 +1,24 @@
 package org.shaneking.roc.persistence.entity;
 
-import org.apache.commons.compress.utils.Lists;
+import lombok.NonNull;
+import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.persistence.CacheableEntities;
 
 import javax.persistence.Transient;
 import java.util.List;
 
-public interface ReadableTenantEntities extends CacheableEntities {
+public interface ReadableTenantEntities extends CacheableEntities, Tenanted {
   @Transient
   String COLUMN__DEFAULT_READABLE = "default_readable";
   @Transient
   String FIELD__DEFAULT_READABLE = "defaultReadable";
 
-  String getDefaultReadable();
-
-  <T extends ReadableTenantEntities> T setDefaultReadable(String defaultReadable);
-
-  String calcReadableTenantId(String clazz);
-
-  default List<String> calcReadableTenantIds(List<? extends ReadableTenantEntities> list, String clazz) {
-    List<String> rtn = Lists.newArrayList();
-    if (list != null && !String0.isNullOrEmpty(clazz)) {
+  static List<String> calc(List<? extends ReadableTenantEntities> list, String clazz, @NonNull List<String> defaultTenantIds) {
+    List<String> rtn = List0.newArrayList();
+    rtn.addAll(defaultTenantIds);
+    if (list != null && list.size() > 0 && !String0.isNullOrEmpty(clazz)) {
       for (ReadableTenantEntities readableTenantEntities : list) {
         String tId = readableTenantEntities.calcReadableTenantId(clazz);
         if (!String0.isNullOrEmpty(tId)) {
@@ -31,4 +28,10 @@ public interface ReadableTenantEntities extends CacheableEntities {
     }
     return rtn;
   }
+
+  String getDefaultReadable();
+
+  <T extends ReadableTenantEntities> T setDefaultReadable(String defaultReadable);
+
+  String calcReadableTenantId(String clazz);
 }

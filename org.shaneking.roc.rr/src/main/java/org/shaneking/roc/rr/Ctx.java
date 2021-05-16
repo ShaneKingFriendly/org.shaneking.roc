@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.zero.util.List0;
 import org.shaneking.ling.zero.util.Map0;
-import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
-import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
-import org.shaneking.roc.persistence.entity.sql.TenantEntities;
-import org.shaneking.roc.persistence.entity.sql.UserEntities;
+import org.shaneking.roc.persistence.entity.sql.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Accessors(chain = true)
@@ -24,7 +23,7 @@ public class Ctx {
   private ChannelEntities channel;
   @Getter
   @Setter
-  private ChannelEntities proxyChannel;
+  private ChannelEntities proxyChannel;//just for api control
   @Getter
   @Setter
   private ObjectNode jon;//json object node
@@ -40,6 +39,12 @@ public class Ctx {
   @Getter
   @Setter
   private Map<String, UserEntities> rtuMap = Map0.newHashMap();//readable tenant user map
+  @Getter
+  @Setter
+  private List<ChannelReadableTenantEntities> crtList = List0.newArrayList();//channel readable tenant
+  @Getter
+  @Setter
+  private List<TenantReadableTenantEntities> trtList = List0.newArrayList();//tenant readable tenant
 
   public String gnaChannelId() {
     return getChannel() == null ? null : getChannel().getId();

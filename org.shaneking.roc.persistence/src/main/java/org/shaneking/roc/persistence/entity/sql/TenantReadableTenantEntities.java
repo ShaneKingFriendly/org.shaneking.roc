@@ -14,4 +14,6 @@ public interface TenantReadableTenantEntities extends ReadableTenantEntities, Te
   String getToTenantId();
 
   <T extends TenantReadableTenantEntities> T setToTenantId(String toTenantId);
+
+  <T extends TenantReadableTenantEntities> Class<T> entityClass();
 }

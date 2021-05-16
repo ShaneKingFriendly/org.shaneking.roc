@@ -15,9 +15,8 @@ import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.dao.NumberedCacheableDao;
-import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
-import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
-import org.shaneking.roc.persistence.entity.sql.TenantEntities;
+import org.shaneking.roc.persistence.entity.sql.*;
+import org.shaneking.roc.rr.Ctx;
 import org.shaneking.roc.rr.Pub;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAudit;
@@ -52,6 +51,11 @@ public class RrAuditAspect {
   private ChannelEntities channelEntityClass;
   @Autowired(required = false)
   private TenantEntities tenantEntityClass;
+
+  @Autowired(required = false)
+  private ChannelReadableTenantEntities channelReadableTenantEntities;
+  @Autowired(required = false)
+  private TenantReadableTenantEntities tenantReadableTenantEntities;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
   private void pointcut() {
@@ -124,6 +128,7 @@ public class RrAuditAspect {
                   req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
                 }
 
+                initReadableTenantCtx(req.gnnCtx());
                 ifExceptionThenInProceed = true;
                 rtn = pjp.proceed();
               }
@@ -172,5 +177,18 @@ public class RrAuditAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  private void initReadableTenantCtx(Ctx ctx) {
+    try {
+      if (channelReadableTenantEntities != null) {
+        ctx.getCrtList().addAll(cacheableDao.lst(channelReadableTenantEntities.entityClass(), channelReadableTenantEntities.entityClass().newInstance().setChannelId(ctx.gnaChannelId())));
+      }
+      if (tenantReadableTenantEntities != null) {
+        ctx.getTrtList().addAll(cacheableDao.lst(tenantReadableTenantEntities.entityClass(), tenantReadableTenantEntities.entityClass().newInstance().setToTenantId(ctx.gnaTenantId())));
+      }
+    } catch (Throwable throwable) {
+      log.error(OM3.p(ctx), throwable);
+    }
   }
 }
