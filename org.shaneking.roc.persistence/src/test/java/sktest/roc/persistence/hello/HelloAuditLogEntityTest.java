@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class HelloAuditLogEntityTest extends SKUnit {
 
   @Test
-  void createTableIfNotExistSql() throws IOException {
-    Files.write(tstOFiles().toPath(), new HelloAuditLogEntity().createTableIfNotExistSql().getBytes());
-    Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloAuditLogEntity().createTableIfNotExistSql().trim());
+  void createTableAndIndexIfNotExistSql() throws IOException {
+    Files.write(tstOFiles().toPath(), new HelloAuditLogEntity().createTableAndIndexIfNotExistSql().getBytes());
+    Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloAuditLogEntity().createTableAndIndexIfNotExistSql().trim());
   }
 
   @Test

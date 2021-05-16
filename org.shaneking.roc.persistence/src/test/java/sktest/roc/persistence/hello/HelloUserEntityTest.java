@@ -27,9 +27,9 @@ class HelloUserEntityTest extends SKUnit {
   }
 
   @Test
-  void createTableIfNotExistSql() throws IOException {
-    Files.write(tstOFiles().toPath(), new HelloUserEntity().createTableIfNotExistSql().getBytes());
-    Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloUserEntity().createTableIfNotExistSql().trim());
+  void createTableAndIndexIfNotExistSql() throws IOException {
+    Files.write(tstOFiles().toPath(), new HelloUserEntity().createTableAndIndexIfNotExistSql().getBytes());
+    Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new HelloUserEntity().createTableAndIndexIfNotExistSql().trim());
   }
 
   @Test

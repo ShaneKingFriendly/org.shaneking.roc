@@ -15,7 +15,7 @@ create table if not exists `t_hello_cacheable_entity` (
   primary key (`id`)
 );
 
--- HelloNumberedEntityTest_createTableIfNotExistSql_null_o.txt
+-- HelloNumberedEntityTest_createTableAndIndexIfNotExistSql_null_o.txt
 create table if not exists `t_hello_numbered_entity` (
   `version` int not null default 0,
   `id` char(40) not null,
@@ -29,7 +29,7 @@ create table if not exists `t_hello_numbered_entity` (
 
 create unique index if not exists u_idx_no on t_hello_numbered_entity(`no`);
 
--- HelloTenantedNumberedEntityTest_createTableIfNotExistSql_null_o.txt
+-- HelloTenantedNumberedEntityTest_createTableAndIndexIfNotExistSql_null_o.txt
 create table if not exists `t_hello_tenanted_numbered_entity` (
   `version` int not null default 0,
   `id` char(40) not null,
