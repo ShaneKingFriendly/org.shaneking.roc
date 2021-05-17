@@ -46,6 +46,10 @@ public class Ctx {
   @Setter
   private List<TenantReadableTenantEntities> trtList = List0.newArrayList();//tenant readable tenant
 
+  public String gnaAuditId() {
+    return getAuditLog() == null ? null : getAuditLog().getId();
+  }
+
   public String gnaChannelId() {
     return getChannel() == null ? null : getChannel().getId();
   }
