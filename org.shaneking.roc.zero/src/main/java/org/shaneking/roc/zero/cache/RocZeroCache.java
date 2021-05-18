@@ -13,10 +13,9 @@ import java.util.Map;
 
 public interface RocZeroCache extends ZeroCache {
   default Boolean del(boolean withoutTransactional, @NonNull String key) {
-    String transactionName = currentTransactionName();
-    if (!withoutTransactional && !String0.isNullOrEmpty(transactionName) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
+    if (!withoutTransactional && inTransactional()) {
       //need record operation key in transactional
-      DEL_MAP.get().computeIfAbsent(transactionName, k -> List0.newArrayList()).add(key);
+      DEL_MAP.get().computeIfAbsent(currentTransactionName(), k -> List0.newArrayList()).add(key);
     }
     LRU_MAP.remove(key);
     return true;
@@ -84,6 +83,6 @@ public interface RocZeroCache extends ZeroCache {
   }
 
   default String currentTransactionName() {
-    return currentTransactionName();
+    return TransactionSynchronizationManager.getCurrentTransactionName();
   }
 }
