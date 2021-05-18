@@ -1,4 +1,4 @@
-package sktest.roc.zero.cache.trans;
+package sktest.roc.zero.cache;
 
 
 import org.shaneking.ling.zero.cache.ZeroCache;
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @EnableTransactionManagement(order = CacheTransactionAspect.ORDER - 500)
-public class CacheTrans {
+public class RocZeroCachePrepare {
 
   @Autowired
   private ZeroCache cache;

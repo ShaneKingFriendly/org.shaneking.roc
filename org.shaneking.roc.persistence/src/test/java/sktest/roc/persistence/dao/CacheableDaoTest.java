@@ -9,7 +9,7 @@ import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import sktest.roc.persistence.HelloCacheableEntity;
+import sktest.roc.persistence.CacheableEntityPrepare;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,102 +19,102 @@ class CacheableDaoTest extends SKSpringUnit {
 
   @BeforeEach
   void beforeEach() {
-    cacheableDao.rmvByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(cacheableDao.ids(HelloCacheableEntity.class, new HelloCacheableEntity()).split(String0.COMMA)));
+    cacheableDao.rmvByIds(CacheableEntityPrepare.class, new CacheableEntityPrepare(), List0.newArrayList(cacheableDao.ids(CacheableEntityPrepare.class, new CacheableEntityPrepare()).split(String0.COMMA)));
 
-    HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
-    helloCacheableEntity.initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
-    cacheableDao.add(HelloCacheableEntity.class, helloCacheableEntity);
+    CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
+    cacheableEntityPrepare.initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
+    cacheableDao.add(CacheableEntityPrepare.class, cacheableEntityPrepare);
   }
 
   @Test
   void add() {
-    HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
-    helloCacheableEntity.initWithUserIdAndId(UUID0.cUl33(), UUID0.cUl33());
-    assertEquals(1, cacheableDao.add(HelloCacheableEntity.class, helloCacheableEntity));
+    CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
+    cacheableEntityPrepare.initWithUserIdAndId(UUID0.cUl33(), UUID0.cUl33());
+    assertEquals(1, cacheableDao.add(CacheableEntityPrepare.class, cacheableEntityPrepare));
   }
 
   @Test
   void cnt() {
-    assertEquals(Long.valueOf(1), cacheableDao.cnt(HelloCacheableEntity.class, new HelloCacheableEntity()));
+    assertEquals(Long.valueOf(1), cacheableDao.cnt(CacheableEntityPrepare.class, new CacheableEntityPrepare()));
   }
 
   @Test
   void ids() {
-    assertEquals(String0.ARY_HEX, cacheableDao.ids(HelloCacheableEntity.class, new HelloCacheableEntity()));
+    assertEquals(String0.ARY_HEX, cacheableDao.ids(CacheableEntityPrepare.class, new CacheableEntityPrepare()));
   }
 
   @Test
   void delById() {
-    assertEquals(0, cacheableDao.rmvById(HelloCacheableEntity.class, String0.ARY_DEC));
-    assertEquals(0, cacheableDao.rmvById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_DEC));
-    assertThrows(NullPointerException.class, () -> cacheableDao.rmvById(HelloCacheableEntity.class, new HelloCacheableEntity(), null));
-    assertThrows(ZeroException.class, () -> cacheableDao.rmvById(HelloCacheableEntity.class, new HelloCacheableEntity()));
+    assertEquals(0, cacheableDao.rmvById(CacheableEntityPrepare.class, String0.ARY_DEC));
+    assertEquals(0, cacheableDao.rmvById(CacheableEntityPrepare.class, new CacheableEntityPrepare(), String0.ARY_DEC));
+    assertThrows(NullPointerException.class, () -> cacheableDao.rmvById(CacheableEntityPrepare.class, new CacheableEntityPrepare(), null));
+    assertThrows(ZeroException.class, () -> cacheableDao.rmvById(CacheableEntityPrepare.class, new CacheableEntityPrepare()));
 
-    HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
-    helloCacheableEntity.setId(String0.ARY_HEX);
-    assertEquals(1, cacheableDao.rmvById(HelloCacheableEntity.class, helloCacheableEntity));
+    CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
+    cacheableEntityPrepare.setId(String0.ARY_HEX);
+    assertEquals(1, cacheableDao.rmvById(CacheableEntityPrepare.class, cacheableEntityPrepare));
   }
 
   @Test
   void delByIds() {
-    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, List0.newArrayList(String0.ARY_DEC)));
-    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, List0.newArrayList()));
-    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(String0.ARY_DEC)));
-    assertEquals(0, cacheableDao.rmvByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList()));
+    assertEquals(0, cacheableDao.rmvByIds(CacheableEntityPrepare.class, List0.newArrayList(String0.ARY_DEC)));
+    assertEquals(0, cacheableDao.rmvByIds(CacheableEntityPrepare.class, List0.newArrayList()));
+    assertEquals(0, cacheableDao.rmvByIds(CacheableEntityPrepare.class, new CacheableEntityPrepare(), List0.newArrayList(String0.ARY_DEC)));
+    assertEquals(0, cacheableDao.rmvByIds(CacheableEntityPrepare.class, new CacheableEntityPrepare(), List0.newArrayList()));
   }
 
   @Test
   void modByIdsVer() {
-    HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
-    assertThrows(ZeroException.class, () -> cacheableDao.modByIdsVer(HelloCacheableEntity.class, helloCacheableEntity, List0.newArrayList()));
-    helloCacheableEntity.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
-    assertEquals(1, cacheableDao.modByIdsVer(HelloCacheableEntity.class, helloCacheableEntity, List0.newArrayList(String0.ARY_HEX)));
+    CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
+    assertThrows(ZeroException.class, () -> cacheableDao.modByIdsVer(CacheableEntityPrepare.class, cacheableEntityPrepare, List0.newArrayList()));
+    cacheableEntityPrepare.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
+    assertEquals(1, cacheableDao.modByIdsVer(CacheableEntityPrepare.class, cacheableEntityPrepare, List0.newArrayList(String0.ARY_HEX)));
   }
 
   @Test
   void modByIdVer() {
-    HelloCacheableEntity helloCacheableEntity = new HelloCacheableEntity();
-    assertThrows(ZeroException.class, () -> cacheableDao.modByIdVer(HelloCacheableEntity.class, helloCacheableEntity));
-    helloCacheableEntity.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
-    assertEquals(1, cacheableDao.modByIdVer(HelloCacheableEntity.class, helloCacheableEntity));
+    CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
+    assertThrows(ZeroException.class, () -> cacheableDao.modByIdVer(CacheableEntityPrepare.class, cacheableEntityPrepare));
+    cacheableEntityPrepare.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
+    assertEquals(1, cacheableDao.modByIdVer(CacheableEntityPrepare.class, cacheableEntityPrepare));
   }
 
   @Test
   void lst() {
-    assertEquals(String0.ARY_HEX, cacheableDao.lst(HelloCacheableEntity.class, new HelloCacheableEntity()).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lst(CacheableEntityPrepare.class, new CacheableEntityPrepare()).get(0).getId());
   }
 
   @Test
   void lstByIds() {
-    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(String0.ARY_HEX)).get(0).getId());
-    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, List0.newArrayList(String0.ARY_HEX)).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare.class, new CacheableEntityPrepare(), List0.newArrayList(String0.ARY_HEX)).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare.class, List0.newArrayList(String0.ARY_HEX)).get(0).getId());
 
-    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList(String0.ARY_HEX, String0.ARY_DEC)).get(0).getId());
-    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, List0.newArrayList(String0.ARY_HEX, String0.ARY_DEC)).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare.class, new CacheableEntityPrepare(), List0.newArrayList(String0.ARY_HEX, String0.ARY_DEC)).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare.class, List0.newArrayList(String0.ARY_HEX, String0.ARY_DEC)).get(0).getId());
 
-    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, new HelloCacheableEntity(), List0.newArrayList()).get(0).getId());
-    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(HelloCacheableEntity.class, List0.newArrayList()).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare.class, new CacheableEntityPrepare(), List0.newArrayList()).get(0).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare.class, List0.newArrayList()).get(0).getId());
   }
 
   @Test
   void one() {
-    assertEquals(String0.ARY_HEX, cacheableDao.one(HelloCacheableEntity.class, new HelloCacheableEntity()).getId());
-    assertEquals(String0.ARY_HEX, cacheableDao.one(HelloCacheableEntity.class, new HelloCacheableEntity(), true).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.one(CacheableEntityPrepare.class, new CacheableEntityPrepare()).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.one(CacheableEntityPrepare.class, new CacheableEntityPrepare(), true).getId());
 
-    assertThrows(ZeroException.class, () -> cacheableDao.one(HelloCacheableEntity.class, (HelloCacheableEntity) new HelloCacheableEntity().setId(String0.ARY_DEC)));
-    assertNull(cacheableDao.one(HelloCacheableEntity.class, (HelloCacheableEntity) new HelloCacheableEntity().setId(String0.ARY_DEC), true));
+    assertThrows(ZeroException.class, () -> cacheableDao.one(CacheableEntityPrepare.class, (CacheableEntityPrepare) new CacheableEntityPrepare().setId(String0.ARY_DEC)));
+    assertNull(cacheableDao.one(CacheableEntityPrepare.class, (CacheableEntityPrepare) new CacheableEntityPrepare().setId(String0.ARY_DEC), true));
   }
 
   @Test
   void oneById() {
-    assertEquals(String0.ARY_HEX, cacheableDao.oneById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_HEX).getId());
-    assertEquals(String0.ARY_HEX, cacheableDao.oneById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_HEX, true).getId());
-    assertEquals(String0.ARY_HEX, cacheableDao.oneById(HelloCacheableEntity.class, String0.ARY_HEX).getId());
-    assertEquals(String0.ARY_HEX, cacheableDao.oneById(HelloCacheableEntity.class, String0.ARY_HEX, true).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.oneById(CacheableEntityPrepare.class, new CacheableEntityPrepare(), String0.ARY_HEX).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.oneById(CacheableEntityPrepare.class, new CacheableEntityPrepare(), String0.ARY_HEX, true).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.oneById(CacheableEntityPrepare.class, String0.ARY_HEX).getId());
+    assertEquals(String0.ARY_HEX, cacheableDao.oneById(CacheableEntityPrepare.class, String0.ARY_HEX, true).getId());
 
-    assertThrows(ZeroException.class, () -> cacheableDao.oneById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_DEC));
-    assertNull(cacheableDao.oneById(HelloCacheableEntity.class, new HelloCacheableEntity(), String0.ARY_DEC, true));
-    assertThrows(ZeroException.class, () -> cacheableDao.oneById(HelloCacheableEntity.class, String0.ARY_DEC));
-    assertNull(cacheableDao.oneById(HelloCacheableEntity.class, String0.ARY_DEC, true));
+    assertThrows(ZeroException.class, () -> cacheableDao.oneById(CacheableEntityPrepare.class, new CacheableEntityPrepare(), String0.ARY_DEC));
+    assertNull(cacheableDao.oneById(CacheableEntityPrepare.class, new CacheableEntityPrepare(), String0.ARY_DEC, true));
+    assertThrows(ZeroException.class, () -> cacheableDao.oneById(CacheableEntityPrepare.class, String0.ARY_DEC));
+    assertNull(cacheableDao.oneById(CacheableEntityPrepare.class, String0.ARY_DEC, true));
   }
 }

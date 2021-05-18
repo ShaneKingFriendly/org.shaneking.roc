@@ -1,10 +1,10 @@
-drop table if exists t_hello_cacheable_entity;
-drop table if exists t_hello_numbered_entity;
-drop table if exists t_hello_tenanted_numbered_entity;
+drop table if exists t_cacheable_entity_prepare;
+drop table if exists t_numbered_entity_prepare;
+drop table if exists t_tenanted_numbered_entity_prepare;
 
 
--- HelloCacheableEntityTest_createTableIfNotExistSql_null_o.txt
-create table if not exists `t_hello_cacheable_entity` (
+-- CacheableEntityTest_createTableIfNotExistSql_null_o.txt
+create table if not exists `t_cacheable_entity_prepare` (
   `version` int not null default 0,
   `id` char(40) not null,
   `dd` varchar(40) default 'N',
@@ -15,8 +15,8 @@ create table if not exists `t_hello_cacheable_entity` (
   primary key (`id`)
 );
 
--- HelloNumberedEntityTest_createTableAndIndexIfNotExistSql_null_o.txt
-create table if not exists `t_hello_numbered_entity` (
+-- NumberedEntityTest_createTableAndIndexIfNotExistSql_null_o.txt
+create table if not exists `t_numbered_entity_prepare` (
   `version` int not null default 0,
   `id` char(40) not null,
   `dd` varchar(40) default 'N',
@@ -27,10 +27,10 @@ create table if not exists `t_hello_numbered_entity` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_no on t_hello_numbered_entity(`no`);
+create unique index if not exists u_idx_no on t_numbered_entity_prepare(`no`);
 
--- HelloTenantedNumberedEntityTest_createTableAndIndexIfNotExistSql_null_o.txt
-create table if not exists `t_hello_tenanted_numbered_entity` (
+-- TenantedNumberedEntityTest_createTableAndIndexIfNotExistSql_null_o.txt
+create table if not exists `t_tenanted_numbered_entity_prepare` (
   `version` int not null default 0,
   `id` char(40) not null,
   `dd` varchar(40) default 'N',
@@ -42,12 +42,12 @@ create table if not exists `t_hello_tenanted_numbered_entity` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_no_tenant_id on t_hello_tenanted_numbered_entity(`no`,`tenant_id`);
+create unique index if not exists u_idx_no_tenant_id on t_tenanted_numbered_entity_prepare(`no`,`tenant_id`);
 
 
-select * from t_hello_cacheable_entity;
-select * from t_hello_numbered_entity;
-select * from t_hello_tenanted_numbered_entity;
+select * from t_cacheable_entity_prepare;
+select * from t_numbered_entity_prepare;
+select * from t_tenanted_numbered_entity_prepare;
 
 
 vacuum;

@@ -6,17 +6,16 @@ import org.shaneking.ling.zero.util.List0;
 import org.shaneking.ling.zero.util.Map0;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
-import sktest.roc.zero.cache.trans.CacheTrans;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RocCacheTest extends SKSpringUnit {
+class RocZeroCacheTest extends SKSpringUnit {
 
   @Autowired
   private ZeroCache cache;
 
   @Autowired
-  private CacheTrans cacheTrans;
+  private RocZeroCachePrepare rocZeroCachePrepare;
 
   @Test
   void testCache() {
@@ -40,8 +39,8 @@ class RocCacheTest extends SKSpringUnit {
   @Test
   void testTrans() {
     assertAll(
-      () -> assertDoesNotThrow(() -> cacheTrans.test(false)),
-      () -> assertThrows(RuntimeException.class, () -> cacheTrans.test(true))
+      () -> assertDoesNotThrow(() -> rocZeroCachePrepare.test(false)),
+      () -> assertThrows(RuntimeException.class, () -> rocZeroCachePrepare.test(true))
     );
   }
 }

@@ -12,6 +12,6 @@ import javax.persistence.UniqueConstraint;
 @Accessors(chain = true)
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID})})
 @ToString(callSuper = true)
-public class HelloChannelizedEntity extends ChannelizedEntity implements SqlliteSqlEntities {
+public class ChannelizedEntityPrepare extends ChannelizedEntity implements SqlliteSqlEntities {
 
 }

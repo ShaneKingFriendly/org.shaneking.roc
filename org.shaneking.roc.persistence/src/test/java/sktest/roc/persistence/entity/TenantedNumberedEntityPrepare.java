@@ -11,5 +11,5 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @Table
 @ToString(callSuper = true)
-public class HelloTenantedNumberedEntity extends TenantedEntity implements SqlliteSqlEntities, TenantedNumberedEntities {
+public class TenantedNumberedEntityPrepare extends TenantedEntity implements SqlliteSqlEntities, TenantedNumberedEntities {
 }
