@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 @ToString
 public class Pub {
   @Transient
-  public static final String ERR_CODE__REQUIRED_CHANNEL_NUMBER = "REQ_PUB__REQUIRED_CHANNEL_NUMBER";
+  public static final String ERR_CODE__REQUIRED_CHANNEL_NUMBER = "PUB__REQUIRED_CHANNEL_NUMBER";
   @Getter
   @Setter
   private String channelNo;

@@ -13,5 +13,5 @@ create table if not exists `t_hello_api_access_signature_entity` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_channel_id_tenant_id_signature on t_hello_api_access_signature_entity(`channel_id`,`tenant_id`,`signature`);
+create unique index if not exists u_idx_dd_channel_id_tenant_id_signature on t_hello_api_access_signature_entity(`dd`,`channel_id`,`tenant_id`,`signature`);
 create index if not exists dd on t_hello_api_access_signature_entity(dd);

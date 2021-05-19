@@ -5,13 +5,9 @@ import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.CacheableEntities;
 
-import javax.persistence.Transient;
 import java.util.regex.Pattern;
 
 public interface ApiAccessRegexEntities extends CacheableEntities, Tenanted, Channelized {
-  @Transient
-  String ERR_CODE__PERMISSION_DENIED = "API_ACCESS__PERMISSION_DENIED";
-
   String getAllowUrlRegex();
 
   <T extends ApiAccessRegexEntities> T setAllowUrlRegex(String allowUrlRegex);

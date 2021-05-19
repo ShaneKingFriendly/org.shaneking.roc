@@ -94,7 +94,7 @@ public class RrAccessAspect {
               ifExceptionThenInProceed = true;
               rtn = pjp.proceed();
             } else {
-              rtn = Resp.failed(ApiAccessRegexEntities.ERR_CODE__PERMISSION_DENIED, OM3.p(apiAccessRegexEntity, apiAccessUrlEntity, apiAccessSignatureEntity), req);
+              rtn = Resp.failed(ApiAccessOpEntities.ERR_CODE__PERMISSION_DENIED, OM3.p(apiAccessRegexEntity, apiAccessUrlEntity, apiAccessSignatureEntity), req);
             }
           } catch (Throwable throwable) {
             log.error(OM3.writeValueAsString(req), throwable);

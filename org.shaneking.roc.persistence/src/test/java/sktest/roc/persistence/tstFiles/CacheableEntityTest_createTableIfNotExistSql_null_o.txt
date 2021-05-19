@@ -1,4 +1,4 @@
-create table if not exists `t_hello_cacheable_entity` (
+create table if not exists `t_cacheable_entity_prepare` (
   `version` int not null default 0,
   `id` char(40) not null,
   `dd` varchar(40) default 'N',
@@ -9,4 +9,4 @@ create table if not exists `t_hello_cacheable_entity` (
   primary key (`id`)
 );
 
-create index if not exists dd on t_hello_cacheable_entity(dd);
+create index if not exists dd on t_cacheable_entity_prepare(dd);
