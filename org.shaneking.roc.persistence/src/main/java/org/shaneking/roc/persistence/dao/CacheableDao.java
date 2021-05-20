@@ -33,6 +33,10 @@ public class CacheableDao {
   private JdbcTemplate jdbcTemplate;
 
   //protectChannelInsert
+  public static <T extends CacheableEntities> T pci(@NonNull T t, String channelId) {
+    return pci(t, List0.newArrayList(channelId));
+  }
+
   public static <T extends CacheableEntities> T pci(@NonNull T t, List<String> channelIds) {
     if (t instanceof Channelized) {
       if (channelIds != null && channelIds.size() == 1) {
@@ -43,6 +47,10 @@ public class CacheableDao {
   }
 
   //protectChannelUpdate
+  public static <T extends CacheableEntities> T pcu(@NonNull T t, String channelId) {
+    return pcu(t, List0.newArrayList(channelId));
+  }
+
   public static <T extends CacheableEntities> T pcu(@NonNull T t, List<String> channelIds) {
     if (t instanceof Channelized) {
       pci(t, channelIds);
@@ -54,6 +62,10 @@ public class CacheableDao {
   }
 
   //protectChannelSelect
+  public static <T extends CacheableEntities> T pcs(@NonNull T t, String channelId) {
+    return pcs(t, List0.newArrayList(channelId));
+  }
+
   public static <T extends CacheableEntities> T pcs(@NonNull T t, List<String> channelIds) {
     if (t instanceof Channelized) {
       if (channelIds != null && channelIds.size() > 0) {
@@ -69,6 +81,10 @@ public class CacheableDao {
   }
 
   //protectTenantInsert
+  public static <T extends CacheableEntities> T pti(@NonNull T t, String tenantId) {
+    return pti(t, List0.newArrayList(tenantId));
+  }
+
   public static <T extends CacheableEntities> T pti(@NonNull T t, List<String> tenantIds) {
     if (t instanceof Tenanted) {
       if (tenantIds != null && tenantIds.size() == 1) {
@@ -79,6 +95,10 @@ public class CacheableDao {
   }
 
   //protectTenantUpdate
+  public static <T extends CacheableEntities> T ptu(@NonNull T t, String tenantId) {
+    return ptu(t, List0.newArrayList(tenantId));
+  }
+
   public static <T extends CacheableEntities> T ptu(@NonNull T t, List<String> tenantIds) {
     if (t instanceof Tenanted) {
       pti(t, tenantIds);
@@ -90,6 +110,10 @@ public class CacheableDao {
   }
 
   //protectTenantSelect
+  public static <T extends CacheableEntities> T pts(@NonNull T t, String tenantId) {
+    return pts(t, List0.newArrayList(tenantId));
+  }
+
   public static <T extends CacheableEntities> T pts(@NonNull T t, List<String> tenantIds) {
     if (t instanceof Tenanted) {
       if (tenantIds != null && tenantIds.size() > 0) {

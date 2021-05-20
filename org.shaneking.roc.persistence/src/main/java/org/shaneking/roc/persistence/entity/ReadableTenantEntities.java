@@ -15,13 +15,17 @@ public interface ReadableTenantEntities extends CacheableEntities, Tenanted {
   @Transient
   String FIELD__DEFAULT_READABLE = "defaultReadable";
 
+  static List<String> calc(List<? extends ReadableTenantEntities> list, String clazz, String defaultTenantId) {
+    return calc(list, clazz, List0.newArrayList(defaultTenantId));
+  }
+
   static List<String> calc(List<? extends ReadableTenantEntities> list, String clazz, @NonNull List<String> defaultTenantIds) {
     List<String> rtn = List0.newArrayList();
     rtn.addAll(defaultTenantIds);
     if (list != null && list.size() > 0 && !String0.isNullOrEmpty(clazz)) {
       for (ReadableTenantEntities readableTenantEntities : list) {
         String tId = readableTenantEntities.calcReadableTenantId(clazz);
-        if (!String0.isNullOrEmpty(tId)) {
+        if (!String0.isNullOrEmpty(tId) && !rtn.contains(tId)) {
           rtn.add(tId);
         }
       }
