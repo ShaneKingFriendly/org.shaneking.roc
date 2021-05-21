@@ -1,6 +1,6 @@
 package org.shaneking.roc.rr;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,8 +9,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @ToString
 public class Req<O, R> {
-  @ApiModelProperty(hidden = true)
   @Getter
+  @Schema(hidden = true)
   @Setter
   private Ctx ctx;
   @Getter
