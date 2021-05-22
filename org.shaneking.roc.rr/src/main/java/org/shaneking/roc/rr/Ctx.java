@@ -65,4 +65,8 @@ public class Ctx {
   public String gnaUserId() {
     return getUser() == null ? null : getUser().getId();
   }
+
+  public String gnaUserNo() {
+    return getUser() == null ? null : getUser().getNo();
+  }
 }
