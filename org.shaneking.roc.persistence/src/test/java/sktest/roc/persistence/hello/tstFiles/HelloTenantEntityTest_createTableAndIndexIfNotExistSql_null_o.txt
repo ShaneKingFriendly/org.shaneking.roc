@@ -11,5 +11,5 @@ create table if not exists `t_hello_tenant_entity` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_no on t_hello_tenant_entity(`no`);
+create unique index if not exists u_idx_dd_no on t_hello_tenant_entity(`dd`,`no`);
 create index if not exists dd on t_hello_tenant_entity(dd);

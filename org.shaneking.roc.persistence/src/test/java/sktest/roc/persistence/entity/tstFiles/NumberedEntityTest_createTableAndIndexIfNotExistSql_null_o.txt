@@ -9,5 +9,5 @@ create table if not exists `t_numbered_entity_prepare` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_no on t_numbered_entity_prepare(`no`);
+create unique index if not exists u_idx_dd_no on t_numbered_entity_prepare(`dd`,`no`);
 create index if not exists dd on t_numbered_entity_prepare(dd);

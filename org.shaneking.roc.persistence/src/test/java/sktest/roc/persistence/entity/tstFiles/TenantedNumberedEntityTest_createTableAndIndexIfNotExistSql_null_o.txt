@@ -10,5 +10,5 @@ create table if not exists `t_tenanted_numbered_entity_prepare` (
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_no_tenant_id on t_tenanted_numbered_entity_prepare(`no`,`tenant_id`);
+create unique index if not exists u_idx_dd_no_tenant_id on t_tenanted_numbered_entity_prepare(`dd`,`no`,`tenant_id`);
 create index if not exists dd on t_tenanted_numbered_entity_prepare(dd);
