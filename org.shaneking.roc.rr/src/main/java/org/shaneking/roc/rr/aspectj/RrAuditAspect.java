@@ -156,6 +156,7 @@ public class RrAuditAspect {
                     auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(respData.gnnCtx()));
                   }
                   respData.setCtx(null);
+                  ((Resp<?>) rtn).setNdrb(null);
                 }
                 auditLogEntity.setRespJsonStrRaw(OM3.writeValueAsString(rtn));
               }
