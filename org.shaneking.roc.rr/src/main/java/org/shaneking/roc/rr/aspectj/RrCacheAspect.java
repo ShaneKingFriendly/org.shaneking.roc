@@ -11,6 +11,7 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.Boolean0;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.rr.Ctx;
@@ -21,8 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.text.MessageFormat;
 
 @Aspect
 @Component
@@ -64,7 +63,7 @@ public class RrCacheAspect {
           }
 
           if (String0.isNullOrEmpty(respCached)) {
-            log.info(MessageFormat.format("{0} - {1}", ZeroCache.ERR_CODE__CACHE_HIT_MISS, key));
+            log.info(MF0.fmt("{0} - {1}", ZeroCache.ERR_CODE__CACHE_HIT_MISS, key));
             req.setCtx(ctx).getPub().setTracingNo(tracingNo);
             proceedBefore = true;
             rtn = pjp.proceed();
@@ -76,7 +75,7 @@ public class RrCacheAspect {
               ((Req) ((Resp<?>) rtn).getData()).setCtx(rstCtx);
             }
           } else {
-            log.info(MessageFormat.format("{0} - {1} : {2}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, respCached));
+            log.info(MF0.fmt("{0} - {1} : {2}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, respCached));
             Resp<?> resp = OM3.readValue(respCached, OM3.om().getTypeFactory().constructParametricType(Resp.class, JavaType3.resolveRtnJavaTypes(pjp)));
             ((Req<?, ?>) resp.getData()).setCtx(ctx).getPub().setTracingNo(tracingNo);
             rtn = resp;
@@ -95,7 +94,7 @@ public class RrCacheAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrCache)));
+        log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrCache)));
         rtn = pjp.proceed();
       }
     } else {

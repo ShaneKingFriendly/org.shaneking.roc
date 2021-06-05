@@ -6,9 +6,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.rr.Resp;
+import org.shaneking.ling.rr.RespException;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.ling.zero.lang.ZeroException;
+import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.util.Map0;
 import org.shaneking.ling.zero.util.concurrent.atomic.AtomicLong0;
 import org.shaneking.roc.rr.annotation.RrLimiting;
@@ -19,7 +21,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 @Order(RrLimitingAspect.ORDER)
 public class RrLimitingAspect {
-  public static final int ORDER = 30000;
+  public static final int ORDER = 40000;
 
   public static final String ERR_CODE__BUSY_NOW = "RR_LIMITING_ASPECT__BUSY_NOW";
   private final Map<String, AtomicLong> map = Map0.newConcurrentHashMap();
@@ -59,11 +60,11 @@ public class RrLimitingAspect {
             AtomicLong0.tryDecreaseFailed(atomicLong);
           }
         } else {
-          log.warn(MessageFormat.format("{0} - {1} : {2}", ERR_CODE__BUSY_NOW, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
-          throw new ZeroException(ERR_CODE__BUSY_NOW);
+          log.warn(MF0.fmt("{0} - {1} : {2}", ERR_CODE__BUSY_NOW, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
+          throw new RespException(Resp.failed(ERR_CODE__BUSY_NOW, ERR_CODE__BUSY_NOW));
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
+        log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
         rtn = pjp.proceed();
       }
     } else {

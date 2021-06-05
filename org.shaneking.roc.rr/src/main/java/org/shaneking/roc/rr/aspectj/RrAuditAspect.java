@@ -8,9 +8,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.persistence.entity.Numbered;
 import org.shaneking.ling.rr.Resp;
+import org.shaneking.ling.rr.RespException;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.net.InetAddress0;
+import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
@@ -26,15 +28,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
-
 @Aspect
 @Component
 @ConditionalOnProperty(prefix = "sk.roc.rr.audit", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(RrAuditAspect.ORDER)///small will first
 public class RrAuditAspect {
-  public static final int ORDER = 40000;
+  public static final int ORDER = 30000;
 
   @Value("${sk.roc.rr.audit.enabled:true}")
   private boolean enabled;
@@ -137,6 +137,9 @@ public class RrAuditAspect {
         } catch (Throwable throwable) {
           log.error(OM3.lp(rtn, req, auditLogEntity), throwable);
           if (ifExceptionThenInProceed) {
+            if (throwable instanceof RespException) {
+              rtn = Resp.failed(Resp.CODE_UNKNOWN_EXCEPTION, Resp.CODE_UNKNOWN_EXCEPTION, req).parseExp((RespException) throwable);
+            }
             throw throwable;
           } else {
             rtn = pjp.proceed();
@@ -171,7 +174,7 @@ public class RrAuditAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAudit)));
+        log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAudit)));
         rtn = pjp.proceed();
       }
     } else {

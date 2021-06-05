@@ -13,6 +13,7 @@ import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.dao.CacheableDao;
@@ -33,7 +34,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.stream.Collectors;
 
 @Aspect
@@ -153,7 +153,7 @@ public class RrCryptoAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrCrypto)));
+        log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrCrypto)));
         rtn = pjp.proceed();
       }
     } else {

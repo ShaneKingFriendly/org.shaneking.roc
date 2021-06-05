@@ -9,6 +9,7 @@ import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.ApiAccessOpEntities;
 import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
@@ -22,8 +23,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import java.text.MessageFormat;
 
 @Aspect
 @Component
@@ -107,7 +106,7 @@ public class RrAccessAspect {
           }
         }
       } else {
-        log.error(MessageFormat.format("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAccess)));
+        log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAccess)));
         rtn = pjp.proceed();
       }
     } else {

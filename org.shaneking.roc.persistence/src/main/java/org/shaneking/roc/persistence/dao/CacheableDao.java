@@ -12,6 +12,7 @@ import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.persistence.Tuple;
+import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.persistence.CacheableEntities;
 import org.shaneking.roc.persistence.annotation.EntityCacheEvict;
@@ -20,13 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Repository
 @Slf4j
 public class CacheableDao {
-  public static final String FMT_RESULT_NOT_EQUALS_ONE = "Result not equals one : {0} = {1}.";
+  public static final String FMT__NOT_FOUND = "Not found {0} by `{1}`";
+  public static final String FMT__DUPLICATE_RECORD = "Duplicate {0} records of {1} by `{2}`";
 
   @Autowired
   @Getter
@@ -282,6 +283,7 @@ public class CacheableDao {
   }
 
   ///if add `t` parameter, can't set `pKeyIdx = 2`. because cache will over, for example: (UserExample.class, {name:ShaneKing}, [1,2,3])
+  @Deprecated
   @EntityCacheable(rKeyPath = Identified.FIELD__ID)
   public <T extends CacheableEntities> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {
@@ -313,7 +315,11 @@ public class CacheableDao {
         log.warn(OM3.lp(lst, cacheType.getName(), t, rtnNullIfNotEqualsOne));
         return null;
       } else {
-        throw new ZeroException(MessageFormat.format(FMT_RESULT_NOT_EQUALS_ONE, cacheType.getName(), OM3.writeValueAsString(t)));
+        if (lst.size() == 0) {
+          throw new ZeroException(MF0.fmt(FMT__NOT_FOUND, cacheType.getName(), OM3.writeValueAsString(t)));
+        } else {
+          throw new ZeroException(MF0.fmt(FMT__DUPLICATE_RECORD, lst.size(), cacheType.getName(), OM3.writeValueAsString(t)));
+        }
       }
     }
   }

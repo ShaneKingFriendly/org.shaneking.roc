@@ -10,13 +10,13 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.Object0;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.roc.persistence.annotation.EntityCacheable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,11 +72,11 @@ public class EntityCacheableAspect {
               //org.shaneking.roc.persistence.dao.CacheableDao.oneById(java.lang.Class<T>, java.lang.String, boolean)
               String k = String.valueOf(String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? pKeyObj : Object0.gs(pKeyObj, entityCacheable.pKeyPath()));
               if (String0.isNull2Empty(k)) {
-                log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+                log.warn(MF0.fmt("{0} - {1}", pjp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
               } else {
                 String cached = cache.hget(clazz.getName(), k);
                 if (!String0.isNullOrEmpty(cached)) {
-                  log.info(MessageFormat.format("{0} - {1} : {2}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_ALL, cached));
+                  log.info(MF0.fmt("{0} - {1} : {2}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_ALL, cached));
                   rtn = OM3.readValue(cached, clazz, true);
                 }
               }
@@ -88,16 +88,16 @@ public class EntityCacheableAspect {
         }
         if (rtn == null) {
           if (argList != null && argList.size() == 0) {
-            log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_ALL, rtnList.size(), OM3.writeValueAsString(rtnList)));
+            log.info(MF0.fmt("{0} - {1}({2}) : {3}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_ALL, rtnList.size(), OM3.writeValueAsString(rtnList)));
             rtn = rtnList;
           } else {
             if (argList != null && argList.size() > 0 && entityCacheable.pKeyIdx() > -1) {
-              log.info(MessageFormat.format("{0} - {1}({2}) : {3}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_PART, rtnList.size(), OM3.writeValueAsString(rtnList)));
+              log.info(MF0.fmt("{0} - {1}({2}) : {3}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_PART, rtnList.size(), OM3.writeValueAsString(rtnList)));
               pjp.getArgs()[entityCacheable.pKeyIdx()] = argList;
               rtn = pjp.proceed(pjp.getArgs());
             } else {
               if (entityCacheable.pKeyIdx() > -1) {
-                log.warn(MessageFormat.format("{0} - {1}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_MISS));
+                log.warn(MF0.fmt("{0} - {1}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_MISS));
               }
               rtn = pjp.proceed();
             }
@@ -130,7 +130,7 @@ public class EntityCacheableAspect {
           }
         }
       } else {
-        log.warn(MessageFormat.format("{0} - {1}", pjp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
+        log.warn(MF0.fmt("{0} - {1}", pjp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
         rtn = pjp.proceed();
       }
     } else {
