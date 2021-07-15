@@ -104,7 +104,7 @@ public class RrCryptoAspect {
               userEntityOne.setNo(req.getPri().gnnExt().getUserNo());
               UserEntities userEntity = cacheableDao.one(userEntityClass.entityClass(), CacheableDao.pts(userEntityOne, List0.newArrayList(tenantEntity.getId())), true);
               if (userEntity == null && autoCreateUserService != null) {
-                userEntity = autoCreateUserService.create(req.getPri().gnnExt().getUserNo(), tenantEntity, channelEntity, req.getCtx().getProxyChannel());
+                userEntity = autoCreateUserService.create(req);
               }
               if (userEntity == null) {
                 rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);

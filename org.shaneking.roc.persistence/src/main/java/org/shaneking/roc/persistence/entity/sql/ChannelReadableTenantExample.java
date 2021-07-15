@@ -13,7 +13,7 @@ import javax.persistence.Column;
 @ToString(callSuper = true)
 public abstract class ChannelReadableTenantExample extends TenantedChannelizedEntity implements ChannelReadableTenantEntities {
 
-  @Column(nullable = false, length = 1, columnDefinition = "default 'Y' COMMENT ''")
+  @Column(nullable = false, length = 1, columnDefinition = "default 'N' COMMENT ''")
   @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
