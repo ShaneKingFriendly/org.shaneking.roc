@@ -283,7 +283,6 @@ public class CacheableDao {
   }
 
   ///if add `t` parameter, can't set `pKeyIdx = 2`. because cache will over, for example: (UserExample.class, {name:ShaneKing}, [1,2,3])
-  @Deprecated
   @EntityCacheable(rKeyPath = Identified.FIELD__ID)
   public <T extends CacheableEntities> List<T> lstByIds(@NonNull Class<T> cacheType, @NonNull T t, @NonNull List<String> ids) {
     try {

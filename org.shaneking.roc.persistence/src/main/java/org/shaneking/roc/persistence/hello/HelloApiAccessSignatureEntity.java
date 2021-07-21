@@ -3,6 +3,7 @@ package org.shaneking.roc.persistence.hello;
 import com.github.liaochong.myexcel.core.annotation.ExcelModel;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.persistence.entity.NumberedUniIdx;
 import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
@@ -19,7 +20,7 @@ import javax.persistence.UniqueConstraint;
 @ExcelModel(includeAllField = false, useFieldNameAsTitle = true)
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {Channelized.COLUMN__CHANNEL_ID, Tenanted.COLUMN__TENANT_ID, ApiAccessSignatureExample.COLUMN__SIGNATURE})})
 @ToString(callSuper = true)
-public class HelloApiAccessSignatureEntity extends ApiAccessSignatureExample implements SqlliteSqlEntities {
+public class HelloApiAccessSignatureEntity extends ApiAccessSignatureExample implements NumberedUniIdx, SqlliteSqlEntities {
   @Override
   public Class<? extends HelloApiAccessSignatureEntity> entityClass() {
     return this.getClass();

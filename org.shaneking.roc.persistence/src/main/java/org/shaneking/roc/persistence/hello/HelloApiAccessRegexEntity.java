@@ -3,6 +3,7 @@ package org.shaneking.roc.persistence.hello;
 import com.github.liaochong.myexcel.core.annotation.ExcelModel;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.persistence.entity.NumberedUniIdx;
 import org.shaneking.ling.persistence.entity.sql.TenantedChannelizedUniIdx;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
 import org.shaneking.roc.persistence.entity.sql.example.ApiAccessRegexExample;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @ExcelModel(includeAllField = false, useFieldNameAsTitle = true)
 @Table
 @ToString(callSuper = true)
-public class HelloApiAccessRegexEntity extends ApiAccessRegexExample implements SqlliteSqlEntities, TenantedChannelizedUniIdx {
+public class HelloApiAccessRegexEntity extends ApiAccessRegexExample implements NumberedUniIdx, SqlliteSqlEntities, TenantedChannelizedUniIdx {
   @Override
   public Class<? extends HelloApiAccessRegexEntity> entityClass() {
     return this.getClass();
