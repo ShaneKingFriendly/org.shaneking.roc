@@ -15,7 +15,7 @@ class PubTest {
   void testToString() {
     String cul33 = UUID0.cUl33();
     assertAll(
-      () -> assertEquals("Pub(channelNo=null, proxyChannelNo=null, encoded=null, jon=null, tenantNo=null, tracingNo=null)", new Pub().toString()),
+      () -> assertEquals("Pub(channelNo=null, proxyChannelNo=null, encoded=null, jon=null, tenantNo=null, tracingNo=null, reqNo=null)", new Pub().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new Pub())),
       () -> assertEquals("{\"channelNo\":\"channelNo\",\"encoded\":\"N\",\"jon\":{},\"tenantNo\":\"tenantNo\",\"tracingNo\":\"" + cul33 + "\"}", OM3.writeValueAsString(new Pub().setChannelNo("channelNo").setEncoded(String0.N).setJon(OM3.createObjectNode()).setTenantNo("tenantNo").setTracingNo(cul33)))
     );

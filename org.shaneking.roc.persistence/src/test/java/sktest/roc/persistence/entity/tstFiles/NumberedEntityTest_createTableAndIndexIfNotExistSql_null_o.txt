@@ -1,13 +1,12 @@
 create table if not exists `t_numbered_entity_prepare` (
-  `version` int not null default 0,
   `id` char(40) not null,
+  `version` int not null default 0,
   `dd` varchar(40) default 'N',
-  `no` varchar(40) default '',
   `invalid` varchar(1) default 'N',
   `last_modify_date_time` varchar(20) default '',
   `last_modify_user_id` varchar(40) default '',
+  `no` varchar(40) default '',
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_dd_no on t_numbered_entity_prepare(`dd`,`no`);
-create index if not exists dd on t_numbered_entity_prepare(dd);
+create unique index if not exists u_idx_no on t_numbered_entity_prepare(`no`);

@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.persistence.entity.NumberedUniIdx;
 import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.text.MF0;
-import org.shaneking.roc.persistence.entity.NumberedEntities;
+import org.shaneking.roc.persistence.CacheableEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -24,11 +25,11 @@ public class NumberedCacheableDao {
   @Value("${sk.roc.persistence.dao.cache.seconds:180}")
   private int cacheSeconds;
 
-  public <T extends NumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no) {
+  public <T extends CacheableEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no) {
     return oneByNo(cacheType, no, true);
   }
 
-  public <T extends NumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, boolean rtnNullIfNotEqualsOne) {
+  public <T extends CacheableEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, boolean rtnNullIfNotEqualsOne) {
     T rtn = null;
     String key = String.join(String0.MORE, cacheType.getName(), no);
     String id = cache == null ? null : cache.get(key);
@@ -49,14 +50,15 @@ public class NumberedCacheableDao {
     return rtn;
   }
 
-  private <T extends NumberedEntities> boolean eq(@NonNull String no, T t) {
+  private <T extends CacheableEntities> boolean eq(@NonNull String no, T t) {
     return t != null && no.equals(t.getNo());
   }
 
-  private <T extends NumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, boolean rtnNullIfNotEqualsOne, String key) {
+  private <T extends CacheableEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, boolean rtnNullIfNotEqualsOne, String key) {
     T rtn = null;
     try {
       T one = cacheType.newInstance();
+      assert one instanceof NumberedUniIdx;
       one.setNo(no);
       rtn = cacheableDao.one(cacheType, one, rtnNullIfNotEqualsOne);
       if (rtn != null && cache != null) {

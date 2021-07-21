@@ -41,6 +41,6 @@ class CacheableEntityTest extends SKUnit {
 
   @Test
   void testToString() {
-    assertEquals("CacheableEntityPrepare(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, dd=N, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null))", new CacheableEntityPrepare().toString());
+    assertEquals("CacheableEntityPrepare(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, version=null, dd=N, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, no=null), lastModifyUser=null))", new CacheableEntityPrepare().toString());
   }
 }

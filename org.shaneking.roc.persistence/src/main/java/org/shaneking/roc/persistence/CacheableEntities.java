@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public interface CacheableEntities extends DialectSqlEntities {
-
   Map<String, Condition> getHavingConditions();
 
   void srvHavingConditions(Map<String, Condition> conditionMap);

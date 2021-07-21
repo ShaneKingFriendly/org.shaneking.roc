@@ -70,18 +70,20 @@ public class RrAuditAspect {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAudit.reqParamIdx()];
         log.info(OM3.writeValueAsString(req));
 
-        req.getPub().setTracingNo(String0.nullOrEmptyTo(req.getPub().getTracingNo(), UUID0.cUl33()));
+        String reqNo = req.getPub().gnnReqNo();
+        String tracingNo = req.getPub().gnnTracingNo();
         AuditLogEntities auditLogEntity = null;
         try {
           auditLogEntity = auditLogEntityClass.entityClass().newInstance();
           auditLogEntity.setId(UUID0.cUl33());
+          auditLogEntity.setNo(reqNo);
           auditLogEntity.setInvalid(String0.N);
           auditLogEntity.setLastModifyDateTime(Date0.on().dateTime());
 //          auditLogEntity.setLastModifyUserId();
           auditLogEntity.setVersion(0);
 //          auditLogEntity.setChannelId();//access
 //          auditLogEntity.setTenantId();//access
-          auditLogEntity.setTracingNo(req.getPub().getTracingNo());
+          auditLogEntity.setTracingNo(tracingNo);
           auditLogEntity.setReqDatetime(Date0.on().datetimes());
 //          auditLogEntity.setReqIps();///web
 //          auditLogEntity.setReqUserId();//crypto

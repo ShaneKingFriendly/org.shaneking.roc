@@ -7,7 +7,7 @@ import org.shaneking.ling.test.SKUnit;
 import org.shaneking.ling.test.crypto.Crypto0Unit;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.entity.sql.UserExample;
+import org.shaneking.roc.persistence.entity.sql.example.UserExample;
 import org.shaneking.roc.persistence.hello.HelloUserEntity;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ class HelloUserEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloUserEntity(super=UserExample(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, dd=N, no=null, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, version=null), lastModifyUser=null), tenantId=null), name=null, haha=null, mobile=null, email=null))", new HelloUserEntity().toString()),
+      () -> Assertions.assertEquals("HelloUserEntity(super=UserExample(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, version=null, dd=N, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, no=null), lastModifyUser=null), tenantId=null), name=null, haha=null, mobile=null, email=null))", new HelloUserEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloUserEntity().nullSetter()))
     );
   }

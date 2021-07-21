@@ -4,7 +4,7 @@ import com.github.liaochong.myexcel.core.annotation.ExcelModel;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
-import org.shaneking.roc.persistence.entity.sql.AuditLogExample;
+import org.shaneking.roc.persistence.entity.sql.example.AuditLogExample;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 

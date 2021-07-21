@@ -1,4 +1,4 @@
-package org.shaneking.roc.persistence.entity.sql;
+package org.shaneking.roc.persistence.entity.sql.example;
 
 import com.github.liaochong.myexcel.core.annotation.ExcelColumn;
 import lombok.Getter;
@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.entity.TenantedEntity;
+import org.shaneking.roc.persistence.entity.sql.UserEntities;
 
 import javax.persistence.Column;
 

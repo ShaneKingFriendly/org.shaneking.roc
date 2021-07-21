@@ -1,4 +1,4 @@
-package org.shaneking.roc.persistence.entity.sql;
+package org.shaneking.roc.persistence.entity.sql.example;
 
 import com.github.liaochong.myexcel.core.annotation.ExcelColumn;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
+import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;

@@ -50,8 +50,10 @@ public class RrCacheAspect {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
         Ctx ctx = req.gnnCtx();
-        String tracingNo = req.getPub().getTracingNo();
+        String reqNo = req.getPub().gnnReqNo();
+        String tracingNo = req.getPub().gnnTracingNo();
         try {
+          req.setCtx(null).getPub().setReqNo(null);
           req.setCtx(null).getPub().setTracingNo(null);
 
           String key = String.join(String0.MORE, pjp.getSignature().toLongString(), OM3.writeValueAsString(req));
@@ -64,6 +66,7 @@ public class RrCacheAspect {
 
           if (String0.isNullOrEmpty(respCached)) {
             log.info(MF0.fmt("{0} - {1}", ZeroCache.ERR_CODE__CACHE_HIT_MISS, key));
+            req.setCtx(ctx).getPub().setReqNo(reqNo);
             req.setCtx(ctx).getPub().setTracingNo(tracingNo);
             proceedBefore = true;
             rtn = pjp.proceed();

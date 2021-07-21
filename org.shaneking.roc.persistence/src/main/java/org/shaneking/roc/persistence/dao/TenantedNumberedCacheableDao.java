@@ -4,12 +4,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.persistence.entity.sql.TenantedNumberedUniIdx;
 import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.lang.ZeroException;
 import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.util.List0;
-import org.shaneking.roc.persistence.entity.TenantedNumberedEntities;
+import org.shaneking.roc.persistence.CacheableEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -25,11 +26,11 @@ public class TenantedNumberedCacheableDao {
   @Value("${sk.roc.persistence.dao.cache.seconds:180}")
   private int cacheSeconds;
 
-  public <T extends TenantedNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId) {
+  public <T extends CacheableEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId) {
     return oneByNo(cacheType, no, tenantId, true);
   }
 
-  public <T extends TenantedNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne) {
+  public <T extends CacheableEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne) {
     T rtn = null;
     String key = String.join(String0.MORE, cacheType.getName(), tenantId, no);
     String id = cache == null ? null : cache.get(key);
@@ -50,14 +51,15 @@ public class TenantedNumberedCacheableDao {
     return rtn;
   }
 
-  private <T extends TenantedNumberedEntities> boolean eq(@NonNull String no, @NonNull String tenantId, T t) {
-    return t != null && no.equals(t.getNo()) && tenantId.equals(t.getTenantId());
+  private <T extends CacheableEntities> boolean eq(@NonNull String no, @NonNull String tenantId, T t) {
+    return t != null && no.equals(t.getNo()) && tenantId.equals(((TenantedNumberedUniIdx) t).getTenantId());
   }
 
-  private <T extends TenantedNumberedEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne, String key) {
+  private <T extends CacheableEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId, boolean rtnNullIfNotEqualsOne, String key) {
     T rtn = null;
     try {
       T one = cacheType.newInstance();
+      assert one instanceof TenantedNumberedUniIdx;
       one.setNo(no);
       rtn = cacheableDao.one(cacheType, CacheableDao.pts(one, List0.newArrayList(tenantId)), rtnNullIfNotEqualsOne);
       if (rtn != null && cache != null) {

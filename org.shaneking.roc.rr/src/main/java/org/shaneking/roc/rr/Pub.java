@@ -32,12 +32,22 @@ public class Pub {
   private String tenantNo;//if null same as channelNo
   @Getter
   @Setter
-  private String tracingNo;
+  private String tracingNo;//if null auto generate, design for series requests
+  @Getter
+  @Setter
+  private String reqNo;//if null auto generate, this is global unique
 
   public String gnnTracingNo() {
     if (String0.isNullOrEmpty(getTracingNo())) {
-      setTracingNo(UUID0.cUl33());
+      setTracingNo(gnnReqNo());
     }
     return getTracingNo();
+  }
+
+  public String gnnReqNo() {
+    if (String0.isNullOrEmpty(getReqNo())) {
+      setReqNo(UUID0.cUl33());
+    }
+    return getReqNo();
   }
 }

@@ -1,7 +1,5 @@
 package org.shaneking.roc.persistence.entity.sql;
 
-import org.shaneking.roc.persistence.entity.ApiAccessOpEntities;
-
 import javax.persistence.Transient;
 
 public interface ApiAccessUrlEntities extends ApiAccessOpEntities {

@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.persistence.entity.sql.sqllite.SqlliteSqlEntities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessSignatureExample;
+import org.shaneking.roc.persistence.entity.sql.example.ApiAccessSignatureExample;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 

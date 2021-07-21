@@ -5,7 +5,6 @@ import org.shaneking.roc.persistence.CacheableEntities;
 import javax.persistence.Transient;
 
 public interface ChannelEntities extends CacheableEntities {
-
   @Transient
   String ERR_CODE__NEED_ENCODING = "CHANNEL_ENTITIES__NEED_ENCODING";
 

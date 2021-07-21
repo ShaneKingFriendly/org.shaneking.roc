@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
-import org.shaneking.ling.persistence.AbstractEntity;
+import org.shaneking.ling.persistence.Entities;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
@@ -107,7 +107,7 @@ public class RrCryptoAspect {
                 userEntity = autoCreateUserService.create(req);
               }
               if (userEntity == null) {
-                rtn = Resp.failed(AbstractEntity.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
+                rtn = Resp.failed(Entities.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
               } else {
                 req.gnnCtx().setUser(userEntity);
                 if (req.gnnCtx().getAuditLog() != null) {

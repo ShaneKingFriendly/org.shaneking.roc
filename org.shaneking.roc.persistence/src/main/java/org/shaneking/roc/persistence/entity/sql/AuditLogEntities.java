@@ -4,8 +4,7 @@ import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.roc.persistence.CacheableEntities;
 
-public interface AuditLogEntities extends CacheableEntities, Tenanted, Channelized {
-
+public interface AuditLogEntities extends CacheableEntities, Channelized, Tenanted {
   String getProxyChannelId();
 
   <T extends AuditLogEntities> T setProxyChannelId(String proxyChannelId);

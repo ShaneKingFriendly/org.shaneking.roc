@@ -1,4 +1,4 @@
-package org.shaneking.roc.persistence.entity;
+package org.shaneking.roc.persistence.entity.sql;
 
 import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
