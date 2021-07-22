@@ -56,7 +56,7 @@ public class RrAccessAspect {
     if (enabled && (apiAccessRegexEntityClass != null || apiAccessUrlEntityClass != null || apiAccessSignatureEntityClass != null)) {
       if (pjp.getArgs().length > rrAccess.reqParamIdx() && pjp.getArgs()[rrAccess.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
-        if (String0.isNullOrEmpty(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId())) || String0.isNullOrEmpty(req.gnnCtx().gnaTenantId())) {
+        if (String0.isNullOrEmpty(req.gnnCtx().gnaChannelId()) || String0.isNullOrEmpty(req.gnnCtx().gnaTenantId())) {
           rtn = Resp.failed(TenantedChannelizedEntity.ERR_CODE__REQUIRED_CHANNEL_ID_AND_TENANT_ID, OM3.writeValueAsString(req.getPub()), req);
         } else {
           try {
@@ -68,14 +68,14 @@ public class RrAccessAspect {
             ApiAccessSignatureEntities apiAccessSignatureEntity = null;
             if (apiAccessRegexEntityClass != null) {
               ApiAccessRegexEntities apiAccessRegexEntitySelect = apiAccessRegexEntityClass.entityClass().newInstance();
-              apiAccessRegexEntitySelect.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
+              apiAccessRegexEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
               apiAccessRegexEntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
               apiAccessRegexEntity = cacheableDao.one(apiAccessRegexEntityClass.entityClass(), apiAccessRegexEntitySelect, true);
               regexPaas = apiAccessRegexEntity == null ? 0 : (apiAccessRegexEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString()) ? 1 : -1);
             }
             if (apiAccessUrlEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {
               ApiAccessUrlEntities apiAccess4EntitySelect = apiAccessUrlEntityClass.entityClass().newInstance();
-              apiAccess4EntitySelect.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
+              apiAccess4EntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
               apiAccess4EntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
               apiAccess4EntitySelect.setUrl(req.getCtx().getAuditLog().getReqUrl());
               apiAccessUrlEntity = cacheableDao.one(apiAccessUrlEntityClass.entityClass(), apiAccess4EntitySelect, true);
@@ -83,7 +83,7 @@ public class RrAccessAspect {
             }
             if (apiAccessSignatureEntityClass != null) {
               ApiAccessSignatureEntities apiAccess5EntitySelect = apiAccessSignatureEntityClass.entityClass().newInstance();
-              apiAccess5EntitySelect.setChannelId(String0.nullOrEmptyTo(req.gnnCtx().gnaProxyChannelId(), req.gnnCtx().gnaChannelId()));
+              apiAccess5EntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
               apiAccess5EntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
               apiAccess5EntitySelect.setSignature(pjp.getSignature().toLongString());
               apiAccessSignatureEntity = cacheableDao.one(apiAccessSignatureEntityClass.entityClass(), apiAccess5EntitySelect, true);

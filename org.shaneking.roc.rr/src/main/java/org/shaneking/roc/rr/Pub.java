@@ -20,9 +20,6 @@ public class Pub {
   private String channelNo;
   @Getter
   @Setter
-  private String proxyChannelNo;//ChannelA cross ChannelB call services
-  @Getter
-  @Setter
   private String encoded;//Y|N(default)
   @Getter
   @Setter

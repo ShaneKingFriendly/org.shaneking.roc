@@ -78,7 +78,7 @@ public class RrCryptoAspect {
           if (tenantEntity == null) {
             rtn = Resp.failed(Tenanted.ERR_CODE__NOT_FOUND, OM3.writeValueAsString(req.gnnCtx()), req);
           } else {
-            ChannelEntities channelEntity = req.getCtx().getProxyChannel() == null ? req.gnnCtx().getChannel() : req.getCtx().getProxyChannel();
+            ChannelEntities channelEntity = req.gnnCtx().getChannel();
             if (channelEntity == null) {
               channelEntity = channelEntityClass.entityClass().newInstance();
               channelEntity.setTokenForce(String0.N).setTokenAlgorithmType(SKC1.SK__CRYPTO__ALGORITHM_NAME).setTokenValueType(ChannelEntities.TOKEN_VALUE_TYPE__SELF);

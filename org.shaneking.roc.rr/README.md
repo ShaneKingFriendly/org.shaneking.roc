@@ -15,7 +15,8 @@
     "encoded": "Y/N。表示 pri 是否加密为 enc",
     "jon": null,
     "tenantNo": "租户编号。不传入则同 channelNo，即 tenantNo=channelNo",
-    "tracingNo": "本次请求跟踪编号。通常不传入"
+    "tracingNo": "跟踪编号（一系列请求）。通常不传入",
+    "reqNo": "请求编号（本次请求）。通常不传入"
   },
   "enc": "pri 的加密形式，或空，或无此节点。若 encoded 为 Y，且此节点为 pri 的加密形式，则 pri 节点可不存在，如果存在也会被 enc 解密出的结果覆盖",
   "pri": {
@@ -49,7 +50,8 @@
       "encoded": "原样返回",
       "jon": null,
       "tenantNo": "原样返回 或为 channelNo 值",
-      "tracingNo": "如请求未给，则生成唯一编号。否则原样返回"
+      "tracingNo": "如请求未给，则生成唯一编号。否则原样返回",
+      "reqNo": "如请求未给，则生成唯一编号。否则原样返回"
     },
     "enc": "pri 的加密形式，或空，或无此节点。若 encoded 为 Y，且此节点为 pri 的加密形式，则 pri 节点可不存在，如果存在，请使用 enc 解密出的结果覆盖",
     "pri": {

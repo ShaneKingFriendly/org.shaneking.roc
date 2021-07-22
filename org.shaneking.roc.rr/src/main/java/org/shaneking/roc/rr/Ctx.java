@@ -23,9 +23,6 @@ public class Ctx {
   private ChannelEntities channel;
   @Getter
   @Setter
-  private ChannelEntities proxyChannel;//just for api control
-  @Getter
-  @Setter
   private ObjectNode jon;//json object node
   @Getter
   @Setter
@@ -52,10 +49,6 @@ public class Ctx {
 
   public String gnaChannelId() {
     return getChannel() == null ? null : getChannel().getId();
-  }
-
-  public String gnaProxyChannelId() {
-    return getProxyChannel() == null ? null : getProxyChannel().getId();
   }
 
   public String gnaTenantId() {
