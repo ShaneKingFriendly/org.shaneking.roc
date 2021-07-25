@@ -16,7 +16,7 @@ import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
-import org.shaneking.roc.persistence.dao.NumberedCacheableDao;
+import org.shaneking.roc.persistence.dao.NumberedDao;
 import org.shaneking.roc.persistence.entity.sql.*;
 import org.shaneking.roc.rr.Ctx;
 import org.shaneking.roc.rr.Pub;
@@ -43,7 +43,7 @@ public class RrAuditAspect {
   private CacheableDao cacheableDao;
 
   @Autowired
-  private NumberedCacheableDao numberedCacheableDao;
+  private NumberedDao numberedDao;
 
   @Autowired(required = false)
   private AuditLogEntities auditLogEntityClass;
@@ -102,7 +102,7 @@ public class RrAuditAspect {
           if (req.getPub() == null || String0.isNullOrEmpty(req.getPub().getChannelNo())) {
             rtn = Resp.failed(Pub.ERR_CODE__REQUIRED_CHANNEL_NUMBER, OM3.writeValueAsString(req.getPub()), req);
           } else {
-            ChannelEntities channelEntity = numberedCacheableDao.oneByNo(channelEntityClass.entityClass(), req.getPub().getChannelNo(), true);
+            ChannelEntities channelEntity = numberedDao.oneByNo(channelEntityClass.entityClass(), req.getPub().getChannelNo(), true);
             if (channelEntity == null) {
               rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, req.getPub().getChannelNo(), req);
             } else {
@@ -111,7 +111,7 @@ public class RrAuditAspect {
                 req.gnnCtx().getAuditLog().setChannelId(channelEntity.getId());
               }
 
-              TenantEntities tenantEntity = numberedCacheableDao.oneByNo(tenantEntityClass.entityClass(), String0.nullOrEmptyTo(req.getPub().getTenantNo(), req.getPub().getChannelNo()), true);
+              TenantEntities tenantEntity = numberedDao.oneByNo(tenantEntityClass.entityClass(), String0.nullOrEmptyTo(req.getPub().getTenantNo(), req.getPub().getChannelNo()), true);
               if (tenantEntity == null) {
                 rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, String.valueOf(req.getPub().getTenantNo()), req);
               } else {
