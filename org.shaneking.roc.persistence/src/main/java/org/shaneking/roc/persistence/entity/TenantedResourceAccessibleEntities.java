@@ -12,11 +12,6 @@ import java.util.List;
 
 public interface TenantedResourceAccessibleEntities extends CacheableEntities, Tenanted, ToTenanted {
   @Transient
-  String COLUMN__TO_TENANT_ID = "to_tenant_id";
-  @Transient
-  String FIELD__TO_TENANT_ID = "toTenantId";
-
-  @Transient
   String COLUMN__DEFAULT_ACCESSIBLE = "default_accessible";
   @Transient
   String FIELD__DEFAULT_ACCESSIBLE = "defaultAccessible";
