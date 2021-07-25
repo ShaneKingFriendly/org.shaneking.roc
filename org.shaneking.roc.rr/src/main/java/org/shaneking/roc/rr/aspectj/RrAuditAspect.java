@@ -53,9 +53,9 @@ public class RrAuditAspect {
   private TenantEntities tenantEntityClass;
 
   @Autowired(required = false)
-  private ChannelReadableTenantEntities channelReadableTenantEntities;
+  private TenantReadTenantEntities tenantReadTenantEntities;
   @Autowired(required = false)
-  private TenantReadableTenantEntities tenantReadableTenantEntities;
+  private TenantUseTenantEntities tenantUseTenantEntities;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
   private void pointcut() {
@@ -120,7 +120,7 @@ public class RrAuditAspect {
                   req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
                 }
 
-                initReadableTenantCtx(req.gnnCtx());
+                initAccessibleTenantCtx(req.gnnCtx());
                 ifExceptionThenInProceed = true;
                 rtn = pjp.proceed();
               }
@@ -175,13 +175,13 @@ public class RrAuditAspect {
     return rtn;
   }
 
-  private void initReadableTenantCtx(Ctx ctx) {
+  private void initAccessibleTenantCtx(Ctx ctx) {
     try {
-      if (channelReadableTenantEntities != null) {
-        ctx.getCrtList().addAll(cacheableDao.lst(channelReadableTenantEntities.entityClass(), channelReadableTenantEntities.entityClass().newInstance().setChannelId(ctx.gnaChannelId())));
+      if (tenantUseTenantEntities != null) {
+        ctx.getTutList().addAll(cacheableDao.lst(tenantUseTenantEntities.entityClass(), tenantUseTenantEntities.entityClass().newInstance().setToTenantId(ctx.gnaTenantId())));
       }
-      if (tenantReadableTenantEntities != null) {
-        ctx.getTrtList().addAll(cacheableDao.lst(tenantReadableTenantEntities.entityClass(), tenantReadableTenantEntities.entityClass().newInstance().setToTenantId(ctx.gnaTenantId())));
+      if (tenantReadTenantEntities != null) {
+        ctx.getTrtList().addAll(cacheableDao.lst(tenantReadTenantEntities.entityClass(), tenantReadTenantEntities.entityClass().newInstance().setToTenantId(ctx.gnaTenantId())));
       }
     } catch (Throwable throwable) {
       log.error(OM3.p(ctx), throwable);

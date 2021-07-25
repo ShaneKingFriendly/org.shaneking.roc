@@ -5,17 +5,23 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
-import org.shaneking.roc.persistence.entity.sql.ChannelReadableTenantEntities;
+import org.shaneking.roc.persistence.entity.TenantedEntity;
+import org.shaneking.roc.persistence.entity.sql.TenantUseTenantEntities;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ChannelReadableTenantExample extends TenantedChannelizedEntity implements ChannelReadableTenantEntities {
+public abstract class TenantUseTenantExample extends TenantedEntity implements TenantUseTenantEntities {
+  @Column(length = 40, columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn(style = {"title->color:red"})
+  @Getter
+  @Setter
+  private String toTenantId;
+
   @Column(nullable = false, length = 1, columnDefinition = "default 'N' COMMENT ''")
   @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
-  private String defaultReadable;
+  private String defaultAccessible;
 }

@@ -17,7 +17,7 @@ import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.dao.CacheableDao;
-import org.shaneking.roc.persistence.entity.ReadableTenantEntities;
+import org.shaneking.roc.persistence.entity.TenantedResourceAccessibleEntities;
 import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 import org.shaneking.roc.persistence.entity.sql.TenantEntities;
@@ -166,7 +166,7 @@ public class RrCryptoAspect {
     try {
       UserEntities lstUser = userEntityClass.entityClass().newInstance();
       lstUser.setNo(ctx.getUser().getNo());
-      lstUser.forceWhereCondition(Tenanted.FIELD__TENANT_ID).resetVal(ReadableTenantEntities.calc(ctx.getCrtList(), userEntityClass.entityClass().getName(), List0.newArrayList(ctx.getUser().getTenantId())));
+      lstUser.forceWhereCondition(Tenanted.FIELD__TENANT_ID).resetVal(TenantedResourceAccessibleEntities.calc(ctx.getTrtList(), userEntityClass.entityClass().getName(), List0.newArrayList(ctx.getUser().getTenantId())));
       ctx.getRtuMap().putAll(cacheableDao.lst(userEntityClass.entityClass(), lstUser).stream().collect(Collectors.toMap(UserEntities::getTenantId, u -> u)));
     } catch (Throwable throwable) {
       log.error(OM3.p(ctx), throwable);

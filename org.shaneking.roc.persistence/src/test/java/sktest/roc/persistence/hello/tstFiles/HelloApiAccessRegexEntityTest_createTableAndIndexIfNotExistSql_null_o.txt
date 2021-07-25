@@ -15,4 +15,5 @@ create table if not exists `t_hello_api_access_regex_entity` (
   primary key (`id`)
 );
 
+create unique index if not exists u_idx_no on t_hello_api_access_regex_entity(`no`);
 create unique index if not exists u_idx_tenant_id_channel_id on t_hello_api_access_regex_entity(`tenant_id`,`channel_id`);

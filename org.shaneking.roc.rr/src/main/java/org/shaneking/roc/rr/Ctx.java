@@ -38,10 +38,10 @@ public class Ctx {
   private Map<String, UserEntities> rtuMap = Map0.newHashMap();//readable tenant user map
   @Getter
   @Setter
-  private List<ChannelReadableTenantEntities> crtList = List0.newArrayList();//channel readable tenant
+  private List<TenantReadTenantEntities> trtList = List0.newArrayList();//tenant read tenant
   @Getter
   @Setter
-  private List<TenantReadableTenantEntities> trtList = List0.newArrayList();//tenant readable tenant
+  private List<TenantUseTenantEntities> tutList = List0.newArrayList();//tenant use tenant
 
   public String gnaAuditId() {
     return getAuditLog() == null ? null : getAuditLog().getId();

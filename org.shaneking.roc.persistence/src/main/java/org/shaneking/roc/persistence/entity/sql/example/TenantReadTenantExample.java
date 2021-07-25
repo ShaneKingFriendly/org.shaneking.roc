@@ -6,13 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.roc.persistence.entity.TenantedEntity;
-import org.shaneking.roc.persistence.entity.sql.TenantReadableTenantEntities;
+import org.shaneking.roc.persistence.entity.sql.TenantReadTenantEntities;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class TenantReadableTenantExample extends TenantedEntity implements TenantReadableTenantEntities {
+public abstract class TenantReadTenantExample extends TenantedEntity implements TenantReadTenantEntities {
   @Column(length = 40, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn(style = {"title->color:red"})
   @Getter
@@ -23,5 +23,5 @@ public abstract class TenantReadableTenantExample extends TenantedEntity impleme
   @ExcelColumn(style = {"title->color:red"})
   @Getter
   @Setter
-  private String defaultReadable;
+  private String defaultAccessible;
 }

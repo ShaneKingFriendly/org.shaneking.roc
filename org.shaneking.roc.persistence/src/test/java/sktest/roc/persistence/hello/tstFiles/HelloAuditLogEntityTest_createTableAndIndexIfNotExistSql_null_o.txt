@@ -25,3 +25,4 @@ create table if not exists `t_hello_audit_log_entity` (
   primary key (`id`)
 );
 
+create index if not exists no on t_hello_audit_log_entity(no);

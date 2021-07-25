@@ -12,3 +12,4 @@ create table if not exists `t_hello_tenant_entity` (
 );
 
 create unique index if not exists u_idx_no on t_hello_tenant_entity(`no`);
+create unique index if not exists u_idx_name on t_hello_tenant_entity(`name`);
