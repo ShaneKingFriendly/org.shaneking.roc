@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Accessors(chain = true)
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.persistence.hello.entity", value = "enabled")
+@ConditionalOnProperty(prefix = "sk.roc.persistence.hello.entity", value = "enabled", matchIfMissing = false)
 @ExcelModel(includeAllField = false, useFieldNameAsTitle = true)
 @Table
 @ToString(callSuper = true)

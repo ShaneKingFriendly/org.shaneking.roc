@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessRegexEntities;
+import org.shaneking.roc.persistence.entity.ChannelizedEntity;
+import org.shaneking.roc.persistence.entity.sql.ChannelAccessRegexApiEntities;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ApiAccessRegexExample extends TenantedChannelizedEntity implements ApiAccessRegexEntities {
+public abstract class ChannelAccessRegexApiExample extends ChannelizedEntity implements ChannelAccessRegexApiEntities {
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

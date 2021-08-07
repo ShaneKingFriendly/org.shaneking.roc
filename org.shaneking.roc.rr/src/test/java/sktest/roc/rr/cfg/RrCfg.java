@@ -10,15 +10,15 @@ import org.springframework.context.annotation.Configuration;
 public class RrCfg {
 
   @Bean
-  @ConditionalOnMissingBean(ApiAccessRegexEntities.class)
-  public HelloApiAccessRegexEntity helloApiAccessRegexEntity() {
-    return new HelloApiAccessRegexEntity();
+  @ConditionalOnMissingBean(RrAuditLogEntities.class)
+  public HelloRrAuditLogEntity helloAuditLogEntity() {
+    return new HelloRrAuditLogEntity();
   }
 
   @Bean
-  @ConditionalOnMissingBean(AuditLogEntities.class)
-  public HelloAuditLogEntity helloAuditLogEntity() {
-    return new HelloAuditLogEntity();
+  @ConditionalOnMissingBean(ChannelAccessTenantRegexApiEntities.class)
+  public HelloChannelAccessTenantRegexApiEntity helloChannelAccessTenantRegexApiEntity() {
+    return new HelloChannelAccessTenantRegexApiEntity();
   }
 
   @Bean

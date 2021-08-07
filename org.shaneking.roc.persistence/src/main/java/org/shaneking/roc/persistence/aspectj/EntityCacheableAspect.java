@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.persistence.entity.cache", value = "enabled")
+@ConditionalOnProperty(prefix = "sk.roc.persistence.entity.cache", value = "enabled", matchIfMissing = true)
 @Slf4j
 public class EntityCacheableAspect {
   @Value("${sk.roc.persistence.entity.cache.enabled:false}")

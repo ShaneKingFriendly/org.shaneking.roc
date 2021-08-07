@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.util.List0;
 import org.shaneking.ling.zero.util.Map0;
 import org.shaneking.roc.persistence.entity.sql.*;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class Ctx {
   @Getter
   @Setter
-  private AuditLogEntities auditLog;
+  private RrAuditLogEntities auditLog;
   @Getter
   @Setter
   private ChannelEntities channel;
@@ -61,5 +62,11 @@ public class Ctx {
 
   public String gnaUserNo() {
     return getUser() == null ? null : getUser().getNo();
+  }
+
+  public String gnaUserInMessage() {
+    return getUser() == null ? null : String0.wrap(getUser().getNo()
+        + String0.wrap(getUser().getId(), String0.OPEN_BRACKET, String0.CLOSE_BRACKET, true)
+      , String0.OPEN_PARENTHESIS, String0.CLOSE_PARENTHESIS);
   }
 }

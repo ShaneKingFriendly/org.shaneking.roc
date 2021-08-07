@@ -33,6 +33,8 @@ public class Pub {
   @Getter
   @Setter
   private String reqNo;//if null auto generate, this is global unique
+  //unserviceable, if hacker ger request body, then can reset appropriate reqTimeMillis
+//  private Integer reqTimeMillis;//Secure Communication
 
   public String gnnTracingNo() {
     if (String0.isNullOrEmpty(getTracingNo())) {

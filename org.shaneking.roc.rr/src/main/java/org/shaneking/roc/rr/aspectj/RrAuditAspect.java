@@ -46,7 +46,7 @@ public class RrAuditAspect {
   private NumberedDao numberedDao;
 
   @Autowired(required = false)
-  private AuditLogEntities auditLogEntityClass;
+  private RrAuditLogEntities auditLogEntityClass;
   @Autowired(required = false)
   private ChannelEntities channelEntityClass;
   @Autowired(required = false)
@@ -72,7 +72,7 @@ public class RrAuditAspect {
 
         String reqNo = req.getPub().gnnReqNo();
         String tracingNo = req.getPub().gnnTracingNo();
-        AuditLogEntities auditLogEntity = null;
+        RrAuditLogEntities auditLogEntity = null;
         try {
           auditLogEntity = auditLogEntityClass.entityClass().newInstance();
           auditLogEntity.setId(UUID0.cUl33());

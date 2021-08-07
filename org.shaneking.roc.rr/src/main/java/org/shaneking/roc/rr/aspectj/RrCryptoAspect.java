@@ -18,8 +18,8 @@ import org.shaneking.ling.zero.util.List0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.entity.TenantedResourceAccessibleEntities;
-import org.shaneking.roc.persistence.entity.sql.AuditLogEntities;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
+import org.shaneking.roc.persistence.entity.sql.RrAuditLogEntities;
 import org.shaneking.roc.persistence.entity.sql.TenantEntities;
 import org.shaneking.roc.persistence.entity.sql.UserEntities;
 import org.shaneking.roc.rr.Ctx;
@@ -114,7 +114,7 @@ public class RrCryptoAspect {
                   req.gnnCtx().getAuditLog().setReqUserId(userEntity.getId());
                 }
 
-                AuditLogEntities auditLogEntity = req.gnnCtx().getAuditLog();
+                RrAuditLogEntities auditLogEntity = req.gnnCtx().getAuditLog();
                 if (auditLogEntity != null) {
                   auditLogEntity.setReqJsonStr(OM3.writeValueAsString(req));
                 }

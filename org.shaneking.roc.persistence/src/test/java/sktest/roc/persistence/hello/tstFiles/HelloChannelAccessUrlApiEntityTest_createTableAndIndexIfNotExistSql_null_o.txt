@@ -1,4 +1,4 @@
-create table if not exists `t_hello_channel_access_tenant_url_api_entity` (
+create table if not exists `t_hello_channel_access_url_api_entity` (
   `id` char(40) not null,
   `version` int not null default 0,
   `dd` varchar(40) default 'N',
@@ -7,11 +7,10 @@ create table if not exists `t_hello_channel_access_tenant_url_api_entity` (
   `last_modify_user_id` varchar(40) default '',
   `no` varchar(40) default '',
   `channel_id` varchar(40) default '',
-  `tenant_id` varchar(40) default '',
   `op` varchar(1) default '',
   `url` varchar(255) default '',
   primary key (`id`)
 );
 
-create unique index if not exists u_idx_channel_id_tenant_id_url on t_hello_channel_access_tenant_url_api_entity(`channel_id`,`tenant_id`,`url`);
-create unique index if not exists u_idx_tenant_id_no on t_hello_channel_access_tenant_url_api_entity(`tenant_id`,`no`);
+create unique index if not exists u_idx_channel_id_no on t_hello_channel_access_url_api_entity(`channel_id`,`no`);
+create unique index if not exists u_idx_channel_id_url on t_hello_channel_access_url_api_entity(`channel_id`,`url`);

@@ -11,11 +11,9 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
+import org.shaneking.roc.persistence.entity.ApiAccessOpEntities;
 import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessOpEntities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessRegexEntities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessSignatureEntities;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessUrlEntities;
+import org.shaneking.roc.persistence.entity.sql.*;
 import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +37,18 @@ public class RrAccessAspect {
   private CacheableDao cacheableDao;
 
   @Autowired(required = false)
-  private ApiAccessRegexEntities apiAccessRegexEntityClass;
+  private ChannelAccessRegexApiEntities channelAccessRegexApiEntityClass;
   @Autowired(required = false)
-  private ApiAccessUrlEntities apiAccessUrlEntityClass;
+  private ChannelAccessUrlApiEntities channelAccessUrlApiEntityClass;
   @Autowired(required = false)
-  private ApiAccessSignatureEntities apiAccessSignatureEntityClass;
+  private ChannelAccessSignatureApiEntities channelAccessSignatureApiEntityClass;
+
+  @Autowired(required = false)
+  private ChannelAccessTenantRegexApiEntities channelAccessTenantRegexApiEntityClass;
+  @Autowired(required = false)
+  private ChannelAccessTenantUrlApiEntities channelAccessTenantUrlApiEntityClass;
+  @Autowired(required = false)
+  private ChannelAccessTenantSignatureApiEntities channelAccessTenantSignatureApiEntityClass;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
   private void pointcut() {
@@ -53,7 +58,8 @@ public class RrAccessAspect {
   public Object around(ProceedingJoinPoint pjp, RrAccess rrAccess) throws Throwable {
     Object rtn = null;
     boolean ifExceptionThenInProceed = false;
-    if (enabled && (apiAccessRegexEntityClass != null || apiAccessUrlEntityClass != null || apiAccessSignatureEntityClass != null)) {
+    if (enabled && (channelAccessRegexApiEntityClass != null || channelAccessUrlApiEntityClass != null || channelAccessSignatureApiEntityClass != null
+      || channelAccessTenantRegexApiEntityClass != null || channelAccessTenantUrlApiEntityClass != null || channelAccessTenantSignatureApiEntityClass != null)) {
       if (pjp.getArgs().length > rrAccess.reqParamIdx() && pjp.getArgs()[rrAccess.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
         if (String0.isNullOrEmpty(req.gnnCtx().gnaChannelId()) || String0.isNullOrEmpty(req.gnnCtx().gnaTenantId())) {
@@ -63,37 +69,61 @@ public class RrAccessAspect {
             int regexPaas = 0;
             int urlPaas = 0;
             int signaturePaas = 0;
-            ApiAccessRegexEntities apiAccessRegexEntity = null;
-            ApiAccessUrlEntities apiAccessUrlEntity = null;
-            ApiAccessSignatureEntities apiAccessSignatureEntity = null;
-            if (apiAccessRegexEntityClass != null) {
-              ApiAccessRegexEntities apiAccessRegexEntitySelect = apiAccessRegexEntityClass.entityClass().newInstance();
-              apiAccessRegexEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
-              apiAccessRegexEntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
-              apiAccessRegexEntity = cacheableDao.one(apiAccessRegexEntityClass.entityClass(), apiAccessRegexEntitySelect, true);
-              regexPaas = apiAccessRegexEntity == null ? 0 : (apiAccessRegexEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString()) ? 1 : -1);
+            ChannelAccessRegexApiEntities channelAccessRegexApiEntity = null;
+            ChannelAccessUrlApiEntities channelAccessUrlApiEntity = null;
+            ChannelAccessSignatureApiEntities channelAccessSignatureApiEntity = null;
+            ChannelAccessTenantRegexApiEntities channelAccessTenantRegexApiEntity = null;
+            ChannelAccessTenantUrlApiEntities channelAccessTenantUrlApiEntity = null;
+            ChannelAccessTenantSignatureApiEntities channelAccessTenantSignatureApiEntity = null;
+            if (channelAccessRegexApiEntityClass != null) {
+              ChannelAccessRegexApiEntities channelAccessRegexApiEntitySelect = channelAccessRegexApiEntityClass.entityClass().newInstance();
+              channelAccessRegexApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
+              channelAccessRegexApiEntity = cacheableDao.one(channelAccessRegexApiEntityClass.entityClass(), channelAccessRegexApiEntitySelect, true);
+              regexPaas = channelAccessRegexApiEntity == null ? 0 : (channelAccessRegexApiEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString()) ? 1 : -1);
             }
-            if (apiAccessUrlEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {
-              ApiAccessUrlEntities apiAccess4EntitySelect = apiAccessUrlEntityClass.entityClass().newInstance();
-              apiAccess4EntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
-              apiAccess4EntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
-              apiAccess4EntitySelect.setUrl(req.getCtx().getAuditLog().getReqUrl());
-              apiAccessUrlEntity = cacheableDao.one(apiAccessUrlEntityClass.entityClass(), apiAccess4EntitySelect, true);
-              urlPaas = urlPaas + (apiAccessUrlEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(apiAccessUrlEntity.getOp()) ? 2 : (ApiAccessOpEntities.OP__DENY.equals(apiAccessUrlEntity.getOp()) ? -2 : 0)));
+            if (channelAccessUrlApiEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {
+              ChannelAccessUrlApiEntities channelAccessUrlApiEntitySelect = channelAccessUrlApiEntityClass.entityClass().newInstance();
+              channelAccessUrlApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
+              channelAccessUrlApiEntitySelect.setUrl(req.getCtx().getAuditLog().getReqUrl());
+              channelAccessUrlApiEntity = cacheableDao.one(channelAccessUrlApiEntityClass.entityClass(), channelAccessUrlApiEntitySelect, true);
+              urlPaas = urlPaas + (channelAccessUrlApiEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(channelAccessUrlApiEntity.getOp()) ? 2 : (ApiAccessOpEntities.OP__DENY.equals(channelAccessUrlApiEntity.getOp()) ? -2 : 0)));
             }
-            if (apiAccessSignatureEntityClass != null) {
-              ApiAccessSignatureEntities apiAccess5EntitySelect = apiAccessSignatureEntityClass.entityClass().newInstance();
-              apiAccess5EntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
-              apiAccess5EntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
-              apiAccess5EntitySelect.setSignature(pjp.getSignature().toLongString());
-              apiAccessSignatureEntity = cacheableDao.one(apiAccessSignatureEntityClass.entityClass(), apiAccess5EntitySelect, true);
-              signaturePaas = signaturePaas + (apiAccessSignatureEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(apiAccessSignatureEntity.getOp()) ? 2 : (ApiAccessOpEntities.OP__DENY.equals(apiAccessSignatureEntity.getOp()) ? -2 : 0)));
+            if (channelAccessSignatureApiEntityClass != null) {
+              ChannelAccessSignatureApiEntities channelAccessSignatureApiEntitySelect = channelAccessSignatureApiEntityClass.entityClass().newInstance();
+              channelAccessSignatureApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
+              channelAccessSignatureApiEntitySelect.setSignature(pjp.getSignature().toLongString());
+              channelAccessSignatureApiEntity = cacheableDao.one(channelAccessSignatureApiEntityClass.entityClass(), channelAccessSignatureApiEntitySelect, true);
+              signaturePaas = signaturePaas + (channelAccessSignatureApiEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(channelAccessSignatureApiEntity.getOp()) ? 2 : (ApiAccessOpEntities.OP__DENY.equals(channelAccessSignatureApiEntity.getOp()) ? -2 : 0)));
+            }
+
+            if (channelAccessTenantRegexApiEntityClass != null) {
+              ChannelAccessTenantRegexApiEntities channelAccessTenantRegexApiEntitySelect = channelAccessTenantRegexApiEntityClass.entityClass().newInstance();
+              channelAccessTenantRegexApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
+              channelAccessTenantRegexApiEntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
+              channelAccessTenantRegexApiEntity = cacheableDao.one(channelAccessTenantRegexApiEntityClass.entityClass(), channelAccessTenantRegexApiEntitySelect, true);
+              regexPaas = channelAccessTenantRegexApiEntity == null ? 0 : (channelAccessTenantRegexApiEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString()) ? 4 : -4);
+            }
+            if (channelAccessTenantUrlApiEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {
+              ChannelAccessTenantUrlApiEntities channelAccessTenantUrlApiEntitySelect = channelAccessTenantUrlApiEntityClass.entityClass().newInstance();
+              channelAccessTenantUrlApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
+              channelAccessTenantUrlApiEntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
+              channelAccessTenantUrlApiEntitySelect.setUrl(req.getCtx().getAuditLog().getReqUrl());
+              channelAccessTenantUrlApiEntity = cacheableDao.one(channelAccessTenantUrlApiEntityClass.entityClass(), channelAccessTenantUrlApiEntitySelect, true);
+              urlPaas = urlPaas + (channelAccessTenantUrlApiEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(channelAccessTenantUrlApiEntity.getOp()) ? 8 : (ApiAccessOpEntities.OP__DENY.equals(channelAccessTenantUrlApiEntity.getOp()) ? -8 : 0)));
+            }
+            if (channelAccessTenantSignatureApiEntityClass != null) {
+              ChannelAccessTenantSignatureApiEntities channelAccessTenantSignatureApiEntitySelect = channelAccessTenantSignatureApiEntityClass.entityClass().newInstance();
+              channelAccessTenantSignatureApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
+              channelAccessTenantSignatureApiEntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
+              channelAccessTenantSignatureApiEntitySelect.setSignature(pjp.getSignature().toLongString());
+              channelAccessTenantSignatureApiEntity = cacheableDao.one(channelAccessTenantSignatureApiEntityClass.entityClass(), channelAccessTenantSignatureApiEntitySelect, true);
+              signaturePaas = signaturePaas + (channelAccessTenantSignatureApiEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(channelAccessTenantSignatureApiEntity.getOp()) ? 8 : (ApiAccessOpEntities.OP__DENY.equals(channelAccessTenantSignatureApiEntity.getOp()) ? -8 : 0)));
             }
             if (regexPaas + urlPaas + signaturePaas > 0) {
               ifExceptionThenInProceed = true;
               rtn = pjp.proceed();
             } else {
-              rtn = Resp.failed(ApiAccessOpEntities.ERR_CODE__PERMISSION_DENIED, OM3.p(apiAccessRegexEntity, apiAccessUrlEntity, apiAccessSignatureEntity), req);
+              rtn = Resp.failed(ApiAccessOpEntities.ERR_CODE__PERMISSION_DENIED, OM3.p(channelAccessTenantRegexApiEntity, channelAccessTenantUrlApiEntity, channelAccessTenantSignatureApiEntity), req);
             }
           } catch (Throwable throwable) {
             log.error(OM3.writeValueAsString(req), throwable);

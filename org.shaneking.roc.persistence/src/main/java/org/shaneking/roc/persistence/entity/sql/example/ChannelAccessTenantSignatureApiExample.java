@@ -6,13 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
-import org.shaneking.roc.persistence.entity.sql.ApiAccessSignatureEntities;
+import org.shaneking.roc.persistence.entity.sql.ChannelAccessTenantSignatureApiEntities;
 
 import javax.persistence.Column;
 
 @Accessors(chain = true)
 @ToString(callSuper = true)
-public abstract class ApiAccessSignatureExample extends TenantedChannelizedEntity implements ApiAccessSignatureEntities {
+public abstract class ChannelAccessTenantSignatureApiExample extends TenantedChannelizedEntity implements ChannelAccessTenantSignatureApiEntities {
   @Column(length = 1, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

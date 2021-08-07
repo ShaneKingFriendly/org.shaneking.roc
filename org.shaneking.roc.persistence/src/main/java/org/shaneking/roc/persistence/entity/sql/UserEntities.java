@@ -1,13 +1,10 @@
 package org.shaneking.roc.persistence.entity.sql;
 
+import org.shaneking.ling.persistence.entity.sql.Named;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.roc.persistence.CacheableEntities;
 
-public interface UserEntities extends CacheableEntities, Tenanted {
-
-  String getName();
-
-  <T extends UserEntities> T setName(String name);
+public interface UserEntities extends CacheableEntities, Named, Tenanted {
 
   String getHaha();
 

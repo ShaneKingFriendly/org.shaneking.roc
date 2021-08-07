@@ -1,13 +1,11 @@
-package org.shaneking.roc.persistence.entity.sql;
+package org.shaneking.roc.persistence.entity;
 
-import org.shaneking.ling.persistence.entity.sql.Channelized;
-import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.CacheableEntities;
 
 import java.util.regex.Pattern;
 
-public interface ApiAccessRegexEntities extends CacheableEntities, Tenanted, Channelized {
+public interface ApiAccessRegexEntities extends CacheableEntities {
   String getAllowUrlRegex();
 
   <T extends ApiAccessRegexEntities> T setAllowUrlRegex(String allowUrlRegex);
@@ -55,7 +53,4 @@ public interface ApiAccessRegexEntities extends CacheableEntities, Tenanted, Cha
     }
     return (urlAllow || signatureAllow) && !(urlDeny || signatureDeny);
   }
-
-  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessRegexEntity
-  <T extends ApiAccessRegexEntities> Class<T> entityClass();
 }

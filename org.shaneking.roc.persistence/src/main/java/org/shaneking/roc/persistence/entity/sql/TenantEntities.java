@@ -1,12 +1,9 @@
 package org.shaneking.roc.persistence.entity.sql;
 
+import org.shaneking.ling.persistence.entity.sql.Named;
 import org.shaneking.roc.persistence.CacheableEntities;
 
-public interface TenantEntities extends CacheableEntities {
-
-  String getName();
-
-  <T extends TenantEntities> T setName(String name);
+public interface TenantEntities extends CacheableEntities, Named {
 
   String getDescription();
 
