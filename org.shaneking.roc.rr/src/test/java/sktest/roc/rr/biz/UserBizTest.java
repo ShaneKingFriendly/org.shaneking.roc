@@ -70,7 +70,7 @@ public class UserBizTest extends SKSpringUnit {
 
   HelloUserEntity userEntity(String id) {
     HelloUserEntity userEntity = new HelloUserEntity();
-    userEntity.initWithUserIdAndId("1612262610216_koFVLCNZrhezbgULWqW", id);
+    userEntity.initWithUidAndId("1612262610216_koFVLCNZrhezbgULWqW", id);
     return userEntity;
   }
 }

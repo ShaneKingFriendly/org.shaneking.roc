@@ -43,7 +43,7 @@
 ```json
 {
   "code": "0表示正常。非0表示各种异常",
-  "mesg": "异常情况下关键信息。部分场景下该节点可能不存在，比如业务处理正常",
+  "msg": "异常情况下关键信息。部分场景下该节点可能不存在，比如业务处理正常",
   "data": {
     "pub": {
       "channelNo": "原样返回",
@@ -56,6 +56,7 @@
     "enc": "pri 的加密形式，或空，或无此节点。若 encoded 为 Y，且此节点为 pri 的加密形式，则 pri 节点可不存在，如果存在，请使用 enc 解密出的结果覆盖",
     "pri": {
       "ext": {
+        "dsz": "yyyy-MM-dd HH:mm:ss.SSSXXX",
         "jon": null,
         "tbl": {
           "pagination": {

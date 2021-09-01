@@ -43,7 +43,7 @@ class HelloChannelAccessTenantRegexApiEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloChannelAccessTenantRegexApiEntity(super=ChannelAccessTenantRegexApiExample(super=TenantedChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, version=null, dd=N, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, no=null), lastModifyUser=null), channelId=null, tenantId=null), allowUrlRegex=null, allowSignatureRegex=null, denyUrlRegex=null, denySignatureRegex=null))", new HelloChannelAccessTenantRegexApiEntity().toString()),
+      () -> Assertions.assertEquals("HelloChannelAccessTenantRegexApiEntity(super=ChannelAccessTenantRegexApiExample(super=TenantedChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), channelId=null, tenantId=null), allowUrlRegex=null, allowSignatureRegex=null, denyUrlRegex=null, denySignatureRegex=null))", new HelloChannelAccessTenantRegexApiEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloChannelAccessTenantRegexApiEntity().nullSetter()))
     );
   }

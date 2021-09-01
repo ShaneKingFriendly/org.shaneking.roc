@@ -22,7 +22,7 @@ class NumberedDaoTest extends SKSpringUnit {
     numberedDao.getCacheableDao().rmvByIds(NumberedEntityPrepare.class, new NumberedEntityPrepare(), List0.newArrayList(numberedDao.getCacheableDao().ids(NumberedEntityPrepare.class, new NumberedEntityPrepare()).split(String0.COMMA)));
 
     NumberedEntityPrepare helloGlobalNumberedEntity = new NumberedEntityPrepare();
-    helloGlobalNumberedEntity.setNo(String0.ARY_HEX).initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
+    helloGlobalNumberedEntity.setNo(String0.ARY_HEX).initWithUidAndId(String0.ARY_HEX, String0.ARY_HEX);
     numberedDao.getCacheableDao().add(NumberedEntityPrepare.class, helloGlobalNumberedEntity);
   }
 

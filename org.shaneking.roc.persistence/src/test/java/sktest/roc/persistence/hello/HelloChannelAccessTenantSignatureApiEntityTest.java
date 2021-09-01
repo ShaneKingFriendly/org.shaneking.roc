@@ -28,7 +28,7 @@ class HelloChannelAccessTenantSignatureApiEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("HelloChannelAccessTenantSignatureApiEntity(super=ChannelAccessTenantSignatureApiExample(super=TenantedChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, version=null, dd=N, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, no=null), lastModifyUser=null), channelId=null, tenantId=null), op=null, signature=null))", new HelloChannelAccessTenantSignatureApiEntity().toString()),
+      () -> Assertions.assertEquals("HelloChannelAccessTenantSignatureApiEntity(super=ChannelAccessTenantSignatureApiExample(super=TenantedChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), channelId=null, tenantId=null), op=null, signature=null))", new HelloChannelAccessTenantSignatureApiEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new HelloChannelAccessTenantSignatureApiEntity().nullSetter()))
     );
   }

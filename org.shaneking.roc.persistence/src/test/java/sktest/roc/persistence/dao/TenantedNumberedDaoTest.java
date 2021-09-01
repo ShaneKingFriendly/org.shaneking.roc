@@ -22,7 +22,7 @@ class TenantedNumberedDaoTest extends SKSpringUnit {
     tenantedNumberedDao.getCacheableDao().rmvByIds(TenantedNumberedEntityPrepare.class, new TenantedNumberedEntityPrepare(), List0.newArrayList(tenantedNumberedDao.getCacheableDao().ids(TenantedNumberedEntityPrepare.class, new TenantedNumberedEntityPrepare()).split(String0.COMMA)));
 
     TenantedNumberedEntityPrepare helloGlobalNumberedEntity = new TenantedNumberedEntityPrepare();
-    helloGlobalNumberedEntity.setTenantId(String0.ALPHABET).setNo(String0.ARY_HEX).initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
+    helloGlobalNumberedEntity.setTenantId(String0.ALPHABET).setNo(String0.ARY_HEX).initWithUidAndId(String0.ARY_HEX, String0.ARY_HEX);
     tenantedNumberedDao.getCacheableDao().add(TenantedNumberedEntityPrepare.class, helloGlobalNumberedEntity);
   }
 

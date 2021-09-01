@@ -22,14 +22,14 @@ class CacheableDaoTest extends SKSpringUnit {
     cacheableDao.rmvByIds(CacheableEntityPrepare.class, new CacheableEntityPrepare(), List0.newArrayList(cacheableDao.ids(CacheableEntityPrepare.class, new CacheableEntityPrepare()).split(String0.COMMA)));
 
     CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
-    cacheableEntityPrepare.initWithUserIdAndId(String0.ARY_HEX, String0.ARY_HEX);
+    cacheableEntityPrepare.initWithUidAndId(String0.ARY_HEX, String0.ARY_HEX);
     cacheableDao.add(CacheableEntityPrepare.class, cacheableEntityPrepare);
   }
 
   @Test
   void add() {
     CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
-    cacheableEntityPrepare.initWithUserIdAndId(UUID0.cUl33(), UUID0.cUl33());
+    cacheableEntityPrepare.initWithUidAndId(UUID0.cUl33(), UUID0.cUl33());
     assertEquals(1, cacheableDao.add(CacheableEntityPrepare.class, cacheableEntityPrepare));
   }
 
@@ -67,7 +67,7 @@ class CacheableDaoTest extends SKSpringUnit {
   void modByIdsVer() {
     CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
     assertThrows(ZeroException.class, () -> cacheableDao.modByIdsVer(CacheableEntityPrepare.class, cacheableEntityPrepare, List0.newArrayList()));
-    cacheableEntityPrepare.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
+    cacheableEntityPrepare.setLmUid(String0.ARY_HEX).setId(String0.ARY_HEX);
     assertEquals(1, cacheableDao.modByIdsVer(CacheableEntityPrepare.class, cacheableEntityPrepare, List0.newArrayList(String0.ARY_HEX)));
   }
 
@@ -75,7 +75,7 @@ class CacheableDaoTest extends SKSpringUnit {
   void modByIdVer() {
     CacheableEntityPrepare cacheableEntityPrepare = new CacheableEntityPrepare();
     assertThrows(ZeroException.class, () -> cacheableDao.modByIdVer(CacheableEntityPrepare.class, cacheableEntityPrepare));
-    cacheableEntityPrepare.setLastModifyUserId(String0.ARY_HEX).setId(String0.ARY_HEX);
+    cacheableEntityPrepare.setLmUid(String0.ARY_HEX).setId(String0.ARY_HEX);
     assertEquals(1, cacheableDao.modByIdVer(CacheableEntityPrepare.class, cacheableEntityPrepare));
   }
 

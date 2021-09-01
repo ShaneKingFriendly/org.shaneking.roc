@@ -23,7 +23,7 @@ class TenantedNumberedEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("TenantedNumberedEntityPrepare(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, version=null, dd=N, invalid=null, lastModifyDateTime=null, lastModifyUserId=null, no=null), lastModifyUser=null), tenantId=null))", new TenantedNumberedEntityPrepare().toString()),
+      () -> Assertions.assertEquals("TenantedNumberedEntityPrepare(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), tenantId=null))", new TenantedNumberedEntityPrepare().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new TenantedNumberedEntityPrepare().nullSetter()))
     );
   }

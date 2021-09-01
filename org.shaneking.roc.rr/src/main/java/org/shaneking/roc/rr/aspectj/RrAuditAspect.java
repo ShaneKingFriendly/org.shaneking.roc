@@ -13,6 +13,7 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.net.InetAddress0;
 import org.shaneking.ling.zero.text.MF0;
+import org.shaneking.ling.zero.time.ZDT0;
 import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
@@ -77,10 +78,10 @@ public class RrAuditAspect {
           auditLogEntity = auditLogEntityClass.entityClass().newInstance();
           auditLogEntity.setId(UUID0.cUl33());
           auditLogEntity.setNo(reqNo);
-          auditLogEntity.setInvalid(String0.N);
-          auditLogEntity.setLastModifyDateTime(Date0.on().dateTime());
+          auditLogEntity.setIvd(String0.N);
+          auditLogEntity.setLmDsz(ZDT0.on().dTSZ());
 //          auditLogEntity.setLastModifyUserId();
-          auditLogEntity.setVersion(0);
+          auditLogEntity.setVer(0);
 //          auditLogEntity.setChannelId();//access
 //          auditLogEntity.setTenantId();//access
           auditLogEntity.setTracingNo(tracingNo);
@@ -139,8 +140,8 @@ public class RrAuditAspect {
         } finally {
           try {
             if (auditLogEntity != null) {
-              auditLogEntity.setLastModifyDateTime(Date0.on().dateTime());
-              auditLogEntity.setLastModifyUserId(auditLogEntity.getReqUserId());
+              auditLogEntity.setLmDsz(ZDT0.on().dTSZ());
+              auditLogEntity.setLmUid(auditLogEntity.getReqUserId());
               auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(req.gnnCtx()));
               req.setCtx(null);
               if (rtn != null) {
@@ -151,7 +152,7 @@ public class RrAuditAspect {
                     auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(respData.gnnCtx()));
                   }
                   respData.setCtx(null);
-                  ((Resp<?>) rtn).setNdrb(null);
+                  ((Resp<?>) rtn).setRbk(null);
                 }
                 auditLogEntity.setRespJsonStrRaw(OM3.writeValueAsString(rtn));
               }

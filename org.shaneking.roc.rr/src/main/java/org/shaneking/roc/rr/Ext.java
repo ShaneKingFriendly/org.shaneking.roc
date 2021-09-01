@@ -11,6 +11,9 @@ import lombok.experimental.Accessors;
 public class Ext {
   @Getter
   @Setter
+  private String dsz;//DateTimeSssZone
+  @Getter
+  @Setter
   private ObjectNode jon;//json object node
   @Getter
   @Setter
