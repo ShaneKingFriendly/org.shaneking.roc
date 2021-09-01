@@ -13,8 +13,8 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.net.InetAddress0;
 import org.shaneking.ling.zero.text.MF0;
+import org.shaneking.ling.zero.time.LDT0;
 import org.shaneking.ling.zero.time.ZDT0;
-import org.shaneking.ling.zero.util.Date0;
 import org.shaneking.ling.zero.util.UUID0;
 import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.dao.NumberedDao;
@@ -85,7 +85,7 @@ public class RrAuditAspect {
 //          auditLogEntity.setChannelId();//access
 //          auditLogEntity.setTenantId();//access
           auditLogEntity.setTracingNo(tracingNo);
-          auditLogEntity.setReqDatetime(Date0.on().datetimes());
+          auditLogEntity.setReqDatetime(LDT0.on().dts());
 //          auditLogEntity.setReqIps();///web
 //          auditLogEntity.setReqUserId();//crypto
           auditLogEntity.setReqJsonStrRaw(OM3.writeValueAsString(req));
@@ -156,7 +156,7 @@ public class RrAuditAspect {
                 }
                 auditLogEntity.setRespJsonStrRaw(OM3.writeValueAsString(rtn));
               }
-              auditLogEntity.setRespDatetime(Date0.on().datetimes());
+              auditLogEntity.setRespDatetime(LDT0.on().dts());
 
               log.info(OM3.writeValueAsString(auditLogEntity));
               cacheableDao.add(auditLogEntity.entityClass(), auditLogEntity);
