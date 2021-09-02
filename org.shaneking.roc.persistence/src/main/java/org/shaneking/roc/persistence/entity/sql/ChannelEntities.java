@@ -8,6 +8,8 @@ import javax.persistence.Transient;
 public interface ChannelEntities extends CacheableEntities, Named {
   @Transient
   String ERR_CODE__NEED_ENCODING = "CHANNEL_ENTITIES__NEED_ENCODING";
+  @Transient
+  String ERR_CODE__INVALID_TIMESTAMP = "CHANNEL_ENTITIES__INVALID_TIMESTAMP";
 
   @Transient
   String TOKEN_VALUE_TYPE__SELF = "SELF";
@@ -33,6 +35,10 @@ public interface ChannelEntities extends CacheableEntities, Named {
   String getTokenValueType();
 
   <T extends ChannelEntities> T setTokenValueType(String tokenValueType);
+
+  Integer getDszSeconds();
+
+  <T extends ChannelEntities> T setDszSeconds(Integer dszForce);
 
   //@see sktest.roc.rr.cfg.RrCfg.helloChannelEntity
   <T extends ChannelEntities> Class<T> entityClass();

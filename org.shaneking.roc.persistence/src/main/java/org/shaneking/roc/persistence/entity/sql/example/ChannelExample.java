@@ -48,4 +48,10 @@ public abstract class ChannelExample extends AbstractCacheableEntity implements 
   @Getter
   @Setter
   private String tokenValueType;
+
+  @Column(columnDefinition = "default 0 COMMENT ''")
+  @ExcelColumn
+  @Getter
+  @Setter
+  private Integer dszSeconds;
 }

@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Order(RrCryptoAspect.ORDER)
 public class RrCryptoAspect {
-  public static final int ORDER = 70000;
+  public static final int ORDER = 60000;
 
   @Value("${sk.roc.rr.crypto.enabled:true}")
   private boolean enabled;

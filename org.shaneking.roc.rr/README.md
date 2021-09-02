@@ -21,6 +21,7 @@
   "enc": "pri 的加密形式，或空，或无此节点。若 encoded 为 Y，且此节点为 pri 的加密形式，则 pri 节点可不存在，如果存在也会被 enc 解密出的结果覆盖",
   "pri": {
     "ext": {
+      "dsz": "yyyy-MM-dd HH:mm:ss.SSSXXX",
       "jon": null,
       "tbl": {
         "pagination": {

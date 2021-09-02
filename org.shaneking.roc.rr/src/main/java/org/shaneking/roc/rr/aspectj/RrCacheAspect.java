@@ -11,6 +11,7 @@ import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.cache.ZeroCache;
 import org.shaneking.ling.zero.lang.Boolean0;
 import org.shaneking.ling.zero.lang.String0;
+import org.shaneking.ling.zero.persistence.Tuple;
 import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.roc.jackson.JavaType3;
 import org.shaneking.roc.persistence.entity.sql.RrAuditLogEntities;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Order(RrCacheAspect.ORDER)
 public class RrCacheAspect {
-  public static final int ORDER = 60000;
+  public static final int ORDER = 80000;
 
   @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;
@@ -49,43 +50,40 @@ public class RrCacheAspect {
     if (enabled && cache != null) {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
-        Ctx ctx = req.gnnCtx();
-        String reqNo = req.getPub().gnnReqNo();
-        String tracingNo = req.getPub().gnnTracingNo();
+        Tuple.Quadruple<Ctx, String, String, String> detached = detach(req);
         try {
-          req.setCtx(null).getPub().setReqNo(null);
-          req.setCtx(null).getPub().setTracingNo(null);
+          attach(req, Tuple.of(null, null, null, null));
 
           String key = String.join(String0.MORE, pjp.getSignature().toLongString(), OM3.writeValueAsString(req));
           String respCached = cache.get(key);
 
-          RrAuditLogEntities auditLogEntity = ctx.getAuditLog();
+          RrAuditLogEntities auditLogEntity = Tuple.getFirst(detached).getAuditLog();
           if (auditLogEntity != null) {
             auditLogEntity.setCached(Boolean0.yn(!String0.isNullOrEmpty(respCached)));
           }
 
           if (String0.isNullOrEmpty(respCached)) {
             log.info(MF0.fmt("{0} - {1}", ZeroCache.ERR_CODE__CACHE_HIT_MISS, key));
-            req.setCtx(ctx).getPub().setReqNo(reqNo);
-            req.setCtx(ctx).getPub().setTracingNo(tracingNo);
+            attach(req, detached);
             proceedBefore = true;
             rtn = pjp.proceed();
             proceedAfter = true;
             if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
-              Ctx rstCtx = ((Req) ((Resp<?>) rtn).getData()).getCtx();///ctx has many abstract class, doesn't have construct.
-              ((Req) ((Resp<?>) rtn).getData()).setCtx(null);
+              Resp<?> resp = (Resp<?>) rtn;
+              Tuple.Pair<Boolean, Tuple.Quadruple<Ctx, String, String, String>> respDetached = detach(resp);
+              attach(resp, Tuple.of(null, Tuple.of(null, null, null, null)));
               cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(rtn));
-              ((Req) ((Resp<?>) rtn).getData()).setCtx(rstCtx);
+              attach(resp, respDetached);
             }
           } else {
             log.info(MF0.fmt("{0} - {1} : {2}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, respCached));
             Resp<?> resp = OM3.readValue(respCached, OM3.om().getTypeFactory().constructParametricType(Resp.class, JavaType3.resolveRtnJavaTypes(pjp)));
-            ((Req<?, ?>) resp.getData()).setCtx(ctx).getPub().setTracingNo(tracingNo);
+            attach((Req<?, ?>) resp.getData(), detached);
             rtn = resp;
           }
         } catch (Throwable throwable) {
           log.error(OM3.writeValueAsString(req), throwable);
-          req.setCtx(ctx).getPub().setTracingNo(tracingNo);
+          attach(req, detached);
           if (proceedBefore && !proceedAfter) {
             throw throwable;//process error
           } else {
@@ -104,5 +102,23 @@ public class RrCacheAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  private Tuple.Quadruple<Ctx, String, String, String> detach(Req<?, ?> req) {
+    return Tuple.of(req.gnnCtx(), req.getPub().gnnReqNo(), req.getPub().gnnTracingNo(), req.getPri().getExt().getDsz());
+  }
+
+  private void attach(Req<?, ?> req, Tuple.Quadruple<Ctx, String, String, String> detached) {
+    req.setCtx(Tuple.getFirst(detached)).getPub().setReqNo(Tuple.getSecond(detached)).setTracingNo(Tuple.getThird(detached));
+    req.getPri().getExt().setDsz(Tuple.getFourth(detached));
+  }
+
+  private Tuple.Pair<Boolean, Tuple.Quadruple<Ctx, String, String, String>> detach(Resp<?> resp) {
+    return Tuple.of(resp.getRbk(), detach((Req<?, ?>) resp.getData()));
+  }
+
+  private void attach(Resp<?> resp, Tuple.Pair<Boolean, Tuple.Quadruple<Ctx, String, String, String>> detached) {
+    resp.setRbk(Tuple.getFirst(detached));
+    attach((Req<?, ?>) resp.getData(), Tuple.getSecond(detached));
   }
 }
