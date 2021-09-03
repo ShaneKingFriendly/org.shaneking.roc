@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Order(RrAccessAspect.ORDER)
 public class RrAccessAspect {
-  public static final int ORDER = 50000;
+  public static final int ORDER = 40000;
 
   @Value("${sk.roc.rr.access.enabled:true}")
   private boolean enabled;

@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Order(RrCacheAspect.ORDER)
 public class RrCacheAspect {
-  public static final int ORDER = 80000;
+  public static final int ORDER = 70000;
 
   @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;
@@ -52,8 +52,6 @@ public class RrCacheAspect {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
         Tuple.Quadruple<Ctx, String, String, String> detached = detach(req);
         try {
-          attach(req, Tuple.of(null, null, null, null));
-
           String key = String.join(String0.MORE, pjp.getSignature().toLongString(), OM3.writeValueAsString(req));
           String respCached = cache.get(key);
 
@@ -71,7 +69,6 @@ public class RrCacheAspect {
             if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
               Resp<?> resp = (Resp<?>) rtn;
               Tuple.Pair<Boolean, Tuple.Quadruple<Ctx, String, String, String>> respDetached = detach(resp);
-              attach(resp, Tuple.of(null, Tuple.of(null, null, null, null)));
               cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(rtn));
               attach(resp, respDetached);
             }
@@ -105,20 +102,22 @@ public class RrCacheAspect {
   }
 
   private Tuple.Quadruple<Ctx, String, String, String> detach(Req<?, ?> req) {
-    return Tuple.of(req.gnnCtx(), req.getPub().gnnReqNo(), req.getPub().gnnTracingNo(), req.getPri().getExt().getDsz());
+    Tuple.Quadruple<Ctx, String, String, String> rtn = Tuple.of(req.detach(), req.getPub().gnnReqNo(), req.getPub().gnnTracingNo(), req.getPri().getExt().getDsz());
+    req.getPub().setReqNo(null).setTracingNo(null);
+    req.getPri().getExt().setDsz(null);
+    return rtn;
   }
 
   private void attach(Req<?, ?> req, Tuple.Quadruple<Ctx, String, String, String> detached) {
-    req.setCtx(Tuple.getFirst(detached)).getPub().setReqNo(Tuple.getSecond(detached)).setTracingNo(Tuple.getThird(detached));
+    req.attach(Tuple.getFirst(detached)).getPub().setReqNo(Tuple.getSecond(detached)).setTracingNo(Tuple.getThird(detached));
     req.getPri().getExt().setDsz(Tuple.getFourth(detached));
   }
 
   private Tuple.Pair<Boolean, Tuple.Quadruple<Ctx, String, String, String>> detach(Resp<?> resp) {
-    return Tuple.of(resp.getRbk(), detach((Req<?, ?>) resp.getData()));
+    return Tuple.of(resp.detach(), detach((Req<?, ?>) resp.getData()));
   }
 
   private void attach(Resp<?> resp, Tuple.Pair<Boolean, Tuple.Quadruple<Ctx, String, String, String>> detached) {
-    resp.setRbk(Tuple.getFirst(detached));
-    attach((Req<?, ?>) resp.getData(), Tuple.getSecond(detached));
+    attach((Req<?, ?>) resp.attach(Tuple.getFirst(detached)).getData(), Tuple.getSecond(detached));
   }
 }

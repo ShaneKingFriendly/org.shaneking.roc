@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Order(RrAuditAspect.ORDER)///small will first
 public class RrAuditAspect {
-  public static final int ORDER = 30000;
+  public static final int ORDER = 20000;
 
   @Value("${sk.roc.rr.audit.enabled:true}")
   private boolean enabled;
@@ -142,17 +142,16 @@ public class RrAuditAspect {
             if (auditLogEntity != null) {
               auditLogEntity.setLmDsz(ZDT0.on().dTSZ());
               auditLogEntity.setLmUid(auditLogEntity.getReqUserId());
-              auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(req.gnnCtx()));
-              req.setCtx(null);
+              auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(req.detach()));
               if (rtn != null) {
                 if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
                   //cached scenario
                   Req<?, ?> respData = (Req<?, ?>) ((Resp<?>) rtn).getData();
                   if (OM3.OBJECT_ERROR_STRING.equalsIgnoreCase(auditLogEntity.getRespJsonStrCtx())) {
-                    auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(respData.gnnCtx()));
+                    auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(respData.detach()));
                   }
-                  respData.setCtx(null);
-                  ((Resp<?>) rtn).setRbk(null);
+                  respData.detach();
+                  ((Resp<?>) rtn).detach();
                 }
                 auditLogEntity.setRespJsonStrRaw(OM3.writeValueAsString(rtn));
               }

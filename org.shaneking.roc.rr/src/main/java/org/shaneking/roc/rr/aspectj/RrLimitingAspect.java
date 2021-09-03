@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 @Order(RrLimitingAspect.ORDER)
 public class RrLimitingAspect {
-  public static final int ORDER = 40000;
+  public static final int ORDER = 30000;
 
   public static final String ERR_CODE__BUSY_NOW = "RR_LIMITING_ASPECT__BUSY_NOW";
   private final Map<String, AtomicLong> map = Map0.newConcurrentHashMap();

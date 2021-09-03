@@ -8,4 +8,6 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 public @interface RrAsync {
   int reqParamIdx() default 0;
+
+  Class<?> rtnType();
 }

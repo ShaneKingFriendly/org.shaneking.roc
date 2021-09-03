@@ -28,7 +28,7 @@ import java.time.ZonedDateTime;
 @Slf4j
 @Order(RrDszAspect.ORDER)
 public class RrDszAspect {
-  public static final int ORDER = 70000;
+  public static final int ORDER = 60000;
 
   @Value("${sk.roc.rr.dsz.enabled:true}")
   private boolean enabled;

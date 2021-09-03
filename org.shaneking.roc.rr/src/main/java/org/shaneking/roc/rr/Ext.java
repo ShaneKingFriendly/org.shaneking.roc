@@ -11,6 +11,9 @@ import lombok.experimental.Accessors;
 public class Ext {
   @Getter
   @Setter
+  private Integer async;//seconds
+  @Getter
+  @Setter
   private String dsz;//DateTimeSssZone
   @Getter
   @Setter

@@ -49,4 +49,15 @@ public class Req<O, R> {
     }
     return getCtx();
   }
+
+  public Ctx detach() {
+    Ctx rtn = ctx;
+    ctx = null;
+    return rtn;
+  }
+
+  public Req<O, R> attach(Ctx ctx) {
+    this.ctx = ctx;
+    return this;
+  }
 }
