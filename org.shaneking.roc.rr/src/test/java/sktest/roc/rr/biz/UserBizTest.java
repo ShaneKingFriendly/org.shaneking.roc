@@ -61,11 +61,11 @@ public class UserBizTest extends SKSpringUnit {
   }
 
   Pub pub() {
-    return new Pub().setTenantNo("tstTenantNo").setChannelNo("tstChannelNo");
+    return new Pub().setChannelNo("tstChannelNo");
   }
 
   Ext ext() {
-    return new Ext().setUserNo("tstUserNo");
+    return new Ext().setTenantNo("tstTenantNo").setUserNo("tstUserNo");
   }
 
   HelloUserEntity userEntity(String id) {

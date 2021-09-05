@@ -39,7 +39,7 @@ public interface CacheableEntities extends DialectSqlEntities {
       conditionMap = Map0.newHashMap();
       this.srvHavingConditions(conditionMap);
     }
-    return conditionMap.keySet().parallelStream().filter(Objects::nonNull).filter(s -> s.equals(fieldName) || s.startsWith(fieldName + String0.UNDERLINE + String0.UNDERLINE)).map(s -> this.getHavingConditions().get(s)).collect(Collectors.toList());
+    return conditionMap.keySet().stream().filter(Objects::nonNull).filter(s -> s.equals(fieldName) || s.startsWith(fieldName + String0.UNDERLINE + String0.UNDERLINE)).map(s -> this.getHavingConditions().get(s)).collect(Collectors.toList());
   }
 
   @Override
@@ -49,7 +49,7 @@ public interface CacheableEntities extends DialectSqlEntities {
       conditionMap = Map0.newHashMap();
       this.srvWhereConditions(conditionMap);
     }
-    return conditionMap.keySet().parallelStream().filter(Objects::nonNull).filter(s -> s.equals(fieldName) || s.startsWith(fieldName + String0.UNDERLINE + String0.UNDERLINE)).map(s -> this.getWhereConditions().get(s)).collect(Collectors.toList());
+    return conditionMap.keySet().stream().filter(Objects::nonNull).filter(s -> s.equals(fieldName) || s.startsWith(fieldName + String0.UNDERLINE + String0.UNDERLINE)).map(s -> this.getWhereConditions().get(s)).collect(Collectors.toList());
   }
 
   default Condition forceCondition(@NonNull Map<String, Condition> conditionMap, @NonNull String field) {

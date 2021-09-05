@@ -10,15 +10,16 @@ import org.shaneking.ling.persistence.entity.Numbered;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.rr.RespException;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
+import org.shaneking.ling.zero.lang.Object0;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.net.InetAddress0;
 import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.time.LDT0;
 import org.shaneking.ling.zero.time.ZDT0;
 import org.shaneking.ling.zero.util.UUID0;
-import org.shaneking.roc.persistence.dao.CacheableDao;
 import org.shaneking.roc.persistence.dao.NumberedDao;
-import org.shaneking.roc.persistence.entity.sql.*;
+import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
+import org.shaneking.roc.persistence.entity.sql.RrAuditLogEntities;
 import org.shaneking.roc.rr.Ctx;
 import org.shaneking.roc.rr.Pub;
 import org.shaneking.roc.rr.Req;
@@ -41,22 +42,12 @@ public class RrAuditAspect {
   private boolean enabled;
 
   @Autowired
-  private CacheableDao cacheableDao;
-
-  @Autowired
   private NumberedDao numberedDao;
 
   @Autowired(required = false)
   private RrAuditLogEntities auditLogEntityClass;
   @Autowired(required = false)
   private ChannelEntities channelEntityClass;
-  @Autowired(required = false)
-  private TenantEntities tenantEntityClass;
-
-  @Autowired(required = false)
-  private TenantReadTenantEntities tenantReadTenantEntities;
-  @Autowired(required = false)
-  private TenantUseTenantEntities tenantUseTenantEntities;
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
   private void pointcut() {
@@ -66,7 +57,7 @@ public class RrAuditAspect {
   public Object around(ProceedingJoinPoint pjp, RrAudit rrAudit) throws Throwable {
     Object rtn = null;
     boolean ifExceptionThenInProceed = false;
-    if (enabled && auditLogEntityClass != null && channelEntityClass != null && tenantEntityClass != null) {
+    if (enabled && auditLogEntityClass != null && channelEntityClass != null) {
       if (pjp.getArgs().length > rrAudit.reqParamIdx() && pjp.getArgs()[rrAudit.reqParamIdx()] instanceof Req) {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAudit.reqParamIdx()];
         log.info(OM3.writeValueAsString(req));
@@ -80,10 +71,10 @@ public class RrAuditAspect {
           auditLogEntity.setNo(reqNo);
           auditLogEntity.setIvd(String0.N);
           auditLogEntity.setLmDsz(ZDT0.on().dTSZ());
-//          auditLogEntity.setLastModifyUserId();
+//          auditLogEntity.setLmUid();
           auditLogEntity.setVer(0);
-//          auditLogEntity.setChannelId();//access
-//          auditLogEntity.setTenantId();//access
+//          auditLogEntity.setChannelId();
+//          auditLogEntity.setTenantId();//crypto
           auditLogEntity.setTracingNo(tracingNo);
           auditLogEntity.setReqDatetime(LDT0.on().dts());
 //          auditLogEntity.setReqIps();///web
@@ -112,19 +103,8 @@ public class RrAuditAspect {
                 req.gnnCtx().getAuditLog().setChannelId(channelEntity.getId());
               }
 
-              TenantEntities tenantEntity = numberedDao.oneByNo(tenantEntityClass.entityClass(), String0.nullOrEmptyTo(req.getPub().getTenantNo(), req.getPub().getChannelNo()), true);
-              if (tenantEntity == null) {
-                rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, String.valueOf(req.getPub().getTenantNo()), req);
-              } else {
-                req.gnnCtx().setTenant(tenantEntity);
-                if (req.gnnCtx().getAuditLog() != null) {
-                  req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
-                }
-
-                initAccessibleTenantCtx(req.gnnCtx());
-                ifExceptionThenInProceed = true;
-                rtn = pjp.proceed();
-              }
+              ifExceptionThenInProceed = true;
+              rtn = pjp.proceed();
             }
           }
         } catch (Throwable throwable) {
@@ -132,8 +112,9 @@ public class RrAuditAspect {
           if (ifExceptionThenInProceed) {
             if (throwable instanceof RespException) {
               rtn = Resp.failed(Resp.CODE_UNKNOWN_EXCEPTION, Resp.CODE_UNKNOWN_EXCEPTION, req).parseExp((RespException) throwable);
+            } else {
+              throw throwable;
             }
-            throw throwable;
           } else {
             rtn = pjp.proceed();
           }
@@ -142,23 +123,30 @@ public class RrAuditAspect {
             if (auditLogEntity != null) {
               auditLogEntity.setLmDsz(ZDT0.on().dTSZ());
               auditLogEntity.setLmUid(auditLogEntity.getReqUserId());
-              auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(req.detach()));
+              Ctx reqCtx = req.detach();
+              auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(reqCtx));
               if (rtn != null) {
                 if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
-                  //cached scenario
-                  Req<?, ?> respData = (Req<?, ?>) ((Resp<?>) rtn).getData();
-                  if (OM3.OBJECT_ERROR_STRING.equalsIgnoreCase(auditLogEntity.getRespJsonStrCtx())) {
-                    auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(respData.detach()));
+                  Resp<?> resp = (Resp<?>) rtn;
+                  if (resp.getData() instanceof Req) {
+                    Req<?, ?> respData = (Req<?, ?>) resp.getData();
+                    if (Object0.NULL.equals(auditLogEntity.getRespJsonStrCtx())
+                      || OM3.OBJECT_ERROR_STRING.equals(auditLogEntity.getRespJsonStrCtx())
+                      || OM3.writeValueAsString(new Ctx()).equals(auditLogEntity.getRespJsonStrCtx())) {
+                      //maybe cached scenario
+                      Ctx respCtx = respData.detach();
+                      auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(respCtx));
+                    }
+                    respData.detach();//maybe is detach again
                   }
-                  respData.detach();
-                  ((Resp<?>) rtn).detach();
+                  resp.detach();
                 }
                 auditLogEntity.setRespJsonStrRaw(OM3.writeValueAsString(rtn));
               }
               auditLogEntity.setRespDatetime(LDT0.on().dts());
 
               log.info(OM3.writeValueAsString(auditLogEntity));
-              cacheableDao.add(auditLogEntity.entityClass(), auditLogEntity);
+              numberedDao.getCacheableDao().add(auditLogEntity.entityClass(), auditLogEntity);
             }
           } catch (Throwable throwable) {
             ///ignore exception : just audit log error, business succeeded
@@ -173,18 +161,5 @@ public class RrAuditAspect {
       rtn = pjp.proceed();
     }
     return rtn;
-  }
-
-  private void initAccessibleTenantCtx(Ctx ctx) {
-    try {
-      if (tenantUseTenantEntities != null) {
-        ctx.getTutList().addAll(cacheableDao.lst(tenantUseTenantEntities.entityClass(), tenantUseTenantEntities.entityClass().newInstance().setToTenantId(ctx.gnaTenantId())));
-      }
-      if (tenantReadTenantEntities != null) {
-        ctx.getTrtList().addAll(cacheableDao.lst(tenantReadTenantEntities.entityClass(), tenantReadTenantEntities.entityClass().newInstance().setToTenantId(ctx.gnaTenantId())));
-      }
-    } catch (Throwable throwable) {
-      log.error(OM3.p(ctx), throwable);
-    }
   }
 }

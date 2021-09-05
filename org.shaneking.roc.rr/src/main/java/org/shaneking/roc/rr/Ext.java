@@ -23,6 +23,9 @@ public class Ext {
   private Tbl tbl;
   @Getter
   @Setter
+  private String tenantNo;//if null same as channelNo
+  @Getter
+  @Setter
   private String userNo;
 
   public Tbl gnnTbl() {

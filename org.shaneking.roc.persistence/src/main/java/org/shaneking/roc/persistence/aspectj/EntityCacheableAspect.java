@@ -50,19 +50,19 @@ public class EntityCacheableAspect {
             Object pKeyObj = pjp.getArgs()[entityCacheable.pKeyIdx()];
             if (pKeyObj instanceof List) {
               //org.shaneking.roc.persistence.dao.CacheableDao.lstByIds
-              List<String> pKeyList = String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheable.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
+              List<String> pKeyList = String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).stream().map(o -> String.valueOf(Object0.gs(o, entityCacheable.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
               List<String> cachedList = cache.hmget(clazz.getName(), pKeyList.toArray(new String[0]));
               if (cachedList.size() > 0) {
                 //compile error
-//              rtnList = cachedList.parallelStream().filter(s -> !Strings.isNullOrEmpty(s)).map(s -> OM3.readValue(s, clazz, true)).filter(o -> o != null).collect(Collectors.toList());
-                rtnList = cachedList.parallelStream().filter(s -> !String0.isNullOrEmpty(s)).collect(ArrayList::new, (a, s) -> {
+//              rtnList = cachedList.stream().filter(s -> !Strings.isNullOrEmpty(s)).map(s -> OM3.readValue(s, clazz, true)).filter(o -> o != null).collect(Collectors.toList());
+                rtnList = cachedList.stream().filter(s -> !String0.isNullOrEmpty(s)).collect(ArrayList::new, (a, s) -> {
                   Object o = OM3.readValue(s, clazz, true);
                   if (o != null) {
                     a.add(o);
                   }
                 }, ArrayList::addAll);
-                Set<String> cachedKeySet = rtnList.parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheable.rKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toSet());
-                argList = ((List<Object>) pKeyObj).parallelStream().filter(o -> {
+                Set<String> cachedKeySet = rtnList.stream().map(o -> String.valueOf(Object0.gs(o, entityCacheable.rKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toSet());
+                argList = ((List<Object>) pKeyObj).stream().filter(o -> {
                   String k = String.valueOf(String0.isNullOrEmpty(entityCacheable.pKeyPath()) ? o : Object0.gs(o, entityCacheable.pKeyPath()));
                   return !cachedKeySet.contains(k);
                 }).collect(Collectors.toList());
@@ -105,7 +105,7 @@ public class EntityCacheableAspect {
               if (rtn instanceof List) {
                 List<Object> rstList = (List<Object>) rtn;
                 if (rstList.size() > 0) {
-                  cache.hmset(clazz.getName(), rstList.parallelStream().collect(HashMap::new, (a, o) -> {
+                  cache.hmset(clazz.getName(), rstList.stream().collect(HashMap::new, (a, o) -> {
                     String k = String.valueOf(Object0.gs(o, entityCacheable.rKeyPath()));
                     if (!String0.isNullOrEmpty(k)) {
                       a.put(k, OM3.writeValueAsString(o));

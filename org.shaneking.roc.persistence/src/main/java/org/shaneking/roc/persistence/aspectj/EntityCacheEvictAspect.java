@@ -47,7 +47,7 @@ public class EntityCacheEvictAspect {
               Object pKeyObj = jp.getArgs()[entityCacheEvict.pKeyIdx()];
               if (pKeyObj instanceof List) {
                 //org.shaneking.roc.persistence.dao.CacheableDao.delByIds
-                List<String> pKeyList = String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).parallelStream().map(o -> String.valueOf(Object0.gs(o, entityCacheEvict.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
+                List<String> pKeyList = String0.isNullOrEmpty(entityCacheEvict.pKeyPath()) ? (List<String>) pKeyObj : ((List<Object>) pKeyObj).stream().map(o -> String.valueOf(Object0.gs(o, entityCacheEvict.pKeyPath()))).filter(s -> !String0.isNullOrEmpty(s)).collect(Collectors.toList());
                 log.info(MF0.fmt("{0} - {1}({2}) : {3}", clazz.getName(), ZeroCache.ERR_CODE__CACHE_HIT_PART, cache.hdel(clazz.getName(), pKeyList.toArray(new String[0])), OM3.writeValueAsString(pKeyList)));
               } else {
                 //org.shaneking.roc.persistence.dao.CacheableDao.delById(java.lang.Class<T>, T)

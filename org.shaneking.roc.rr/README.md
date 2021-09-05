@@ -12,7 +12,7 @@
 {
   "pub": {
     "channelNo": "渠道编号",
-    "encoded": "Y/N。表示 pri 是否加密为 enc",
+    "encoded": "Y|N。表示 pri 是否加密为 enc",
     "jon": null,
     "tenantNo": "租户编号。不传入则同 channelNo，即 tenantNo=channelNo",
     "tracingNo": "跟踪编号（一系列请求）。通常不传入",

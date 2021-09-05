@@ -26,9 +26,6 @@ public class Pub {
   private ObjectNode jon;//json object node
   @Getter
   @Setter
-  private String tenantNo;//if null same as channelNo
-  @Getter
-  @Setter
   private String tracingNo;//if null auto generate, design for series requests
   @Getter
   @Setter

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.roc.persistence.AbstractCacheableEntity;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
 
@@ -31,18 +32,25 @@ public abstract class ChannelExample extends AbstractCacheableEntity implements 
   @Setter
   private String tokenValue;
 
-  @Column(columnDefinition = "default '' COMMENT ''")
+  @Column(columnDefinition = "default '' COMMENT 'Y|N'")
   @ExcelColumn
   @Getter
   @Setter
   private String tokenForce;
 
+  /**
+   * @see SKC1#SK__CRYPTO__ALGORITHM_NAME
+   */
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
   private String tokenAlgorithmType;
 
+  /**
+   * @see ChannelEntities#TOKEN_VALUE_TYPE__SELF
+   * @see ChannelEntities#TOKEN_VALUE_TYPE__PROP
+   */
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

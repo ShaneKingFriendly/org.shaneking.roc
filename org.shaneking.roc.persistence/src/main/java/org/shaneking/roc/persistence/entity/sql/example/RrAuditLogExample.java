@@ -64,7 +64,7 @@ public abstract class RrAuditLogExample extends TenantedChannelizedEntity implem
   @Setter
   private String reqSignature;
 
-  @Column(length = 1, columnDefinition = "default '' COMMENT ''")
+  @Column(length = 1, columnDefinition = "default '' COMMENT 'Y|N'")
   @ExcelColumn
   @Getter
   @Setter

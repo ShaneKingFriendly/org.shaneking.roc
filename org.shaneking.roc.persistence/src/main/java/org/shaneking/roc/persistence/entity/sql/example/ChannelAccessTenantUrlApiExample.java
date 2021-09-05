@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.roc.persistence.entity.ApiAccessOpEntities;
 import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
 import org.shaneking.roc.persistence.entity.sql.ChannelAccessTenantUrlApiEntities;
 
@@ -13,6 +14,10 @@ import javax.persistence.Column;
 @Accessors(chain = true)
 @ToString(callSuper = true)
 public abstract class ChannelAccessTenantUrlApiExample extends TenantedChannelizedEntity implements ChannelAccessTenantUrlApiEntities {
+  /**
+   * @see ApiAccessOpEntities#OP__ALLOW
+   * @see ApiAccessOpEntities#OP__DENY
+   */
   @Column(length = 1, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
