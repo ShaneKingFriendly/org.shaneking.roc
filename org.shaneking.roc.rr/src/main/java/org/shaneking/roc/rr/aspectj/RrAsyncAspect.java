@@ -64,7 +64,7 @@ public class RrAsyncAspect {
             asyncLogEntity.setReqJsonStrRaw(OM3.writeValueAsString(req)).setCtxJsonStr(OM3.writeValueAsString(req.gnnCtx())).setTenantId(req.gnnCtx().gnaTenantId());
             asyncLogEntity.setNo(req.getPub().gnnReqNo());
             asyncLogEntity.initWithUidAndId(req.gnnCtx().gnaUserId(), String0.nullOrEmptyTo(req.gnnCtx().gnaAuditId(), UUID0.cUl33()));
-            numberedDao.getCacheableDao().add(asyncLogEntities.entityClass(), asyncLogEntity);
+            numberedDao.getCacheableDao().add(asyncLogEntities.entityClass(), asyncLogEntity);//ignore concurrent insert scenario
 
             RrAsyncLogEntities modAsyncLogEntity = asyncLogEntities.entityClass().newInstance();
             modAsyncLogEntity.setId(asyncLogEntity.getId());
