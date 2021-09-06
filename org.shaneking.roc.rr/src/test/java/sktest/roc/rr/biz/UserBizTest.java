@@ -54,8 +54,8 @@ public class UserBizTest extends SKSpringUnit {
       log.info(OM3.writeValueAsString(userBiz.add(Req.build(pub(), Pri.<SimpleUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(userBiz.modByIdVer(Req.build(pub(), Pri.<SimpleUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(cryptoHelper.decrypt(userBiz.rmvById(cryptoHelper.encrypt(Req.build(pub().setEncoded(String0.Y), Pri.<String, Integer>build().setExt(ext()).setObj(id))
-          , "494c6f7665596f75", String0.N, SKC1.SK__CRYPTO__ALGORITHM_NAME, ChannelEntities.TOKEN_VALUE_TYPE__SELF))
-        , "494c6f7665596f75", SKC1.SK__CRYPTO__ALGORITHM_NAME, ChannelEntities.TOKEN_VALUE_TYPE__SELF, new TypeReference<Pri<String, Integer>>() {
+          , "494c6f7665596f75", String0.N, SKC1.ALGORITHM_NAME, ChannelEntities.TOKEN_VALUE_TYPE__SELF))
+        , "494c6f7665596f75", SKC1.ALGORITHM_NAME, ChannelEntities.TOKEN_VALUE_TYPE__SELF, new TypeReference<Pri<String, Integer>>() {
         })));
     }
   }

@@ -28,7 +28,7 @@ public class RrCryptoHelper {
         throw new IllegalArgumentException(OM3.p(req, req, tokenValue, tokenForce, tokenAlgorithmType, tokenValueType));
       }
       log.info(OM3.writeValueAsString(req));
-      if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(tokenAlgorithmType)) {
+      if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(tokenAlgorithmType)) {
         req.setEnc(SKC1.encrypt(OM3.writeValueAsString(req.getPri()), token)).setPri(null).getPub().setEncoded(String0.Y);
       } else if (String0.Y.equalsIgnoreCase(tokenForce)) {
         throw new IllegalArgumentException(OM3.p(req, tokenValue, tokenForce, tokenAlgorithmType, tokenValueType));
@@ -54,7 +54,7 @@ public class RrCryptoHelper {
         throw new IllegalArgumentException(OM3.p(respData, tokenValue, tokenAlgorithmType, tokenValueType));
       }
       log.info(OM3.writeValueAsString(respData));
-      if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(tokenAlgorithmType)) {
+      if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(tokenAlgorithmType)) {
         respData.setPri(OM3.readValue(SKC1.decrypt(respData.getEnc(), token), typeReference)).setEnc(null);
       } else if (String0.Y.equalsIgnoreCase(respData.getPub().getEncoded())) {
         throw new IllegalArgumentException(OM3.p(respData, tokenValue, tokenAlgorithmType, tokenValueType));

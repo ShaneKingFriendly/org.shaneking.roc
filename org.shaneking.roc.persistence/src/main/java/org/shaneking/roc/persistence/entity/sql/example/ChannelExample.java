@@ -39,7 +39,7 @@ public abstract class ChannelExample extends AbstractCacheableEntity implements 
   private String tokenForce;
 
   /**
-   * @see SKC1#SK__CRYPTO__ALGORITHM_NAME
+   * @see SKC1#ALGORITHM_NAME
    */
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn

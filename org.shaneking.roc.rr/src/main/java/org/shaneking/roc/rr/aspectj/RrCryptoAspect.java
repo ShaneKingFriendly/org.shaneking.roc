@@ -91,7 +91,7 @@ public class RrCryptoAspect {
             if (String0.Y.equalsIgnoreCase(req.getPub().getEncoded()) && !String0.isNullOrEmpty(req.getEnc())) {
               String enc = req.getEnc();
               JavaType[] javaTypes = JavaType3.resolveArgJavaTypes(pjp, rrCrypto.reqParamIdx());
-              if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
+              if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
                 enc = SKC1.decrypt(enc, token);
               }
               req.setPri(OM3.readValue(enc, OM3.om().getTypeFactory().constructParametricType(Pri.class, javaTypes))).setEnc(null);
@@ -138,7 +138,7 @@ public class RrCryptoAspect {
 
                     if (String0.Y.equalsIgnoreCase(respReq.getPub().getEncoded()) && respReq.getPri() != null) {
                       String enc = OM3.writeValueAsString(respReq.getPri());
-                      if (SKC1.SK__CRYPTO__ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
+                      if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
                         enc = SKC1.encrypt(enc, token);
                       }
                       respReq.setEnc(enc).setPri(null);
