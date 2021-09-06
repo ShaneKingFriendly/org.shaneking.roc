@@ -5,6 +5,6 @@ import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.roc.persistence.entity.ApiAccessRegexEntities;
 
 public interface ChannelAccessTenantRegexApiEntities extends ApiAccessRegexEntities, Channelized, Tenanted {
-  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessRegexEntity
+  //@see sktest.roc.rr.cfg.RrCfg.simpleApiAccessRegexEntity
   <T extends ChannelAccessTenantRegexApiEntities> Class<T> entityClass();
 }

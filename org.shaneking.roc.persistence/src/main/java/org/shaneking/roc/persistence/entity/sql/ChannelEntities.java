@@ -40,6 +40,6 @@ public interface ChannelEntities extends CacheableEntities, Named {
 
   <T extends ChannelEntities> T setDszSeconds(Integer dszForce);
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloChannelEntity
+  //@see sktest.roc.rr.cfg.RrCfg.simpleChannelEntity
   <T extends ChannelEntities> Class<T> entityClass();
 }

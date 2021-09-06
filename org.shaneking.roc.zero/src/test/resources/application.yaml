@@ -4,7 +4,7 @@ sk:
       cache:
         transactional:
           enabled: true
-      hello:
+      simple:
         cache:
           enabled: true
       net:

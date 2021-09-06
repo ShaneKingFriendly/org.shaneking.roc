@@ -1,7 +1,7 @@
 package sktest.roc.rr.cfg;
 
 import org.shaneking.roc.persistence.entity.sql.*;
-import org.shaneking.roc.persistence.hello.*;
+import org.shaneking.roc.persistence.simple.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,31 +11,31 @@ public class RrCfg {
 
   @Bean
   @ConditionalOnMissingBean(RrAuditLogEntities.class)
-  public HelloRrAuditLogEntity helloAuditLogEntity() {
-    return new HelloRrAuditLogEntity();
+  public SimpleRrAuditLogEntity simpleAuditLogEntity() {
+    return new SimpleRrAuditLogEntity();
   }
 
   @Bean
   @ConditionalOnMissingBean(ChannelAccessTenantRegexApiEntities.class)
-  public HelloChannelAccessTenantRegexApiEntity helloChannelAccessTenantRegexApiEntity() {
-    return new HelloChannelAccessTenantRegexApiEntity();
+  public SimpleChannelAccessTenantRegexApiEntity simpleChannelAccessTenantRegexApiEntity() {
+    return new SimpleChannelAccessTenantRegexApiEntity();
   }
 
   @Bean
   @ConditionalOnMissingBean(ChannelEntities.class)
-  public HelloChannelEntity helloChannelEntity() {
-    return new HelloChannelEntity();
+  public SimpleChannelEntity simpleChannelEntity() {
+    return new SimpleChannelEntity();
   }
 
   @Bean
   @ConditionalOnMissingBean(TenantEntities.class)
-  public HelloTenantEntity helloTenantEntity() {
-    return new HelloTenantEntity();
+  public SimpleTenantEntity simpleTenantEntity() {
+    return new SimpleTenantEntity();
   }
 
   @Bean
   @ConditionalOnMissingBean(UserEntities.class)
-  public HelloUserEntity helloUserEntity() {
-    return new HelloUserEntity();
+  public SimpleUserEntity simpleUserEntity() {
+    return new SimpleUserEntity();
   }
 }

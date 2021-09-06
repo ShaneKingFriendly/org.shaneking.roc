@@ -9,6 +9,6 @@ public interface TenantEntities extends CacheableEntities, Named {
 
   <T extends TenantEntities> T setDescription(String description);
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloTenantEntity
+  //@see sktest.roc.rr.cfg.RrCfg.simpleTenantEntity
   <T extends TenantEntities> Class<T> entityClass();
 }

@@ -36,6 +36,6 @@ public interface RrAsyncLogEntities extends CacheableEntities, Tenanted {
 
   <T extends RrAsyncLogEntities> T setDoneDatetime(String doneDatetime);
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloAsyncLogEntity
+  //@see sktest.roc.rr.cfg.RrCfg.simpleAsyncLogEntity
   <T extends RrAsyncLogEntities> Class<T> entityClass();
 }

@@ -61,6 +61,6 @@ public interface RrAuditLogEntities extends CacheableEntities, Channelized, Tena
 
   <T extends RrAuditLogEntities> T setRespDatetime(String respDatetime);
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloAuditLogEntity
+  //@see sktest.roc.rr.cfg.RrCfg.simpleAuditLogEntity
   <T extends RrAuditLogEntities> Class<T> entityClass();
 }

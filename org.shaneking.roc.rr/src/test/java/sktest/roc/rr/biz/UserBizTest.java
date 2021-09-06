@@ -7,7 +7,7 @@ import org.shaneking.ling.jackson.databind.OM3;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
-import org.shaneking.roc.persistence.hello.HelloUserEntity;
+import org.shaneking.roc.persistence.simple.SimpleUserEntity;
 import org.shaneking.roc.rr.*;
 import org.shaneking.roc.test.SKSpringUnit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,26 +35,26 @@ public class UserBizTest extends SKSpringUnit {
     ExecutorService executorService = Executors.newFixedThreadPool(3);
     executorService.submit(() -> {
       while (true) {
-        log.info(OM3.writeValueAsString(userBiz.lst(Req.build(pub(), Pri.<HelloUserEntity, List<HelloUserEntity>>build().setExt(ext()).setObj(new HelloUserEntity())))));
+        log.info(OM3.writeValueAsString(userBiz.lst(Req.build(pub(), Pri.<SimpleUserEntity, List<SimpleUserEntity>>build().setExt(ext()).setObj(new SimpleUserEntity())))));
       }
     });
     executorService.submit(() -> {
       while (true) {
-        log.info(OM3.writeValueAsString(userBiz.lst(Req.build(pub(), Pri.<HelloUserEntity, List<HelloUserEntity>>build().setExt(ext()).setObj(new HelloUserEntity())))));
+        log.info(OM3.writeValueAsString(userBiz.lst(Req.build(pub(), Pri.<SimpleUserEntity, List<SimpleUserEntity>>build().setExt(ext()).setObj(new SimpleUserEntity())))));
       }
     });
     executorService.submit(() -> {
       while (true) {
-        log.info(OM3.writeValueAsString(userBiz.lst(Req.build(pub(), Pri.<HelloUserEntity, List<HelloUserEntity>>build().setExt(ext()).setObj(new HelloUserEntity())))));
+        log.info(OM3.writeValueAsString(userBiz.lst(Req.build(pub(), Pri.<SimpleUserEntity, List<SimpleUserEntity>>build().setExt(ext()).setObj(new SimpleUserEntity())))));
       }
     });
 
     String id = "1612353237501_DcNd45KtJXPmSpz2xRB";
     for (int i = 0; i < 3; i++) {
-      log.info(OM3.writeValueAsString(userBiz.add(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
-      log.info(OM3.writeValueAsString(userBiz.modByIdVer(Req.build(pub(), Pri.<HelloUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
+      log.info(OM3.writeValueAsString(userBiz.add(Req.build(pub(), Pri.<SimpleUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
+      log.info(OM3.writeValueAsString(userBiz.modByIdVer(Req.build(pub(), Pri.<SimpleUserEntity, Integer>build().setExt(ext()).setObj(userEntity(id))))));
       log.info(OM3.writeValueAsString(cryptoHelper.decrypt(userBiz.rmvById(cryptoHelper.encrypt(Req.build(pub().setEncoded(String0.Y), Pri.<String, Integer>build().setExt(ext()).setObj(id))
-        , "494c6f7665596f75", String0.N, SKC1.SK__CRYPTO__ALGORITHM_NAME, ChannelEntities.TOKEN_VALUE_TYPE__SELF))
+          , "494c6f7665596f75", String0.N, SKC1.SK__CRYPTO__ALGORITHM_NAME, ChannelEntities.TOKEN_VALUE_TYPE__SELF))
         , "494c6f7665596f75", SKC1.SK__CRYPTO__ALGORITHM_NAME, ChannelEntities.TOKEN_VALUE_TYPE__SELF, new TypeReference<Pri<String, Integer>>() {
         })));
     }
@@ -68,8 +68,8 @@ public class UserBizTest extends SKSpringUnit {
     return new Ext().setTenantNo("tstTenantNo").setUserNo("tstUserNo");
   }
 
-  HelloUserEntity userEntity(String id) {
-    HelloUserEntity userEntity = new HelloUserEntity();
+  SimpleUserEntity userEntity(String id) {
+    SimpleUserEntity userEntity = new SimpleUserEntity();
     userEntity.initWithUidAndId("1612262610216_koFVLCNZrhezbgULWqW", id);
     return userEntity;
   }

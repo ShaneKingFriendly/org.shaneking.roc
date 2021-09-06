@@ -18,6 +18,6 @@ public interface UserEntities extends CacheableEntities, Named, Tenanted {
 
   <T extends UserEntities> T setEmail(String email);
 
-  //@see sktest.roc.rr.cfg.RrCfg.helloUserEntity
+  //@see sktest.roc.rr.cfg.RrCfg.simpleUserEntity
   <T extends UserEntities> Class<T> entityClass();
 }

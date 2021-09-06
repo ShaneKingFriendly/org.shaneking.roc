@@ -30,7 +30,7 @@ sk:
       entity:
         cache:
           enabled: false
-      hello:
+      simple:
         entity:
           enabled: false
     rr:
@@ -48,7 +48,7 @@ sk:
       chche:
         transactional:
           enabled: false
-      hello:
+      simple:
         cache:
           enabled: false
 ```

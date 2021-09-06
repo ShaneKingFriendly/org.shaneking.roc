@@ -1,0 +1,28 @@
+create table if not exists `t_simple_rr_audit_log_entity` (
+  `id` char(40) not null,
+  `ver` int not null default 0,
+  `dd` varchar(40) default 'N',
+  `ivd` varchar(1) default 'N',
+  `lm_dsz` varchar(30) default '',
+  `lm_uid` varchar(40) default '',
+  `no` varchar(40) default '',
+  `channel_id` varchar(40) default '',
+  `tenant_id` varchar(40) default '',
+  `tracing_no` varchar(40) default '',
+  `req_datetime` varchar(20) default '',
+  `req_ips` varchar(255) default '',
+  `req_user_id` varchar(40) default '',
+  `req_json_str_raw` text default '',
+  `req_json_str` text default '',
+  `req_url` varchar(255) default '',
+  `req_signature` varchar(255) default '',
+  `cached` varchar(1) default '',
+  `resp_json_str` text default '',
+  `resp_json_str_ctx` text default '',
+  `resp_json_str_raw` text default '',
+  `resp_ips` varchar(255) default '',
+  `resp_datetime` varchar(20) default '',
+  primary key (`id`)
+);
+
+create index if not exists no on t_simple_rr_audit_log_entity(no);

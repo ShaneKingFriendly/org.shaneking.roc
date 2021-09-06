@@ -4,6 +4,6 @@ import org.shaneking.ling.persistence.entity.sql.Channelized;
 import org.shaneking.roc.persistence.entity.ApiAccessSignatureOpEntities;
 
 public interface ChannelAccessSignatureApiEntities extends ApiAccessSignatureOpEntities, Channelized {
-  //@see sktest.roc.rr.cfg.RrCfg.helloApiAccessSignatureEntity
+  //@see sktest.roc.rr.cfg.RrCfg.simpleApiAccessSignatureEntity
   <T extends ChannelAccessSignatureApiEntities> Class<T> entityClass();
 }
