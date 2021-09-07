@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @EnableTransactionManagement(order = CacheTransactionAspect.ORDER - 500)
-public class RocZeroCachePrepare {
+public class RocZeroCachePrepare1 {
 
   @Autowired
   private ZeroCache cache;

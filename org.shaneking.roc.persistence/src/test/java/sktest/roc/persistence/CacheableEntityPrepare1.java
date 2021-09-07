@@ -8,8 +8,8 @@ import org.shaneking.roc.persistence.AbstractCacheableEntity;
 import javax.persistence.Table;
 
 @Accessors(chain = true)
-@Table
+@Table(name = "t_cacheable_entity_prepare")
 @ToString(callSuper = true)
-public class CacheableEntityPrepare extends AbstractCacheableEntity implements SqlliteSqlEntities {
+public class CacheableEntityPrepare1 extends AbstractCacheableEntity implements SqlliteSqlEntities {
 
 }

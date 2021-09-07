@@ -16,15 +16,15 @@ class TenantedNumberedEntityTest extends SKUnit {
 
   @Test
   void createTableAndIndexIfNotExistSql() throws IOException {
-    Files.write(tstOFiles().toPath(), new TenantedNumberedEntityPrepare().createTableAndIndexIfNotExistSql().getBytes());
-    assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new TenantedNumberedEntityPrepare().createTableAndIndexIfNotExistSql().trim());
+    Files.write(tstOFiles().toPath(), new TenantedNumberedEntityPrepare1().createTableAndIndexIfNotExistSql().getBytes());
+    assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new TenantedNumberedEntityPrepare1().createTableAndIndexIfNotExistSql().trim());
   }
 
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("TenantedNumberedEntityPrepare(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), tenantId=null))", new TenantedNumberedEntityPrepare().toString()),
-      () -> assertEquals("{}", OM3.writeValueAsString(new TenantedNumberedEntityPrepare().nullSetter()))
+      () -> Assertions.assertEquals("TenantedNumberedEntityPrepare1(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), tenantId=null))", new TenantedNumberedEntityPrepare1().toString()),
+      () -> assertEquals("{}", OM3.writeValueAsString(new TenantedNumberedEntityPrepare1().nullSetter()))
     );
   }
 }

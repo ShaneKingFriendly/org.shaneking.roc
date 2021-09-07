@@ -9,7 +9,7 @@ import org.shaneking.roc.persistence.entity.TenantedEntity;
 import javax.persistence.Table;
 
 @Accessors(chain = true)
-@Table
+@Table(name = "t_tenanted_numbered_entity_prepare")
 @ToString(callSuper = true)
-public class TenantedNumberedEntityPrepare extends TenantedEntity implements SqlliteSqlEntities, TenantedNumberedUniIdx {
+public class TenantedNumberedEntityPrepare1 extends TenantedEntity implements SqlliteSqlEntities, TenantedNumberedUniIdx {
 }

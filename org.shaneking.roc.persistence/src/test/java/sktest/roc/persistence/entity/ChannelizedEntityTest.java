@@ -11,8 +11,8 @@ class ChannelizedEntityTest {
   @Test
   void testToString() {
     assertAll(
-      () -> assertEquals("ChannelizedEntityPrepare(super=ChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), channelId=null))", new ChannelizedEntityPrepare().toString()),
-      () -> assertEquals("{}", OM3.writeValueAsString(new ChannelizedEntityPrepare().nullSetter()))
+      () -> assertEquals("ChannelizedEntityPrepare1(super=ChannelizedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), channelId=null))", new ChannelizedEntityPrepare1().toString()),
+      () -> assertEquals("{}", OM3.writeValueAsString(new ChannelizedEntityPrepare1().nullSetter()))
     );
   }
 }

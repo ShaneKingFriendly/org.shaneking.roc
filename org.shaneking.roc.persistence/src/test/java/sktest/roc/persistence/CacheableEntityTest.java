@@ -15,32 +15,32 @@ class CacheableEntityTest extends SKUnit {
 
   @Test
   void createTableIfNotExistSql() throws IOException {
-    Files.write(tstOFiles().toPath(), new CacheableEntityPrepare().createTableAndIndexIfNotExistSql().getBytes());
-    assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new CacheableEntityPrepare().createTableAndIndexIfNotExistSql().trim());
+    Files.write(tstOFiles().toPath(), new CacheableEntityPrepare1().createTableAndIndexIfNotExistSql().getBytes());
+    assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new CacheableEntityPrepare1().createTableAndIndexIfNotExistSql().trim());
   }
 
   @Test
   void findHavingConditions() {
-    assertNotNull(new CacheableEntityPrepare().findHavingConditions(Identified.FIELD__ID));
+    assertNotNull(new CacheableEntityPrepare1().findHavingConditions(Identified.FIELD__ID));
   }
 
   @Test
   void findWhereConditions() {
-    assertNotNull(new CacheableEntityPrepare().findWhereConditions(Identified.FIELD__ID));
+    assertNotNull(new CacheableEntityPrepare1().findWhereConditions(Identified.FIELD__ID));
   }
 
   @Test
   void forceHavingCondition() {
-    assertNotNull(new CacheableEntityPrepare().forceHavingCondition(Identified.FIELD__ID));
+    assertNotNull(new CacheableEntityPrepare1().forceHavingCondition(Identified.FIELD__ID));
   }
 
   @Test
   void forceWhereCondition() {
-    assertNotNull(new CacheableEntityPrepare().forceWhereCondition(Identified.FIELD__ID));
+    assertNotNull(new CacheableEntityPrepare1().forceWhereCondition(Identified.FIELD__ID));
   }
 
   @Test
   void testToString() {
-    assertEquals("CacheableEntityPrepare(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null))", new CacheableEntityPrepare().toString());
+    assertEquals("CacheableEntityPrepare1(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null))", new CacheableEntityPrepare1().toString());
   }
 }

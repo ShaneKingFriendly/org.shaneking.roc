@@ -16,15 +16,15 @@ class NumberedEntityTest extends SKUnit {
 
   @Test
   void createTableAndIndexIfNotExistSql() throws IOException {
-    Files.write(tstOFiles().toPath(), new NumberedEntityPrepare().createTableAndIndexIfNotExistSql().getBytes());
-    assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new NumberedEntityPrepare().createTableAndIndexIfNotExistSql().trim());
+    Files.write(tstOFiles().toPath(), new NumberedEntityPrepare1().createTableAndIndexIfNotExistSql().getBytes());
+    assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new NumberedEntityPrepare1().createTableAndIndexIfNotExistSql().trim());
   }
 
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("NumberedEntityPrepare(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null))", new NumberedEntityPrepare().toString()),
-      () -> assertEquals("{}", OM3.writeValueAsString(new NumberedEntityPrepare().nullSetter()))
+      () -> Assertions.assertEquals("NumberedEntityPrepare1(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null))", new NumberedEntityPrepare1().toString()),
+      () -> assertEquals("{}", OM3.writeValueAsString(new NumberedEntityPrepare1().nullSetter()))
     );
   }
 }

@@ -9,7 +9,7 @@ import org.shaneking.roc.persistence.AbstractCacheableEntity;
 import javax.persistence.Table;
 
 @Accessors(chain = true)
-@Table
+@Table(name = "t_numbered_entity_prepare")
 @ToString(callSuper = true)
-public class NumberedEntityPrepare extends AbstractCacheableEntity implements SqlliteSqlEntities, NumberedUniIdx {
+public class NumberedEntityPrepare1 extends AbstractCacheableEntity implements SqlliteSqlEntities, NumberedUniIdx {
 }

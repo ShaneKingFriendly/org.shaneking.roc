@@ -15,7 +15,7 @@ class RocZeroCacheTest extends SKSpringUnit {
   private ZeroCache cache;
 
   @Autowired
-  private RocZeroCachePrepare rocZeroCachePrepare;
+  private RocZeroCachePrepare1 rocZeroCachePrepare1;
 
   @Test
   void testCache() {
@@ -39,8 +39,8 @@ class RocZeroCacheTest extends SKSpringUnit {
   @Test
   void testTrans() {
     assertAll(
-      () -> assertDoesNotThrow(() -> rocZeroCachePrepare.test(false)),
-      () -> assertThrows(RuntimeException.class, () -> rocZeroCachePrepare.test(true))
+      () -> assertDoesNotThrow(() -> rocZeroCachePrepare1.test(false)),
+      () -> assertThrows(RuntimeException.class, () -> rocZeroCachePrepare1.test(true))
     );
   }
 }
