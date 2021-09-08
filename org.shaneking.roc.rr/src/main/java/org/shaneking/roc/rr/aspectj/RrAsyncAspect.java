@@ -57,7 +57,7 @@ public class RrAsyncAspect {
     if (enabled) {
       if (pjp.getArgs().length > rrAsync.reqParamIdx() && pjp.getArgs()[rrAsync.reqParamIdx()] instanceof Req) {
         Req req = (Req<?, ?>) pjp.getArgs()[rrAsync.reqParamIdx()];
-        if (Integer0.null2Zero(req.getPri().getExt().getAsync()) > 0 && asyncLogEntities != null) {
+        if (Integer0.null2Zero(req.getPri().gnnExt().getAsync()) > 0 && asyncLogEntities != null) {
           RrAsyncLogEntities asyncLogEntity = numberedDao.oneByNo(asyncLogEntities.entityClass(), req.getPub().gnnReqNo(), true);
           if (asyncLogEntity == null) {
             asyncLogEntity = asyncLogEntities.entityClass().newInstance();
@@ -70,7 +70,7 @@ public class RrAsyncAspect {
             modAsyncLogEntity.setId(asyncLogEntity.getId());
             Future<Resp<?>> respFuture = asyncAspectSupport.async(pjp, req, modAsyncLogEntity);
             try {
-              rtn = respFuture.get(req.getPri().getExt().getAsync(), TimeUnit.SECONDS);
+              rtn = respFuture.get(req.getPri().gnnExt().getAsync(), TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
               rtn = Resp.success(req);
             }

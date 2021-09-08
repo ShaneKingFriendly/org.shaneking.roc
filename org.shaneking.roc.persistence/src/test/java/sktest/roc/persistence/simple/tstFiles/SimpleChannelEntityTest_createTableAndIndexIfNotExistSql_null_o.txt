@@ -8,11 +8,15 @@ create table if not exists `t_simple_channel_entity` (
   `no` varchar(40) default '',
   `name` varchar(255) default '',
   `description` varchar(255) default '',
-  `token_value` varchar(255) default '',
-  `token_force` varchar(255) default '',
-  `token_algorithm_type` varchar(255) default '',
-  `token_value_type` varchar(255) default '',
+  `enc_tv` varchar(255) default '',
+  `enc_tf` varchar(1) default '',
+  `enc_tat` varchar(255) default '',
+  `enc_tvt` varchar(7) default '',
   `dsz_seconds` int default 0,
+  `mvc_tv` varchar(255) default '',
+  `mvc_tf` varchar(1) default '',
+  `mvc_tat` varchar(255) default '',
+  `mvc_tvt` varchar(7) default '',
   primary key (`id`)
 );
 

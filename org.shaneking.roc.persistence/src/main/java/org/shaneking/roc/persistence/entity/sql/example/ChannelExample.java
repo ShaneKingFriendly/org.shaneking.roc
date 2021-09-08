@@ -30,13 +30,13 @@ public abstract class ChannelExample extends AbstractCacheableEntity implements 
   @ExcelColumn
   @Getter
   @Setter
-  private String tokenValue;
+  private String encTv;//TokenValue
 
-  @Column(columnDefinition = "default '' COMMENT 'Y|N'")
+  @Column(length = 1, columnDefinition = "default '' COMMENT 'Y|N'")
   @ExcelColumn
   @Getter
   @Setter
-  private String tokenForce;
+  private String encTf;//TokenForce
 
   /**
    * @see SKC1#ALGORITHM_NAME
@@ -45,21 +45,52 @@ public abstract class ChannelExample extends AbstractCacheableEntity implements 
   @ExcelColumn
   @Getter
   @Setter
-  private String tokenAlgorithmType;
+  private String encTat;//TokenAlgorithmType
 
   /**
    * @see ChannelEntities#TOKEN_VALUE_TYPE__SELF
    * @see ChannelEntities#TOKEN_VALUE_TYPE__PROP
    */
-  @Column(columnDefinition = "default '' COMMENT ''")
+  @Column(length = 7, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
-  private String tokenValueType;
+  private String encTvt;//TokenValueType
 
   @Column(columnDefinition = "default 0 COMMENT ''")
   @ExcelColumn
   @Getter
   @Setter
   private Integer dszSeconds;
+
+  @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
+  @Getter
+  @Setter
+  private String mvcTv;//TokenValue
+
+  @Column(length = 1, columnDefinition = "default '' COMMENT 'Y|N'")
+  @ExcelColumn
+  @Getter
+  @Setter
+  private String mvcTf;//TokenForce
+
+  /**
+   * @see SKC1#ALGORITHM_NAME
+   */
+  @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
+  @Getter
+  @Setter
+  private String mvcTat;//TokenAlgorithmType
+
+  /**
+   * @see ChannelEntities#TOKEN_VALUE_TYPE__SELF
+   * @see ChannelEntities#TOKEN_VALUE_TYPE__PROP
+   */
+  @Column(length = 7, columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
+  @Getter
+  @Setter
+  private String mvcTvt;//TokenValueType
 }

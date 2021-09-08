@@ -30,9 +30,19 @@ public class Pub {
   @Getter
   @Setter
   private String reqNo;//if null auto generate, this is global unique
-//  @Getter
-//  @Setter
-//  private String mvc;//Message Verification Code
+  /**
+   * Message Verification Code
+   * <p>
+   * default algorithm is MD5
+   * <p>
+   * 1. if is not null or empty, need check request
+   * 2. if is not null or empty, need set response
+   *
+   * @see Req#enc
+   */
+  @Getter
+  @Setter
+  private String mvc;//Message Verification Code for req.enc. (Default MD5)
 
   public String gnnTracingNo() {
     if (String0.isNullOrEmpty(getTracingNo())) {

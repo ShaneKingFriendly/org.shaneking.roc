@@ -28,7 +28,7 @@ class SimpleChannelEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("SimpleChannelEntity(super=ChannelExample(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), name=null, description=null, tokenValue=null, tokenForce=null, tokenAlgorithmType=null, tokenValueType=null, dszSeconds=null))", new SimpleChannelEntity().toString()),
+      () -> Assertions.assertEquals("SimpleChannelEntity(super=ChannelExample(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), name=null, description=null, encTv=null, encTf=null, encTat=null, encTvt=null, dszSeconds=null, mvcTv=null, mvcTf=null, mvcTat=null, mvcTvt=null))", new SimpleChannelEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new SimpleChannelEntity().nullSetter()))
     );
   }

@@ -12,6 +12,7 @@ import org.shaneking.ling.persistence.entity.Numbered;
 import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
+import org.shaneking.ling.zero.crypto.MD5a;
 import org.shaneking.ling.zero.crypto.SKC1;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.text.MF0;
@@ -80,68 +81,93 @@ public class RrCryptoAspect {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCrypto.reqParamIdx()];
         try {
           ChannelEntities channelEntity = req.gnnCtx().getChannel();
-          if (String0.Y.equalsIgnoreCase(channelEntity.getTokenForce()) && (!String0.Y.equalsIgnoreCase(req.getPub().getEncoded()) || String0.isNullOrEmpty(req.getEnc()))) {
+          if (String0.Y.equalsIgnoreCase(channelEntity.getEncTf()) && (!String0.Y.equalsIgnoreCase(req.getPub().getEncoded()) || String0.isNullOrEmpty(req.getEnc()))) {
             rtn = Resp.failed(ChannelEntities.ERR_CODE__NEED_ENCODING, req.getPub().getEncoded(), req);
           } else {
-            String token = channelEntity.getTokenValue();
-            if (!String0.isNullOrEmpty(token) && ChannelEntities.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(channelEntity.getTokenValueType())) {
+            String token = channelEntity.getEncTv();
+            if (!String0.isNullOrEmpty(token) && ChannelEntities.TOKEN_VALUE_TYPE__PROP.equalsIgnoreCase(channelEntity.getEncTvt())) {
               token = environment.getProperty(token, token);
             }
 
             if (String0.Y.equalsIgnoreCase(req.getPub().getEncoded()) && !String0.isNullOrEmpty(req.getEnc())) {
               String enc = req.getEnc();
-              JavaType[] javaTypes = JavaType3.resolveArgJavaTypes(pjp, rrCrypto.reqParamIdx());
-              if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
-                enc = SKC1.decrypt(enc, token);
+              if ((String0.Y.equalsIgnoreCase(channelEntity.getEncTf()) && String0.isNullOrEmpty(req.getPub().getMvc()))) {
+                rtn = Resp.failed(ChannelEntities.ERR_CODE__NEED_MVC, channelEntity.getNo(), req);
+              } else if (!String0.isNullOrEmpty(req.getPub().getMvc())) {
+                if (MD5a.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getMvcTat())) {
+                  if (!req.getPub().getMvc().equalsIgnoreCase(MD5a.encrypt(enc))) {
+                    rtn = Resp.failed(ChannelEntities.ERR_CODE__BAD_REQUEST, OM3.lp(req.getPub().getMvc(), enc), req);
+                  }
+                } else {
+                  rtn = Resp.failed(ChannelEntities.ERR_CODE__ALGORITHM_UNSUPPORTED, channelEntity.getMvcTat(), req);
+                }
               }
-              req.setPri(OM3.readValue(enc, OM3.om().getTypeFactory().constructParametricType(Pri.class, javaTypes))).setEnc(null);
+              //message verified to decode
+              if (rtn == null) {
+                JavaType[] javaTypes = JavaType3.resolveArgJavaTypes(pjp, rrCrypto.reqParamIdx());
+                if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getEncTat())) {
+                  enc = SKC1.decrypt(enc, token);
+                } else {
+                  rtn = Resp.failed(ChannelEntities.ERR_CODE__ALGORITHM_UNSUPPORTED, channelEntity.getEncTat(), req);
+                }
+                req.setPri(OM3.readValue(enc, OM3.om().getTypeFactory().constructParametricType(Pri.class, javaTypes))).setEnc(null);
+              }
             }
 
-            TenantEntities tenantEntity = numberedDao.oneByNo(tenantEntityClass.entityClass(), String0.nullOrEmptyTo(req.getPri().getExt().getTenantNo(), req.getPub().getChannelNo()), true);
-            if (tenantEntity == null) {
-              rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, String.valueOf(req.getPri().getExt().getTenantNo()), req);
-            } else {
-              req.gnnCtx().setTenant(tenantEntity);
-              if (req.gnnCtx().getAuditLog() != null) {
-                req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
-              }
-              initAccessibleTenantCtx(req.gnnCtx());
-
-              UserEntities userEntity = tenantedNumberedDao.oneByNo(userEntityClass.entityClass(), req.getPri().gnnExt().getUserNo(), tenantEntity.getId(), true);
-              if (userEntity == null && autoCreateUserService != null) {
-                userEntity = autoCreateUserService.create(req);
-              }
-              if (userEntity == null) {
-                rtn = Resp.failed(Entities.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
+            //message verified to process
+            if (rtn == null) {
+              TenantEntities tenantEntity = numberedDao.oneByNo(tenantEntityClass.entityClass(), String0.nullOrEmptyTo(req.getPri().gnnExt().getTenantNo(), req.getPub().getChannelNo()), true);
+              if (tenantEntity == null) {
+                rtn = Resp.failed(Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, String.valueOf(req.getPri().gnnExt().getTenantNo()), req);
               } else {
-                req.gnnCtx().setUser(userEntity);
+                req.gnnCtx().setTenant(tenantEntity);
                 if (req.gnnCtx().getAuditLog() != null) {
-                  req.gnnCtx().getAuditLog().setReqUserId(userEntity.getId());
+                  req.gnnCtx().getAuditLog().setTenantId(tenantEntity.getId());
                 }
+                initAccessibleTenantCtx(req.gnnCtx());
 
-                RrAuditLogEntities auditLogEntity = req.gnnCtx().getAuditLog();
-                if (auditLogEntity != null) {
-                  auditLogEntity.setReqJsonStr(OM3.writeValueAsString(req));
+                UserEntities userEntity = tenantedNumberedDao.oneByNo(userEntityClass.entityClass(), req.getPri().gnnExt().getUserNo(), tenantEntity.getId(), true);
+                if (userEntity == null && autoCreateUserService != null) {
+                  userEntity = autoCreateUserService.create(req);
                 }
-                initReadableTenantUserCtx(req.gnnCtx());
-                proceedBefore = true;
-                rtn = pjp.proceed();
-                proceedAfter = true;
-                if (auditLogEntity != null) {
-                  auditLogEntity.setRespJsonStr(OM3.writeValueAsString(rtn));
-                }
+                if (userEntity == null) {
+                  rtn = Resp.failed(Entities.ERR_CODE__NOT_FOUND, req.getPri().gnnExt().getUserNo(), req);
+                } else {
+                  req.gnnCtx().setUser(userEntity);
+                  if (req.gnnCtx().getAuditLog() != null) {
+                    req.gnnCtx().getAuditLog().setReqUserId(userEntity.getId());
+                  }
 
-                if (rtn instanceof Resp) {
-                  Object respData = ((Resp<?>) rtn).getData();
-                  if (respData instanceof Req) {
-                    Req<?, ?> respReq = (Req<?, ?>) respData;
+                  RrAuditLogEntities auditLogEntity = req.gnnCtx().getAuditLog();
+                  if (auditLogEntity != null) {
+                    auditLogEntity.setReqJsonStr(OM3.writeValueAsString(req));
+                  }
+                  initReadableTenantUserCtx(req.gnnCtx());
+                  proceedBefore = true;
+                  rtn = pjp.proceed();
+                  proceedAfter = true;
+                  if (auditLogEntity != null) {
+                    auditLogEntity.setRespJsonStr(OM3.writeValueAsString(rtn));
+                  }
 
-                    if (String0.Y.equalsIgnoreCase(respReq.getPub().getEncoded()) && respReq.getPri() != null) {
-                      String enc = OM3.writeValueAsString(respReq.getPri());
-                      if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getTokenAlgorithmType())) {
-                        enc = SKC1.encrypt(enc, token);
+                  if (rtn instanceof Resp) {
+                    Object respData = ((Resp<?>) rtn).getData();
+                    if (respData instanceof Req) {
+                      Req<?, ?> respReq = (Req<?, ?>) respData;
+                      if (respReq.getPri() != null) {
+                        if (String0.Y.equalsIgnoreCase(respReq.getPub().getEncoded())) {
+                          String enc = OM3.writeValueAsString(respReq.getPri());
+                          if (SKC1.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getEncTat())) {
+                            enc = SKC1.encrypt(enc, token);
+                          }
+                          respReq.setEnc(enc).setPri(null);
+                          if (respReq.getPub() != null) {
+                            if (!String0.isNullOrEmpty(respReq.getPub().getMvc())) {
+                              respReq.getPub().setMvc(MD5a.encrypt(enc));
+                            }
+                          }
+                        }
                       }
-                      respReq.setEnc(enc).setPri(null);
                     }
                   }
                 }

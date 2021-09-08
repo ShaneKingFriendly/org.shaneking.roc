@@ -7,7 +7,13 @@ import javax.persistence.Transient;
 
 public interface ChannelEntities extends CacheableEntities, Named {
   @Transient
+  String ERR_CODE__ALGORITHM_UNSUPPORTED = "CHANNEL_ENTITIES__ALGORITHM_UNSUPPORTED";
+  @Transient
+  String ERR_CODE__BAD_REQUEST = "CHANNEL_ENTITIES__BAD_REQUEST";
+  @Transient
   String ERR_CODE__NEED_ENCODING = "CHANNEL_ENTITIES__NEED_ENCODING";
+  @Transient
+  String ERR_CODE__NEED_MVC = "CHANNEL_ENTITIES__NEED_MVC";
   @Transient
   String ERR_CODE__INVALID_TIMESTAMP = "CHANNEL_ENTITIES__INVALID_TIMESTAMP";
 
@@ -20,25 +26,41 @@ public interface ChannelEntities extends CacheableEntities, Named {
 
   <T extends ChannelEntities> T setDescription(String description);
 
-  String getTokenValue();
+  String getEncTv();
 
-  <T extends ChannelEntities> T setTokenValue(String tokenValue);
+  <T extends ChannelEntities> T setEncTv(String encTv);
 
-  String getTokenForce();
+  String getEncTf();
 
-  <T extends ChannelEntities> T setTokenForce(String tokenForce);
+  <T extends ChannelEntities> T setEncTf(String encTf);
 
-  String getTokenAlgorithmType();
+  String getEncTat();
 
-  <T extends ChannelEntities> T setTokenAlgorithmType(String tokenAlgorithmType);
+  <T extends ChannelEntities> T setEncTat(String encTat);
 
-  String getTokenValueType();
+  String getEncTvt();
 
-  <T extends ChannelEntities> T setTokenValueType(String tokenValueType);
+  <T extends ChannelEntities> T setEncTvt(String encTvt);
 
   Integer getDszSeconds();
 
   <T extends ChannelEntities> T setDszSeconds(Integer dszForce);
+
+  String getMvcTv();
+
+  <T extends ChannelEntities> T setMvcTv(String mvcTv);
+
+  String getMvcTf();
+
+  <T extends ChannelEntities> T setMvcTf(String mvcTf);
+
+  String getMvcTat();
+
+  <T extends ChannelEntities> T setMvcTat(String mvcTat);
+
+  String getMvcTvt();
+
+  <T extends ChannelEntities> T setMvcTvt(String mvcTvt);
 
   //@see sktest.roc.rr.cfg.RrCfg.simpleChannelEntity
   <T extends ChannelEntities> Class<T> entityClass();

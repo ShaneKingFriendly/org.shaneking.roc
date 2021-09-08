@@ -45,10 +45,16 @@ public class RrDszAspect {
         Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
         ChannelEntities channelEntities = req.gnnCtx().getChannel();
         if (channelEntities != null && channelEntities.getDszSeconds() != null && channelEntities.getDszSeconds() > 0
-          && (String0.isNullOrEmpty(req.getPri().getExt().getDsz()) || Duration.between(ZDT0.on().dTSZ(req.getPri().getExt().getDsz()).getZonedDateTime(), ZonedDateTime.now()).getSeconds() > channelEntities.getDszSeconds())) {
-          rtn = Resp.failed(ChannelEntities.ERR_CODE__INVALID_TIMESTAMP, req.getPri().getExt().getDsz(), req);
+          && (String0.isNullOrEmpty(req.getPri().gnnExt().getDsz()) || Duration.between(ZDT0.on().dTSZ(req.getPri().gnnExt().getDsz()).getZonedDateTime(), ZonedDateTime.now()).getSeconds() > channelEntities.getDszSeconds())) {
+          rtn = Resp.failed(ChannelEntities.ERR_CODE__INVALID_TIMESTAMP, req.getPri().gnnExt().getDsz(), req);
         } else {
           rtn = pjp.proceed();
+          if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req && ((Req<?, ?>) ((Resp<?>) rtn).getData()).getPri() != null) {
+            Req<?, ?> respReq = (Req<?, ?>) ((Resp<?>) rtn).getData();
+            if (!String0.isNullOrEmpty(respReq.getPri().gnnExt().getDsz())) {
+              respReq.getPri().gnnExt().setDsz(ZDT0.on().dTSZ());
+            }
+          }
         }
       } else {
         log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAccess)));

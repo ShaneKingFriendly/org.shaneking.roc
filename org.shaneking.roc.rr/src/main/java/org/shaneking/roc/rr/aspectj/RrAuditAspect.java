@@ -126,7 +126,7 @@ public class RrAuditAspect {
               Ctx reqCtx = req.detach();
               auditLogEntity.setRespJsonStrCtx(OM3.writeValueAsString(reqCtx));
               if (rtn != null) {
-                if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
+                if (rtn instanceof Resp) {
                   Resp<?> resp = (Resp<?>) rtn;
                   if (resp.getData() instanceof Req) {
                     Req<?, ?> respData = (Req<?, ?>) resp.getData();

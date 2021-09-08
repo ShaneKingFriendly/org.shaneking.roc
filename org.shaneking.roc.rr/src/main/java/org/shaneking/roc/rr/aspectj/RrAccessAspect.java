@@ -81,10 +81,10 @@ public class RrAccessAspect {
               channelAccessRegexApiEntity = cacheableDao.one(channelAccessRegexApiEntityClass.entityClass(), channelAccessRegexApiEntitySelect, true);
               regexPaas = channelAccessRegexApiEntity == null ? 0 : (channelAccessRegexApiEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString()) ? 1 : -1);
             }
-            if (channelAccessUrlApiEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {
+            if (channelAccessUrlApiEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.gnnCtx().getAuditLog().getReqUrl())) {
               ChannelAccessUrlApiEntities channelAccessUrlApiEntitySelect = channelAccessUrlApiEntityClass.entityClass().newInstance();
               channelAccessUrlApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
-              channelAccessUrlApiEntitySelect.setUrl(req.getCtx().getAuditLog().getReqUrl());
+              channelAccessUrlApiEntitySelect.setUrl(req.gnnCtx().getAuditLog().getReqUrl());
               channelAccessUrlApiEntity = cacheableDao.one(channelAccessUrlApiEntityClass.entityClass(), channelAccessUrlApiEntitySelect, true);
               urlPaas = urlPaas + (channelAccessUrlApiEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(channelAccessUrlApiEntity.getOp()) ? 2 : (ApiAccessOpEntities.OP__DENY.equals(channelAccessUrlApiEntity.getOp()) ? -2 : 0)));
             }
@@ -103,11 +103,11 @@ public class RrAccessAspect {
               channelAccessTenantRegexApiEntity = cacheableDao.one(channelAccessTenantRegexApiEntityClass.entityClass(), channelAccessTenantRegexApiEntitySelect, true);
               regexPaas = channelAccessTenantRegexApiEntity == null ? 0 : (channelAccessTenantRegexApiEntity.check(req.gnnCtx().getAuditLog() == null ? null : req.gnnCtx().getAuditLog().getReqUrl(), pjp.getSignature().toLongString()) ? 4 : -4);
             }
-            if (channelAccessTenantUrlApiEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.getCtx().getAuditLog().getReqUrl())) {
+            if (channelAccessTenantUrlApiEntityClass != null && req.gnnCtx().getAuditLog() != null && !String0.isNullOrEmpty(req.gnnCtx().getAuditLog().getReqUrl())) {
               ChannelAccessTenantUrlApiEntities channelAccessTenantUrlApiEntitySelect = channelAccessTenantUrlApiEntityClass.entityClass().newInstance();
               channelAccessTenantUrlApiEntitySelect.setChannelId(req.gnnCtx().gnaChannelId());
               channelAccessTenantUrlApiEntitySelect.setTenantId(req.gnnCtx().gnaTenantId());
-              channelAccessTenantUrlApiEntitySelect.setUrl(req.getCtx().getAuditLog().getReqUrl());
+              channelAccessTenantUrlApiEntitySelect.setUrl(req.gnnCtx().getAuditLog().getReqUrl());
               channelAccessTenantUrlApiEntity = cacheableDao.one(channelAccessTenantUrlApiEntityClass.entityClass(), channelAccessTenantUrlApiEntitySelect, true);
               urlPaas = urlPaas + (channelAccessTenantUrlApiEntity == null ? 0 : (ApiAccessOpEntities.OP__ALLOW.equals(channelAccessTenantUrlApiEntity.getOp()) ? 8 : (ApiAccessOpEntities.OP__DENY.equals(channelAccessTenantUrlApiEntity.getOp()) ? -8 : 0)));
             }
