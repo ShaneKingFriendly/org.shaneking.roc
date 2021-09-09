@@ -11,12 +11,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @ToString
 public class CacheTransactionEventObject {
   /**
-   * @see TransactionSynchronizationManager#getCurrentTransactionName()
-   */
-  @Getter
-  @Setter
-  private String transactionName;
-  /**
    * @see TransactionSynchronizationManager#isCurrentTransactionReadOnly()
    */
   @Getter
@@ -28,4 +22,10 @@ public class CacheTransactionEventObject {
   @Getter
   @Setter
   private boolean readOnly;
+  /**
+   * @see TransactionSynchronizationManager#getCurrentTransactionName()
+   */
+  @Getter
+  @Setter
+  private String transactionName;
 }

@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserBizTest extends SKSpringUnit {
 
   @Autowired
-  private UserBizImpl userBiz;
+  private RrCryptoHelper cryptoHelper;
 
   @Autowired
-  private RrCryptoHelper cryptoHelper;
+  private UserBizImpl userBiz;
 
   @Test
   void curd() {
@@ -60,12 +60,12 @@ public class UserBizTest extends SKSpringUnit {
     }
   }
 
-  Pub pub() {
-    return new Pub().setChannelNo("tstChannelNo");
-  }
-
   Ext ext() {
     return new Ext().setTenantNo("tstTenantNo").setUserNo("tstUserNo");
+  }
+
+  Pub pub() {
+    return new Pub().setChannelNo("tstChannelNo");
   }
 
   SimpleUserEntity userEntity(String id) {

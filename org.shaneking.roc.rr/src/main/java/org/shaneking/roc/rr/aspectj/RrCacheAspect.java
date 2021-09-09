@@ -31,16 +31,10 @@ import org.springframework.stereotype.Component;
 @Order(RrCacheAspect.ORDER)
 public class RrCacheAspect {
   public static final int ORDER = 70000;
-
   @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;
-
   @Autowired(required = false)
   private ZeroCache cache;
-
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCache * *..*.*(..))")
-  private void pointcut() {
-  }
 
   @Around("pointcut() && @annotation(rrCache)")
   public Object around(ProceedingJoinPoint pjp, RrCache rrCache) throws Throwable {
@@ -101,6 +95,15 @@ public class RrCacheAspect {
     return rtn;
   }
 
+  private void attach(Req<?, ?> req, Tuple.Quintuple<Ctx, String, String, String, String> detached) {
+    req.attach(Tuple.getFirst(detached)).getPub().setReqNo(Tuple.getSecond(detached)).setTracingNo(Tuple.getThird(detached)).setMvc(Tuple.getFifth(detached));
+    req.getPri().gnnExt().setDsz(Tuple.getFourth(detached));
+  }
+
+  private void attach(Resp<?> resp, Tuple.Pair<Boolean, Tuple.Quintuple<Ctx, String, String, String, String>> detached) {
+    attach((Req<?, ?>) resp.attach(Tuple.getFirst(detached)).getData(), Tuple.getSecond(detached));
+  }
+
   private Tuple.Quintuple<Ctx, String, String, String, String> detach(Req<?, ?> req) {
     Tuple.Quintuple<Ctx, String, String, String, String> rtn = Tuple.of(req.detach(), req.getPub().gnnReqNo(), req.getPub().gnnTracingNo(), req.getPri().gnnExt().getDsz(), req.getPub().getMvc());
     req.getPub().setReqNo(null).setTracingNo(null).setMvc(null);
@@ -108,16 +111,11 @@ public class RrCacheAspect {
     return rtn;
   }
 
-  private void attach(Req<?, ?> req, Tuple.Quintuple<Ctx, String, String, String, String> detached) {
-    req.attach(Tuple.getFirst(detached)).getPub().setReqNo(Tuple.getSecond(detached)).setTracingNo(Tuple.getThird(detached)).setMvc(Tuple.getFifth(detached));
-    req.getPri().gnnExt().setDsz(Tuple.getFourth(detached));
-  }
-
   private Tuple.Pair<Boolean, Tuple.Quintuple<Ctx, String, String, String, String>> detach(Resp<?> resp) {
     return Tuple.of(resp.detach(), detach((Req<?, ?>) resp.getData()));
   }
 
-  private void attach(Resp<?> resp, Tuple.Pair<Boolean, Tuple.Quintuple<Ctx, String, String, String, String>> detached) {
-    attach((Req<?, ?>) resp.attach(Tuple.getFirst(detached)).getData(), Tuple.getSecond(detached));
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCache * *..*.*(..))")
+  private void pointcut() {
   }
 }

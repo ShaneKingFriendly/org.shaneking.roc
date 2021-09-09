@@ -16,10 +16,6 @@ public interface TenantedResourceAccessibleEntities extends CacheableEntities, T
   @Transient
   String FIELD__DEFAULT_ACCESSIBLE = "defaultAccessible";
 
-  static List<String> calc(List<? extends TenantedResourceAccessibleEntities> list, String clazz, String defaultTenantId) {
-    return calc(list, clazz, List0.newArrayList(defaultTenantId));
-  }
-
   static List<String> calc(List<? extends TenantedResourceAccessibleEntities> list, String clazz, @NonNull List<String> defaultTenantIds) {
     List<String> rtn = List0.newArrayList();
     rtn.addAll(defaultTenantIds);
@@ -34,11 +30,15 @@ public interface TenantedResourceAccessibleEntities extends CacheableEntities, T
     return rtn;
   }
 
-  String getDefaultAccessible();
-
-  <T extends TenantedResourceAccessibleEntities> T setDefaultAccessible(String defaultAccessible);
+  static List<String> calc(List<? extends TenantedResourceAccessibleEntities> list, String clazz, String defaultTenantId) {
+    return calc(list, clazz, List0.newArrayList(defaultTenantId));
+  }
 
   String calcReadableTenantId(String clazz);
 
   <T extends TenantedResourceAccessibleEntities> Class<T> entityClass();
+
+  String getDefaultAccessible();
+
+  <T extends TenantedResourceAccessibleEntities> T setDefaultAccessible(String defaultAccessible);
 }

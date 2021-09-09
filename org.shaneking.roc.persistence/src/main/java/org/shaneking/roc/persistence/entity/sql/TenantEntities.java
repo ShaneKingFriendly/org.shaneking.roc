@@ -5,10 +5,10 @@ import org.shaneking.roc.persistence.CacheableEntities;
 
 public interface TenantEntities extends CacheableEntities, Named {
 
+  //@see sktest.roc.rr.cfg.RrCfg.simpleTenantEntity
+  <T extends TenantEntities> Class<T> entityClass();
+
   String getDescription();
 
   <T extends TenantEntities> T setDescription(String description);
-
-  //@see sktest.roc.rr.cfg.RrCfg.simpleTenantEntity
-  <T extends TenantEntities> Class<T> entityClass();
 }

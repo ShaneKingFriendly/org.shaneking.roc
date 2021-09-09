@@ -27,10 +27,6 @@ public class Req<O, R> {
     return new Req<O, R>();
   }
 
-  public static <O, R> Req<O, R> build(Pri<O, R> pri) {
-    return new Req<O, R>().setPri(pri);
-  }
-
   public static <O, R> Req<O, R> build(Pub pub) {
     return new Req<O, R>().setPub(pub);
   }
@@ -43,11 +39,13 @@ public class Req<O, R> {
     return new Req<O, R>().setPub(pub).setEnc(enc);
   }
 
-  public Ctx gnnCtx() {
-    if (getCtx() == null) {
-      setCtx(new Ctx());
-    }
-    return getCtx();
+  public static <O, R> Req<O, R> build(Pri<O, R> pri) {
+    return new Req<O, R>().setPri(pri);
+  }
+
+  public Req<O, R> attach(Ctx ctx) {
+    this.ctx = ctx;
+    return this;
   }
 
   public Ctx detach() {
@@ -56,8 +54,10 @@ public class Req<O, R> {
     return rtn;
   }
 
-  public Req<O, R> attach(Ctx ctx) {
-    this.ctx = ctx;
-    return this;
+  public Ctx gnnCtx() {
+    if (getCtx() == null) {
+      setCtx(new Ctx());
+    }
+    return getCtx();
   }
 }

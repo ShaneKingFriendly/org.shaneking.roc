@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface RrCache {
-  int reqParamIdx() default 0;
-
   int cacheSeconds() default 180;//180s
+
+  int reqParamIdx() default 0;
 }

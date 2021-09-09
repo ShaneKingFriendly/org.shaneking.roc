@@ -34,22 +34,14 @@ import java.util.concurrent.TimeoutException;
 @Order(RrAsyncAspect.ORDER)
 public class RrAsyncAspect {
   public static final int ORDER = 80000;
-
   @Value("${sk.roc.rr.async.enabled:true}")
   private boolean enabled;
-
   @Autowired
   private NumberedDao numberedDao;
-
   @Autowired
-  private RrAsyncAspectSupport asyncAspectSupport;
-
+  private RrAsyncAspectHelper asyncAspectHelper;
   @Autowired(required = false)
   private RrAsyncLogEntities asyncLogEntities;
-
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAsync * *..*.*(..))")
-  private void pointcut() {
-  }
 
   @Around("pointcut() && @annotation(rrAsync)")
   public Object around(ProceedingJoinPoint pjp, RrAsync rrAsync) throws Throwable {
@@ -68,7 +60,7 @@ public class RrAsyncAspect {
 
             RrAsyncLogEntities modAsyncLogEntity = asyncLogEntities.entityClass().newInstance();
             modAsyncLogEntity.setId(asyncLogEntity.getId());
-            Future<Resp<?>> respFuture = asyncAspectSupport.async(pjp, req, modAsyncLogEntity);
+            Future<Resp<?>> respFuture = asyncAspectHelper.async(pjp, req, modAsyncLogEntity);
             try {
               rtn = respFuture.get(req.getPri().gnnExt().getAsync(), TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -94,5 +86,9 @@ public class RrAsyncAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAsync * *..*.*(..))")
+  private void pointcut() {
   }
 }

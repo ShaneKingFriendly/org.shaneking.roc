@@ -43,33 +43,24 @@ import java.util.stream.Collectors;
 @Order(RrCryptoAspect.ORDER)
 public class RrCryptoAspect {
   public static final int ORDER = 40000;
-
   @Value("${sk.roc.rr.crypto.enabled:true}")
   private boolean enabled;
-
   @Autowired
   private Environment environment;
-
   @Autowired
   private NumberedDao numberedDao;
-  @Autowired
-  private TenantedNumberedDao tenantedNumberedDao;
-
+  @Autowired(required = false)
+  private RrAutoCreateUserService autoCreateUserService;
   @Autowired(required = false)
   private TenantEntities tenantEntityClass;
-  @Autowired(required = false)
-  private UserEntities userEntityClass;
-
+  @Autowired
+  private TenantedNumberedDao tenantedNumberedDao;
   @Autowired(required = false)
   private TenantReadTenantEntities tenantReadTenantEntities;
   @Autowired(required = false)
   private TenantUseTenantEntities tenantUseTenantEntities;
   @Autowired(required = false)
-  private RrAutoCreateUserService autoCreateUserService;
-
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCrypto * *..*.*(..))")
-  private void pointcut() {
-  }
+  private UserEntities userEntityClass;
 
   @Around("pointcut() && @annotation(rrCrypto)")
   public Object around(ProceedingJoinPoint pjp, RrCrypto rrCrypto) throws Throwable {
@@ -215,5 +206,9 @@ public class RrCryptoAspect {
     } catch (Throwable throwable) {
       log.error(OM3.p(ctx), throwable);
     }
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCrypto * *..*.*(..))")
+  private void pointcut() {
   }
 }

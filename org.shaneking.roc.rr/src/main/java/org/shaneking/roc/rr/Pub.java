@@ -44,17 +44,17 @@ public class Pub {
   @Setter
   private String mvc;//Message Verification Code for req.enc. (Default MD5)
 
-  public String gnnTracingNo() {
-    if (String0.isNullOrEmpty(getTracingNo())) {
-      setTracingNo(gnnReqNo());
-    }
-    return getTracingNo();
-  }
-
   public String gnnReqNo() {
     if (String0.isNullOrEmpty(getReqNo())) {
       setReqNo(UUID0.cUl33());
     }
     return getReqNo();
+  }
+
+  public String gnnTracingNo() {
+    if (String0.isNullOrEmpty(getTracingNo())) {
+      setTracingNo(gnnReqNo());
+    }
+    return getTracingNo();
   }
 }

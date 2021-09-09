@@ -33,10 +33,6 @@ public class EntityCacheableAspect {
   @Autowired
   private ZeroCache cache;
 
-  @Pointcut("execution(@org.shaneking.roc.persistence.annotation.EntityCacheable * *..*.*(..))")
-  private void pointcut() {
-  }
-
   @Around("pointcut() && @annotation(entityCacheable)")
   public Object around(ProceedingJoinPoint pjp, EntityCacheable entityCacheable) throws Throwable {
     Object rtn = null;
@@ -137,5 +133,9 @@ public class EntityCacheableAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.persistence.annotation.EntityCacheable * *..*.*(..))")
+  private void pointcut() {
   }
 }

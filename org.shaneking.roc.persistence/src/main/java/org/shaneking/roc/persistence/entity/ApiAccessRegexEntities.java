@@ -6,22 +6,6 @@ import org.shaneking.roc.persistence.CacheableEntities;
 import java.util.regex.Pattern;
 
 public interface ApiAccessRegexEntities extends CacheableEntities {
-  String getAllowUrlRegex();
-
-  <T extends ApiAccessRegexEntities> T setAllowUrlRegex(String allowUrlRegex);
-
-  String getDenyUrlRegex();
-
-  <T extends ApiAccessRegexEntities> T setDenyUrlRegex(String denyUrlRegex);
-
-  String getAllowSignatureRegex();
-
-  <T extends ApiAccessRegexEntities> T setAllowSignatureRegex(String allowSignatureRegex);
-
-  String getDenySignatureRegex();
-
-  <T extends ApiAccessRegexEntities> T setDenySignatureRegex(String denySignatureRegex);
-
   default boolean check(String url, String signature) {
     boolean urlAllow = false;
     boolean urlDeny = false;
@@ -53,4 +37,20 @@ public interface ApiAccessRegexEntities extends CacheableEntities {
     }
     return (urlAllow || signatureAllow) && !(urlDeny || signatureDeny);
   }
+
+  String getAllowSignatureRegex();
+
+  <T extends ApiAccessRegexEntities> T setAllowSignatureRegex(String allowSignatureRegex);
+
+  String getAllowUrlRegex();
+
+  <T extends ApiAccessRegexEntities> T setAllowUrlRegex(String allowUrlRegex);
+
+  String getDenySignatureRegex();
+
+  <T extends ApiAccessRegexEntities> T setDenySignatureRegex(String denySignatureRegex);
+
+  String getDenyUrlRegex();
+
+  <T extends ApiAccessRegexEntities> T setDenyUrlRegex(String denyUrlRegex);
 }

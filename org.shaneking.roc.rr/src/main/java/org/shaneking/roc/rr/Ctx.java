@@ -60,13 +60,13 @@ public class Ctx {
     return getUser() == null ? null : getUser().getId();
   }
 
-  public String gnaUserNo() {
-    return getUser() == null ? null : getUser().getNo();
-  }
-
   public String gnaUserInMessage() {
     return getUser() == null ? null : String0.wrap(getUser().getNo()
         + String0.wrap(getUser().getId(), String0.OPEN_BRACKET, String0.CLOSE_BRACKET, true)
       , String0.OPEN_PARENTHESIS, String0.CLOSE_PARENTHESIS);
+  }
+
+  public String gnaUserNo() {
+    return getUser() == null ? null : getUser().getNo();
   }
 }

@@ -18,13 +18,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Slf4j
 public class TenantedNumberedDao {
+  @Value("${sk.roc.persistence.dao.cache.seconds:180}")
+  private int cacheSeconds;
   @Autowired
   @Getter
   private CacheableDao cacheableDao;
   @Autowired(required = false)
   private ZeroCache cache;
-  @Value("${sk.roc.persistence.dao.cache.seconds:180}")
-  private int cacheSeconds;
 
   public <T extends CacheableEntities> T oneByNo(@NonNull Class<T> cacheType, @NonNull String no, @NonNull String tenantId) {
     return oneByNo(cacheType, no, tenantId, true);

@@ -11,9 +11,9 @@ import java.lang.annotation.*;
 public @interface EntityCacheEvict {
   int clsIdx() default 0;
 
+  boolean empty() default false;
+
   int pKeyIdx() default -1;///begin 0, for parameter
 
   String pKeyPath() default String0.EMPTY;//a.b.c, for parameter
-
-  boolean empty() default false;
 }

@@ -14,24 +14,10 @@ import java.lang.reflect.TypeVariable;
 //I forgot where it came from
 public class JavaType3 {
 
-  public static JavaType[] resolveRtnJavaTypes(ProceedingJoinPoint pjp) {
-    Method method = resolveMethod(pjp);
-    JavaType javaType = resolveJavaType(ResolvableType.forMethodReturnType(method).getType(), pjp.getTarget().getClass());
-    return resolveJavaTypes(javaType);
-  }
-
   public static JavaType[] resolveArgJavaTypes(ProceedingJoinPoint pjp, int idx) {
     Method method = resolveMethod(pjp);
     JavaType javaType = resolveJavaType(ResolvableType.forMethodParameter(method, idx).getType(), pjp.getTarget().getClass());
     return resolveJavaTypes(javaType);
-  }
-
-  public static JavaType[] resolveJavaTypes(JavaType javaType) {
-    JavaType[] rtnJavaTypes = new JavaType[javaType.containedTypeCount()];
-    for (int i = 0; i < javaType.containedTypeCount(); i++) {
-      rtnJavaTypes[i] = javaType.containedType(i);
-    }
-    return rtnJavaTypes;
   }
 
   public static JavaType resolveJavaType(Type type, Class<?> contextClass) {
@@ -62,6 +48,32 @@ public class JavaType3 {
     return typeFactory.constructType(type);
   }
 
+  public static JavaType[] resolveJavaTypes(JavaType javaType) {
+    JavaType[] rtnJavaTypes = new JavaType[javaType.containedTypeCount()];
+    for (int i = 0; i < javaType.containedTypeCount(); i++) {
+      rtnJavaTypes[i] = javaType.containedType(i);
+    }
+    return rtnJavaTypes;
+  }
+
+  public static Method resolveMethod(ProceedingJoinPoint pjp) {
+    Method rtnMethod = null;
+    String methodLongString = pjp.getSignature().toLongString();
+    for (Method method : pjp.getSignature().getDeclaringType().getMethods()) {
+      if (method.toString().equals(methodLongString)) {
+        rtnMethod = method;
+        break;
+      }
+    }
+    return rtnMethod;
+  }
+
+  public static JavaType[] resolveRtnJavaTypes(ProceedingJoinPoint pjp) {
+    Method method = resolveMethod(pjp);
+    JavaType javaType = resolveJavaType(ResolvableType.forMethodReturnType(method).getType(), pjp.getTarget().getClass());
+    return resolveJavaTypes(javaType);
+  }
+
   public static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
     ResolvableType rtnResolvableType = null;
     if (contextType.hasGenerics()) {
@@ -87,17 +99,5 @@ public class JavaType3 {
     }
 
     return ResolvableType.NONE;
-  }
-
-  public static Method resolveMethod(ProceedingJoinPoint pjp) {
-    Method rtnMethod = null;
-    String methodLongString = pjp.getSignature().toLongString();
-    for (Method method : pjp.getSignature().getDeclaringType().getMethods()) {
-      if (method.toString().equals(methodLongString)) {
-        rtnMethod = method;
-        break;
-      }
-    }
-    return rtnMethod;
   }
 }

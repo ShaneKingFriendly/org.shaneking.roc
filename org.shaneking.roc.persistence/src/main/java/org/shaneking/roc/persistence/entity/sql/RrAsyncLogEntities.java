@@ -4,38 +4,38 @@ import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.roc.persistence.CacheableEntities;
 
 public interface RrAsyncLogEntities extends CacheableEntities, Tenanted {
-  String getReqJsonStrRaw();
-
-  <T extends RrAsyncLogEntities> T setReqJsonStrRaw(String reqJsonStrRaw);
+  //@see sktest.roc.rr.cfg.RrCfg.simpleAsyncLogEntity
+  <T extends RrAsyncLogEntities> Class<T> entityClass();
 
   String getCtxJsonStr();
 
-  <T extends RrAsyncLogEntities> T setCtxJsonStr(String ctxJsonStr);
-
-  String getStartDatetime();
-
-  <T extends RrAsyncLogEntities> T setStartDatetime(String startDatetime);
+  String getDoneDatetime();
 
   String getReqJsonStr();
 
-  <T extends RrAsyncLogEntities> T setReqJsonStr(String reqJsonStr);
+  <T extends RrAsyncLogEntities> T setDoneDatetime(String doneDatetime);
+
+  String getRtnCode();
+
+  String getReqJsonStrRaw();
+
+  String getRtnMsg();
+
+  <T extends RrAsyncLogEntities> T setReqJsonStrRaw(String reqJsonStrRaw);
 
   String getRtnJsonStr();
 
   <T extends RrAsyncLogEntities> T setRtnJsonStr(String rtnJsonStr);
 
-  String getRtnCode();
+  String getStartDatetime();
 
-  <T extends RrAsyncLogEntities> T setRtnCode(String rtnCode);
+  <T extends RrAsyncLogEntities> T setStartDatetime(String startDatetime);
 
-  String getRtnMsg();
+  <T extends RrAsyncLogEntities> T setCtxJsonStr(String ctxJsonStr);
+
+  <T extends RrAsyncLogEntities> T setReqJsonStr(String reqJsonStr);
 
   <T extends RrAsyncLogEntities> T setRtnMsg(String rtnMsg);
 
-  String getDoneDatetime();
-
-  <T extends RrAsyncLogEntities> T setDoneDatetime(String doneDatetime);
-
-  //@see sktest.roc.rr.cfg.RrCfg.simpleAsyncLogEntity
-  <T extends RrAsyncLogEntities> Class<T> entityClass();
+  <T extends RrAsyncLogEntities> T setRtnCode(String rtnCode);
 }

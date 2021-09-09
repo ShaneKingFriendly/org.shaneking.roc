@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class RocZeroCacheTest extends SKSpringUnit {
 
   @Autowired
-  private ZeroCache cache;
+  private RocZeroCachePrepare1 rocZeroCachePrepare1;
 
   @Autowired
-  private RocZeroCachePrepare1 rocZeroCachePrepare1;
+  private ZeroCache cache;
 
   @Test
   void testCache() {

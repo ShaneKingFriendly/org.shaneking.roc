@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.Future;
 
 @Component
-public class RrAsyncAspectSupport {
+public class RrAsyncAspectHelper {
   @Autowired
   private CacheableDao cacheableDao;
 

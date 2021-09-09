@@ -30,11 +30,11 @@ create table if not exists `skrp_distributed_locks` (
 public class DistributedDbLock implements DistributedLockable {
   public static final String DEFAULT_LOCK_TBL = "skrp_distributed_locks";
   @Getter
-  private String lockKey;
+  private long timeMillis = System.currentTimeMillis();
   @Getter
   private String clientId;
   @Getter
-  private long timeMillis = System.currentTimeMillis();
+  private String lockKey;
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
@@ -46,6 +46,12 @@ public class DistributedDbLock implements DistributedLockable {
   public DistributedDbLock(JdbcTemplate jdbcTemplate) {
     this();
     this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void close() throws Exception {
+    jdbcTemplate.update(MF0.fmt("update {0} set lock_status = 'N' where lock_status = 'Y' and lock_key = '{1}' and client_id = '{2}'", DEFAULT_LOCK_TBL, this.lockKey, this.clientId));
+    this.lockKey = null;
   }
 
   @Override
@@ -88,11 +94,5 @@ public class DistributedDbLock implements DistributedLockable {
     } catch (Exception e) {
       log.error(OM3.p(this.lockKey, this.clientId), e);
     }
-  }
-
-  @Override
-  public void close() throws Exception {
-    jdbcTemplate.update(MF0.fmt("update {0} set lock_status = 'N' where lock_status = 'Y' and lock_key = '{1}' and client_id = '{2}'", DEFAULT_LOCK_TBL, this.lockKey, this.clientId));
-    this.lockKey = null;
   }
 }

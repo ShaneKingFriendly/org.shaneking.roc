@@ -5,62 +5,62 @@ import org.shaneking.ling.persistence.entity.sql.Tenanted;
 import org.shaneking.roc.persistence.CacheableEntities;
 
 public interface RrAuditLogEntities extends CacheableEntities, Channelized, Tenanted {
-  String getTracingNo();
+  //@see sktest.roc.rr.cfg.RrCfg.simpleAuditLogEntity
+  <T extends RrAuditLogEntities> Class<T> entityClass();
 
-  <T extends RrAuditLogEntities> T setTracingNo(String tracingNo);
+  String getCached();
 
   String getReqDatetime();
 
-  <T extends RrAuditLogEntities> T setReqDatetime(String reqDatetime);
-
   String getReqIps();
-
-  <T extends RrAuditLogEntities> T setReqIps(String reqIps);
-
-  String getReqUserId();
-
-  <T extends RrAuditLogEntities> T setReqUserId(String reqUserId);
-
-  String getReqJsonStrRaw();
-
-  <T extends RrAuditLogEntities> T setReqJsonStrRaw(String reqJsonStrRaw);
 
   String getReqJsonStr();
 
-  <T extends RrAuditLogEntities> T setReqJsonStr(String reqJsonStr);
+  <T extends RrAuditLogEntities> T setCached(String cached);
+
+  String getReqJsonStrRaw();
 
   String getReqUrl();
 
-  <T extends RrAuditLogEntities> T setReqUrl(String reqUrl);
+  <T extends RrAuditLogEntities> T setReqJsonStrRaw(String reqJsonStrRaw);
 
   String getReqSignature();
 
   <T extends RrAuditLogEntities> T setReqSignature(String reqSignature);
 
-  String getCached();
-
-  <T extends RrAuditLogEntities> T setCached(String cached);
-
   String getRespJsonStr();
-
-  <T extends RrAuditLogEntities> T setRespJsonStr(String respJsonStr);
 
   String getRespJsonStrCtx();
 
-  <T extends RrAuditLogEntities> T setRespJsonStrCtx(String respJsonStrCtx);
-
   String getRespJsonStrRaw();
 
-  <T extends RrAuditLogEntities> T setRespJsonStrRaw(String respJsonStrRaw);
+  String getReqUserId();
+
+  <T extends RrAuditLogEntities> T setReqUserId(String reqUserId);
+
+  String getRespDatetime();
 
   String getRespIps();
 
   <T extends RrAuditLogEntities> T setRespIps(String respIps);
 
-  String getRespDatetime();
+  String getTracingNo();
+
+  <T extends RrAuditLogEntities> T setTracingNo(String tracingNo);
+
+  <T extends RrAuditLogEntities> T setReqDatetime(String reqDatetime);
+
+  <T extends RrAuditLogEntities> T setReqIps(String reqIps);
 
   <T extends RrAuditLogEntities> T setRespDatetime(String respDatetime);
 
-  //@see sktest.roc.rr.cfg.RrCfg.simpleAuditLogEntity
-  <T extends RrAuditLogEntities> Class<T> entityClass();
+  <T extends RrAuditLogEntities> T setReqJsonStr(String reqJsonStr);
+
+  <T extends RrAuditLogEntities> T setReqUrl(String reqUrl);
+
+  <T extends RrAuditLogEntities> T setRespJsonStr(String respJsonStr);
+
+  <T extends RrAuditLogEntities> T setRespJsonStrCtx(String respJsonStrCtx);
+
+  <T extends RrAuditLogEntities> T setRespJsonStrRaw(String respJsonStrRaw);
 }

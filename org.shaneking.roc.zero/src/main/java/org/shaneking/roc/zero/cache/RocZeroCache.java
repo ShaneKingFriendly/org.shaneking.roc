@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface RocZeroCache extends ZeroCache {
+  default String currentTransactionName() {
+    return TransactionSynchronizationManager.getCurrentTransactionName();
+  }
+
   default Boolean del(boolean withoutTransactional, @NonNull String key) {
     if (!withoutTransactional && inTransactional()) {
       //need record operation key in transactional
@@ -67,6 +71,10 @@ public interface RocZeroCache extends ZeroCache {
     }
   }
 
+  default boolean inTransactional() {
+    return !String0.isNullOrEmpty(currentTransactionName()) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly();
+  }
+
   default void set(@NonNull String key, @NonNull String value) {
     boolean contain = false;
     if (inTransactional()) {
@@ -76,13 +84,5 @@ public interface RocZeroCache extends ZeroCache {
     if (!contain) {
       LRU_MAP.put(key, value);
     }
-  }
-
-  default boolean inTransactional() {
-    return !String0.isNullOrEmpty(currentTransactionName()) && !TransactionSynchronizationManager.isCurrentTransactionReadOnly();
-  }
-
-  default String currentTransactionName() {
-    return TransactionSynchronizationManager.getCurrentTransactionName();
   }
 }

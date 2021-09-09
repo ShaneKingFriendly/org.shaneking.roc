@@ -30,10 +30,6 @@ public class EntityCacheEvictAspect {
   @Autowired
   private ZeroCache cache;
 
-  @Pointcut("execution(@org.shaneking.roc.persistence.annotation.EntityCacheEvict * *..*.*(..))")
-  private void pointcut() {
-  }
-
   @After("pointcut() && @annotation(entityCacheEvict)")
   public void after(JoinPoint jp, EntityCacheEvict entityCacheEvict) throws Throwable {
     if (enabled) {
@@ -69,5 +65,9 @@ public class EntityCacheEvictAspect {
         log.warn(MF0.fmt("{0} - {1}", jp.getSignature().toLongString(), ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR));
       }
     }
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.persistence.annotation.EntityCacheEvict * *..*.*(..))")
+  private void pointcut() {
   }
 }

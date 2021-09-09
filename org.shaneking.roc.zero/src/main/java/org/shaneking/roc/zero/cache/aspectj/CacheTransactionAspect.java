@@ -21,13 +21,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Order(CacheTransactionAspect.ORDER)//@EnableTransactionManagement(order = <this)
 public class CacheTransactionAspect {
   public static final int ORDER = 500000;
-
   @Autowired
   private ApplicationEventPublisher applicationEventPublisher;
-
-  @Pointcut("execution(@org.springframework.transaction.annotation.Transactional * *..*.*(..))")
-  private void pointcut() {
-  }
 
   @Around("pointcut() && @annotation(transactional)")
   public Object around(ProceedingJoinPoint pjp, Transactional transactional) throws Throwable {
@@ -35,5 +30,9 @@ public class CacheTransactionAspect {
       .setCurrentTransactionReadOnly(TransactionSynchronizationManager.isCurrentTransactionReadOnly())
       .setTransactionName(TransactionSynchronizationManager.getCurrentTransactionName()));
     return pjp.proceed();
+  }
+
+  @Pointcut("execution(@org.springframework.transaction.annotation.Transactional * *..*.*(..))")
+  private void pointcut() {
   }
 }

@@ -29,13 +29,8 @@ import java.time.ZonedDateTime;
 @Order(RrDszAspect.ORDER)
 public class RrDszAspect {
   public static final int ORDER = 60000;
-
   @Value("${sk.roc.rr.dsz.enabled:true}")
   private boolean enabled;
-
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
-  private void pointcut() {
-  }
 
   @Around("pointcut() && @annotation(rrAccess)")
   public Object around(ProceedingJoinPoint pjp, RrAccess rrAccess) throws Throwable {
@@ -64,5 +59,9 @@ public class RrDszAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
+  private void pointcut() {
   }
 }

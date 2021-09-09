@@ -13,13 +13,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public interface CacheableEntities extends DialectSqlEntities {
-  Map<String, Condition> getHavingConditions();
-
-  void srvHavingConditions(Map<String, Condition> conditionMap);
-
-  Map<String, Condition> getWhereConditions();
-
-  void srvWhereConditions(Map<String, Condition> conditionMap);
 
   default <T extends CacheableEntities> T filedToCondition() throws Exception {
     T t = (T) this.getClass().newInstance();
@@ -31,7 +24,6 @@ public interface CacheableEntities extends DialectSqlEntities {
     return t;
   }
 
-  ///
   @Override
   default @NonNull List<Condition> findHavingConditions(@NonNull String fieldName) {
     Map<String, Condition> conditionMap = this.getHavingConditions();
@@ -79,8 +71,15 @@ public interface CacheableEntities extends DialectSqlEntities {
     return forceCondition(conditionMap, field);
   }
 
-  ///
+  Map<String, Condition> getHavingConditions();
+
   UserEntities getLastModifyUser();
 
+  Map<String, Condition> getWhereConditions();
+
   <T extends CacheableEntities> T setLastModifyUser(UserEntities userEntity);
+
+  void srvHavingConditions(Map<String, Condition> conditionMap);
+
+  void srvWhereConditions(Map<String, Condition> conditionMap);
 }

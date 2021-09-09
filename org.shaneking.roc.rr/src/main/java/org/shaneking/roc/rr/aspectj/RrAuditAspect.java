@@ -37,21 +37,18 @@ import org.springframework.stereotype.Component;
 @Order(RrAuditAspect.ORDER)///small will first
 public class RrAuditAspect {
   public static final int ORDER = 20000;
-
+  @Value("${sk.roc.rr.audit.async:true}")
+  private boolean async;
   @Value("${sk.roc.rr.audit.enabled:true}")
   private boolean enabled;
-
   @Autowired
   private NumberedDao numberedDao;
-
-  @Autowired(required = false)
-  private RrAuditLogEntities auditLogEntityClass;
   @Autowired(required = false)
   private ChannelEntities channelEntityClass;
-
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
-  private void pointcut() {
-  }
+  @Autowired
+  private RrAuditAspectHelper auditAspectHelper;
+  @Autowired(required = false)
+  private RrAuditLogEntities auditLogEntityClass;
 
   @Around("pointcut() && @annotation(rrAudit)")
   public Object around(ProceedingJoinPoint pjp, RrAudit rrAudit) throws Throwable {
@@ -146,7 +143,11 @@ public class RrAuditAspect {
               auditLogEntity.setRespDatetime(LDT0.on().dts());
 
               log.info(OM3.writeValueAsString(auditLogEntity));
-              numberedDao.getCacheableDao().add(auditLogEntity.entityClass(), auditLogEntity);
+              if (async) {
+                auditAspectHelper.async(auditLogEntity);
+              } else {
+                numberedDao.getCacheableDao().add(auditLogEntity.entityClass(), auditLogEntity);
+              }
             }
           } catch (Throwable throwable) {
             ///ignore exception : just audit log error, business succeeded
@@ -161,5 +162,9 @@ public class RrAuditAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAudit * *..*.*(..))")
+  private void pointcut() {
   }
 }

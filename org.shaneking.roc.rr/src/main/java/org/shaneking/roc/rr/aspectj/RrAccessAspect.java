@@ -29,30 +29,22 @@ import org.springframework.stereotype.Component;
 @Order(RrAccessAspect.ORDER)
 public class RrAccessAspect {
   public static final int ORDER = 50000;
-
   @Value("${sk.roc.rr.access.enabled:true}")
   private boolean enabled;
-
   @Autowired
   private CacheableDao cacheableDao;
-
   @Autowired(required = false)
   private ChannelAccessRegexApiEntities channelAccessRegexApiEntityClass;
   @Autowired(required = false)
-  private ChannelAccessUrlApiEntities channelAccessUrlApiEntityClass;
-  @Autowired(required = false)
   private ChannelAccessSignatureApiEntities channelAccessSignatureApiEntityClass;
-
   @Autowired(required = false)
   private ChannelAccessTenantRegexApiEntities channelAccessTenantRegexApiEntityClass;
   @Autowired(required = false)
+  private ChannelAccessTenantSignatureApiEntities channelAccessTenantSignatureApiEntityClass;
+  @Autowired(required = false)
   private ChannelAccessTenantUrlApiEntities channelAccessTenantUrlApiEntityClass;
   @Autowired(required = false)
-  private ChannelAccessTenantSignatureApiEntities channelAccessTenantSignatureApiEntityClass;
-
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
-  private void pointcut() {
-  }
+  private ChannelAccessUrlApiEntities channelAccessUrlApiEntityClass;
 
   @Around("pointcut() && @annotation(rrAccess)")
   public Object around(ProceedingJoinPoint pjp, RrAccess rrAccess) throws Throwable {
@@ -143,5 +135,9 @@ public class RrAccessAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
+  private void pointcut() {
   }
 }

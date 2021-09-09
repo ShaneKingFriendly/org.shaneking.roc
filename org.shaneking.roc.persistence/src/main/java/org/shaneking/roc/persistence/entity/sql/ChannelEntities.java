@@ -18,50 +18,50 @@ public interface ChannelEntities extends CacheableEntities, Named {
   String ERR_CODE__INVALID_TIMESTAMP = "CHANNEL_ENTITIES__INVALID_TIMESTAMP";
 
   @Transient
-  String TOKEN_VALUE_TYPE__SELF = "SELF";
-  @Transient
   String TOKEN_VALUE_TYPE__PROP = "PROP";
+  @Transient
+  String TOKEN_VALUE_TYPE__SELF = "SELF";
+
+  //@see sktest.roc.rr.cfg.RrCfg.simpleChannelEntity
+  <T extends ChannelEntities> Class<T> entityClass();
 
   String getDescription();
-
-  <T extends ChannelEntities> T setDescription(String description);
-
-  String getEncTv();
-
-  <T extends ChannelEntities> T setEncTv(String encTv);
-
-  String getEncTf();
-
-  <T extends ChannelEntities> T setEncTf(String encTf);
-
-  String getEncTat();
-
-  <T extends ChannelEntities> T setEncTat(String encTat);
-
-  String getEncTvt();
-
-  <T extends ChannelEntities> T setEncTvt(String encTvt);
 
   Integer getDszSeconds();
 
   <T extends ChannelEntities> T setDszSeconds(Integer dszForce);
 
+  String getEncTf();
+
+  String getEncTat();
+
+  String getEncTvt();
+
+  <T extends ChannelEntities> T setEncTat(String encTat);
+
+  String getEncTv();
+
   String getMvcTv();
 
-  <T extends ChannelEntities> T setMvcTv(String mvcTv);
+  String getMvcTvt();
 
-  String getMvcTf();
-
-  <T extends ChannelEntities> T setMvcTf(String mvcTf);
+  <T extends ChannelEntities> T setEncTv(String encTv);
 
   String getMvcTat();
 
   <T extends ChannelEntities> T setMvcTat(String mvcTat);
 
-  String getMvcTvt();
+  String getMvcTf();
+
+  <T extends ChannelEntities> T setMvcTf(String mvcTf);
+
+  <T extends ChannelEntities> T setDescription(String description);
+
+  <T extends ChannelEntities> T setEncTf(String encTf);
+
+  <T extends ChannelEntities> T setEncTvt(String encTvt);
+
+  <T extends ChannelEntities> T setMvcTv(String mvcTv);
 
   <T extends ChannelEntities> T setMvcTvt(String mvcTvt);
-
-  //@see sktest.roc.rr.cfg.RrCfg.simpleChannelEntity
-  <T extends ChannelEntities> Class<T> entityClass();
 }

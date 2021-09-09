@@ -31,17 +31,12 @@ import java.util.concurrent.atomic.AtomicLong;
 @Order(RrLimitingAspect.ORDER)
 public class RrLimitingAspect {
   public static final int ORDER = 30000;
-
   public static final String ERR_CODE__BUSY_NOW = "RR_LIMITING_ASPECT__BUSY_NOW";
   private final Map<String, AtomicLong> map = Map0.newConcurrentHashMap();
   @Value("${sk.roc.rr.limiting.enabled:true}")
   private boolean enabled;
   @Autowired
   private Environment environment;
-
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrLimiting * *..*.*(..))")
-  private void pointcut() {
-  }
 
   @Around("pointcut() && @annotation(rrLimiting)")
   public Object around(ProceedingJoinPoint pjp, RrLimiting rrLimiting) throws Throwable {
@@ -71,5 +66,9 @@ public class RrLimitingAspect {
       rtn = pjp.proceed();
     }
     return rtn;
+  }
+
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrLimiting * *..*.*(..))")
+  private void pointcut() {
   }
 }

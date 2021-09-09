@@ -17,6 +17,13 @@ class CacheableDaoTest extends SKSpringUnit {
   @Autowired
   private CacheableDao cacheableDao;
 
+  @Test
+  void add() {
+    CacheableEntityPrepare1 cacheableEntityPrepare1 = new CacheableEntityPrepare1();
+    cacheableEntityPrepare1.initWithUidAndId(UUID0.cUl33(), UUID0.cUl33());
+    assertEquals(1, cacheableDao.add(CacheableEntityPrepare1.class, cacheableEntityPrepare1));
+  }
+
   @BeforeEach
   void beforeEach() {
     cacheableDao.rmvByIds(CacheableEntityPrepare1.class, new CacheableEntityPrepare1(), List0.newArrayList(cacheableDao.ids(CacheableEntityPrepare1.class, new CacheableEntityPrepare1()).split(String0.COMMA)));
@@ -27,20 +34,8 @@ class CacheableDaoTest extends SKSpringUnit {
   }
 
   @Test
-  void add() {
-    CacheableEntityPrepare1 cacheableEntityPrepare1 = new CacheableEntityPrepare1();
-    cacheableEntityPrepare1.initWithUidAndId(UUID0.cUl33(), UUID0.cUl33());
-    assertEquals(1, cacheableDao.add(CacheableEntityPrepare1.class, cacheableEntityPrepare1));
-  }
-
-  @Test
   void cnt() {
     assertEquals(Long.valueOf(1), cacheableDao.cnt(CacheableEntityPrepare1.class, new CacheableEntityPrepare1()));
-  }
-
-  @Test
-  void ids() {
-    assertEquals(String0.ARY_HEX, cacheableDao.ids(CacheableEntityPrepare1.class, new CacheableEntityPrepare1()));
   }
 
   @Test
@@ -64,19 +59,8 @@ class CacheableDaoTest extends SKSpringUnit {
   }
 
   @Test
-  void modByIdsVer() {
-    CacheableEntityPrepare1 cacheableEntityPrepare1 = new CacheableEntityPrepare1();
-    assertThrows(ZeroException.class, () -> cacheableDao.modByIdsVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1, List0.newArrayList()));
-    cacheableEntityPrepare1.setLmUid(String0.ARY_HEX).setId(String0.ARY_HEX);
-    assertEquals(1, cacheableDao.modByIdsVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1, List0.newArrayList(String0.ARY_HEX)));
-  }
-
-  @Test
-  void modByIdVer() {
-    CacheableEntityPrepare1 cacheableEntityPrepare1 = new CacheableEntityPrepare1();
-    assertThrows(ZeroException.class, () -> cacheableDao.modByIdVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1));
-    cacheableEntityPrepare1.setLmUid(String0.ARY_HEX).setId(String0.ARY_HEX);
-    assertEquals(1, cacheableDao.modByIdVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1));
+  void ids() {
+    assertEquals(String0.ARY_HEX, cacheableDao.ids(CacheableEntityPrepare1.class, new CacheableEntityPrepare1()));
   }
 
   @Test
@@ -94,6 +78,22 @@ class CacheableDaoTest extends SKSpringUnit {
 
 //    assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare1.class, new CacheableEntityPrepare1(), List0.newArrayList()).get(0).getId());
     assertEquals(String0.ARY_HEX, cacheableDao.lstByIds(CacheableEntityPrepare1.class, List0.newArrayList()).get(0).getId());
+  }
+
+  @Test
+  void modByIdsVer() {
+    CacheableEntityPrepare1 cacheableEntityPrepare1 = new CacheableEntityPrepare1();
+    assertThrows(ZeroException.class, () -> cacheableDao.modByIdsVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1, List0.newArrayList()));
+    cacheableEntityPrepare1.setLmUid(String0.ARY_HEX).setId(String0.ARY_HEX);
+    assertEquals(1, cacheableDao.modByIdsVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1, List0.newArrayList(String0.ARY_HEX)));
+  }
+
+  @Test
+  void modByIdVer() {
+    CacheableEntityPrepare1 cacheableEntityPrepare1 = new CacheableEntityPrepare1();
+    assertThrows(ZeroException.class, () -> cacheableDao.modByIdVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1));
+    cacheableEntityPrepare1.setLmUid(String0.ARY_HEX).setId(String0.ARY_HEX);
+    assertEquals(1, cacheableDao.modByIdVer(CacheableEntityPrepare1.class, cacheableEntityPrepare1));
   }
 
   @Test

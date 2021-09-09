@@ -6,18 +6,18 @@ import org.shaneking.roc.persistence.CacheableEntities;
 
 public interface UserEntities extends CacheableEntities, Named, Tenanted {
 
-  String getHaha();
-
-  <T extends UserEntities> T setHaha(String haha);
-
-  String getMobile();
-
-  <T extends UserEntities> T setMobile(String mobile);
+  //@see sktest.roc.rr.cfg.RrCfg.simpleUserEntity
+  <T extends UserEntities> Class<T> entityClass();
 
   String getEmail();
 
+  String getHaha();
+
+  String getMobile();
+
   <T extends UserEntities> T setEmail(String email);
 
-  //@see sktest.roc.rr.cfg.RrCfg.simpleUserEntity
-  <T extends UserEntities> Class<T> entityClass();
+  <T extends UserEntities> T setHaha(String haha);
+
+  <T extends UserEntities> T setMobile(String mobile);
 }

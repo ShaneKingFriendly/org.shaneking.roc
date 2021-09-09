@@ -25,14 +25,14 @@ public class UserBizImpl {
     return resp;
   }
 
+  @RrLimiting(prop = "sktest.roc.rr.biz.impl.UserBizImpl.lst", limit = 1)
   @RrAudit
   @RrAccess
+  @RrCache
   @RrCrypto
-  public Resp<Req<String, Integer>> rmvById(Req<String, Integer> req) {
-    Resp<Req<String, Integer>> resp = Resp.success(req);
-    SimpleUserEntity userEntity = new SimpleUserEntity();
-    userEntity.setId(req.getPri().getObj());
-    req.getPri().setRtn(cacheableDao.rmvById(SimpleUserEntity.class, CacheableDao.ptu(userEntity, req.gnnCtx().gnaTenantId())));
+  public Resp<Req<SimpleUserEntity, List<SimpleUserEntity>>> lst(Req<SimpleUserEntity, List<SimpleUserEntity>> req) {
+    Resp<Req<SimpleUserEntity, List<SimpleUserEntity>>> resp = Resp.success(req);
+    req.getPri().setRtn(cacheableDao.lst(SimpleUserEntity.class, CacheableDao.pts(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
     return resp;
   }
 
@@ -45,14 +45,14 @@ public class UserBizImpl {
     return resp;
   }
 
-  @RrLimiting(prop = "sktest.roc.rr.biz.impl.UserBizImpl.lst", limit = 1)
   @RrAudit
   @RrAccess
-  @RrCache
   @RrCrypto
-  public Resp<Req<SimpleUserEntity, List<SimpleUserEntity>>> lst(Req<SimpleUserEntity, List<SimpleUserEntity>> req) {
-    Resp<Req<SimpleUserEntity, List<SimpleUserEntity>>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.lst(SimpleUserEntity.class, CacheableDao.pts(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
+  public Resp<Req<String, Integer>> rmvById(Req<String, Integer> req) {
+    Resp<Req<String, Integer>> resp = Resp.success(req);
+    SimpleUserEntity userEntity = new SimpleUserEntity();
+    userEntity.setId(req.getPri().getObj());
+    req.getPri().setRtn(cacheableDao.rmvById(SimpleUserEntity.class, CacheableDao.ptu(userEntity, req.gnnCtx().gnaTenantId())));
     return resp;
   }
 }

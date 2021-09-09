@@ -18,15 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimpleUserEntityTest extends SKUnit {
 
   @Test
-  void getHaha() {
-    UserExample userEntity = new SimpleUserEntity();
-    userEntity.setHaha(Crypto0Unit.I_LOVE_YOU);
-    assertEquals(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU__ENCRYPTED, userEntity.getHaha());
-    userEntity.setHaha(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU);
-    assertEquals(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU, userEntity.getHaha());
-  }
-
-  @Test
   void createTableAndIndexIfNotExistSql() throws IOException {
     Files.write(tstOFiles().toPath(), new SimpleUserEntity().createTableAndIndexIfNotExistSql().getBytes());
     Assertions.assertEquals(String.join(String0.BR_LINUX, Files.readAllLines(tstOFiles().toPath())).trim(), new SimpleUserEntity().createTableAndIndexIfNotExistSql().trim());
@@ -35,6 +26,15 @@ class SimpleUserEntityTest extends SKUnit {
   @Test
   void entityClass() {
     assertNotNull(new SimpleUserEntity().entityClass());
+  }
+
+  @Test
+  void getHaha() {
+    UserExample userEntity = new SimpleUserEntity();
+    userEntity.setHaha(Crypto0Unit.I_LOVE_YOU);
+    assertEquals(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU__ENCRYPTED, userEntity.getHaha());
+    userEntity.setHaha(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU);
+    assertEquals(SKC1.ENCRYPTED_PREFIX + Crypto0Unit.I_LOVE_YOU, userEntity.getHaha());
   }
 
   @Test
