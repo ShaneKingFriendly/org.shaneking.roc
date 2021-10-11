@@ -13,7 +13,7 @@
       "rno": "【字符串】【可选。不给时，响应会自动生成】【全局永久唯一递增编号】RequestNo，请求编号。用于标识唯一请求，可防止重放。由org.shaneking.ling.zero.util.UUID0.cUl33()生成。样例：1612263653223_oGFvE5Hyndf0njoFhyK",
       "asy": "【自然数】【可选】Asynchronous，异步等待秒数Seconds",
       "ano": "【字符串】【按需。如果asy>0且此值未给，则响应会自动生成】【全局永久唯一递增编号】AsynchronousNo，异步编号",
-      "dsz": "【字符串】【可选】DateTimeSssZone，请求时间。",
+      "dsz": "【字符串】【可选】DateTimeSssZone，请求时间。格式：yyyy-MM-dd HH:mm:ss.SSSXXX",
       "jsn": "【json】【按需。暂无用，用于扩展】",
       "bdy【json】【必给】【该节点将用于请求级缓存】Request Body，请求业务数据。": {
         "uno": "【字符串】【按需。对于需要记录到人的则必给，否则可不给】UserNo，用户编号",
@@ -33,7 +33,7 @@
   "msg【json】【按约。如果enc存在，以enc为准】Message，消息。": {
     "rno": "如请求未给，则生成全局永久唯一递增编号。否则原样返回",
     "ano": "如果asy>0且此值请求未给，则生成全局永久唯一递增编号。否则原样返回",
-    "dsz": "【字符串】【可选】DateTimeSssZone，响应时间。",
+    "dsz": "【字符串】【可选】DateTimeSssZone，响应时间。格式：yyyy-MM-dd HH:mm:ss.SSSXXX",
     "jsn": "【json】【按需。暂无用，用于扩展】",
     "body【json】【必给】【该节点将用于请求级缓存】Response Body，响应业务数据。": {
       "code": "响应代码",
