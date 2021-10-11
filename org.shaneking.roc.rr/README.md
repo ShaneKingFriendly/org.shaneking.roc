@@ -5,19 +5,19 @@
 ```json
 {
     "cno": "【字符串】【必给】ChannelNo，渠道编号",
-    "tno【待定】": "【字符串】【可选】TracingNo，跟踪编号。用于调用方处理一笔请求时，多次调用我方场景，比如：一次支付，可能需要多次调银联",
     "mvc": "【字符串】【按约。通常为msg字符串形式的校验码或enc字符串的校验码】Message Verification Code，消息校验码。根据约定的算法校验请求和响应数据完整性",
     "enc": "【字符串】【按约。为msg节点字符串形式的密文】Encoded，密文。根据约定的算法解密请求和加密响应数据",
-    "msg【json】【按约。如果enc存在，以enc为准】Message，消息。": {
+    "msg【json】【按约。如果enc存在，以enc为准】Message，消息": {
       "tno": "【字符串】【按需。如不给，则等于cno】TenantNo，租户编号",
       "rno": "【字符串】【可选。不给时，响应会自动生成】【全局永久唯一递增编号】RequestNo，请求编号。用于标识唯一请求，可防止重放。由org.shaneking.ling.zero.util.UUID0.cUl33()生成。样例：1612263653223_oGFvE5Hyndf0njoFhyK",
+      "sno": "【字符串】【可选】SeriesNo，系列编号。用于调用方处理一笔请求时，多次调用我方场景，比如：一次支付，可能需要多次调银联",
       "asy": "【自然数】【可选】Asynchronous，异步等待秒数Seconds",
       "ano": "【字符串】【按需。如果asy>0且此值未给，则响应会自动生成】【全局永久唯一递增编号】AsynchronousNo，异步编号",
       "dsz": "【字符串】【可选】DateTimeSssZone，请求时间。格式：yyyy-MM-dd HH:mm:ss.SSSXXX",
       "jsn": "【json】【按需。暂无用，用于扩展】",
-      "bdy【json】【必给】【该节点将用于请求级缓存】Request Body，请求业务数据。": {
+      "bdy【json】【必给】【该节点将用于请求级缓存】Request Body，请求业务数据": {
         "uno": "【字符串】【按需。对于需要记录到人的则必给，否则可不给】UserNo，用户编号",
-        "tbl": "【json】【按需。对于表格类（含page/sort/filter等）请求需传入，其他情况可不给】Json Object Node",
+        "tbl": "【json】【按需。对于表格类（含page/sort/filter等）请求需传入，其他情况可不给】",
         "obj": "【json】【按需】请求业务对象",
         "jsn": "【json】【按需。暂无用，用于扩展】"
       }
@@ -30,14 +30,14 @@
 {
   "mvc": "【字符串】【按约。通常为msg字符串形式的校验码或enc字符串的校验码】Message Verification Code，消息校验码。根据约定的算法校验请求和响应数据完整性",
   "enc": "【字符串】【按约。为msg节点字符串形式的密文】Encoded，密文。根据约定的算法解密请求和加密响应数据",
-  "msg【json】【按约。如果enc存在，以enc为准】Message，消息。": {
-    "rno": "如请求未给，则生成全局永久唯一递增编号。否则原样返回",
-    "ano": "如果asy>0且此值请求未给，则生成全局永久唯一递增编号。否则原样返回",
-    "dsz": "【字符串】【可选】DateTimeSssZone，响应时间。格式：yyyy-MM-dd HH:mm:ss.SSSXXX",
+  "msg【json】【按约。如果enc存在，以enc为准】Message，消息": {
+    "rno": "【字符串】【必给】如请求未给，则生成全局永久唯一递增编号。否则原样返回",
+    "ano": "【字符串】【按需】如果asy>0且此值请求未给，则生成全局永久唯一递增编号。否则原样返回",
+    "dsz": "【字符串】【必给】DateTimeSssZone，响应时间。格式：yyyy-MM-dd HH:mm:ss.SSSXXX",
     "jsn": "【json】【按需。暂无用，用于扩展】",
-    "body【json】【必给】【该节点将用于请求级缓存】Response Body，响应业务数据。": {
-      "code": "响应代码",
-      "info": "响应信息",
+    "body【json】【必给】【该节点将用于请求级缓存】Response Body，响应业务数据": {
+      "code": "字符串】【必给】响应代码",
+      "info": "字符串】【按需】响应信息",
       "page": "【json】【按需】对于分页表格类请求返回总条数等信息",
       "data": "【json】【按需】响应业务对象",
       "json": "【json】【按需。暂无用，用于扩展】"
