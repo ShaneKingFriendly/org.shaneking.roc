@@ -1,77 +1,46 @@
 ## 请求响应（Request and Response）报文格式定义
-
 这只是一个通用模版，各系统可根据自身需要定制。
 
 ### Request
-
-- `obj`：为请求的业务对象
-- `jon`：为扩展的 `Json Object Node`
-- `ext.tbl`：主要用于分页场景
-
 ```json
 {
-  "pub": {
-    "channelNo": "渠道编号",
-    "encoded": "Y|N。表示 pri 是否加密为 enc",
-    "jon": null,
-    "tenantNo": "租户编号。不传入则同 channelNo，即 tenantNo=channelNo",
-    "tracingNo": "跟踪编号（一系列请求）。通常不传入",
-    "reqNo": "请求编号（本次请求）。通常不传入",
-    "mvc": "请求报文enc的消息校验码"
-  },
-  "enc": "pri 的加密形式，或空，或无此节点。若 encoded 为 Y，且此节点为 pri 的加密形式，则 pri 节点可不存在，如果存在也会被 enc 解密出的结果覆盖",
-  "pri": {
-    "ext": {
-      "dsz": "yyyy-MM-dd HH:mm:ss.SSSXXX（请求时间）",
-      "jon": null,
-      "tbl": {
-        "pagination": {
-          "count": 1,
-          "page": 2,
-          "size": 3
-        }
-      },
-      "userNo": "用户编号"
-    },
-    "obj": null
+    "cno": "【字符串】【必给】ChannelNo，渠道编号",
+    "tno【待定】": "【字符串】【可选】TracingNo，跟踪编号。用于调用方处理一笔请求时，多次调用我方场景，比如：一次支付，可能需要多次调银联",
+    "mvc": "【字符串】【按约。通常为msg字符串形式的校验码或enc字符串的校验码】Message Verification Code，消息校验码。根据约定的算法校验请求和响应数据完整性",
+    "enc": "【字符串】【按约。为msg节点字符串形式的密文】Encoded，密文。根据约定的算法解密请求和加密响应数据",
+    "msg【json】【按约。如果enc存在，以enc为准】Message，消息。": {
+      "tno": "【字符串】【按需。如不给，则等于cno】TenantNo，租户编号",
+      "rno": "【字符串】【可选。不给时，响应会自动生成】【全局永久唯一递增编号】RequestNo，请求编号。用于标识唯一请求，可防止重放。由org.shaneking.ling.zero.util.UUID0.cUl33()生成。样例：1612263653223_oGFvE5Hyndf0njoFhyK",
+      "asy": "【自然数】【可选】Asynchronous，异步等待秒数Seconds",
+      "ano": "【字符串】【按需。如果asy>0且此值未给，则响应会自动生成】【全局永久唯一递增编号】AsynchronousNo，异步编号",
+      "dsz": "【字符串】【可选】DateTimeSssZone，请求时间。",
+      "jsn": "【json】【按需。暂无用，用于扩展】",
+      "bdy【json】【必给】【该节点将用于请求级缓存】Request Body，请求业务数据。": {
+        "uno": "【字符串】【按需。对于需要记录到人的则必给，否则可不给】UserNo，用户编号",
+        "tbl": "【json】【按需。对于表格类（含page/sort/filter等）请求需传入，其他情况可不给】Json Object Node",
+        "obj": "【json】【按需】请求业务对象",
+        "jsn": "【json】【按需。暂无用，用于扩展】"
+      }
+    }
   }
-}
 ```
 
 ### Response
-
-- `rtn`：为响应的业务对象
-
 ```json
 {
-  "code": "0表示正常。非0表示各种异常",
-  "msg": "异常情况下关键信息。部分场景下该节点可能不存在，比如业务处理正常",
-  "data": {
-    "pub": {
-      "channelNo": "原样返回",
-      "encoded": "原样返回",
-      "jon": null,
-      "tenantNo": "原样返回 或为 channelNo 值",
-      "tracingNo": "如请求未给，则生成唯一编号。否则原样返回",
-      "reqNo": "如请求未给，则生成唯一编号。否则原样返回",
-      "mvc": "响应报文enc的消息校验码"
-    },
-    "enc": "pri 的加密形式，或空，或无此节点。若 encoded 为 Y，且此节点为 pri 的加密形式，则 pri 节点可不存在，如果存在，请使用 enc 解密出的结果覆盖",
-    "pri": {
-      "ext": {
-        "dsz": "yyyy-MM-dd HH:mm:ss.SSSXXX（响应时间）",
-        "jon": null,
-        "tbl": {
-          "pagination": {
-            "count": 1,
-            "page": 2,
-            "size": 3
-          }
-        },
-        "userNo": "原样返回"
-      },
-      "obj": null,
-      "rtn": null
+  "mvc": "【字符串】【按约。通常为msg字符串形式的校验码或enc字符串的校验码】Message Verification Code，消息校验码。根据约定的算法校验请求和响应数据完整性",
+  "enc": "【字符串】【按约。为msg节点字符串形式的密文】Encoded，密文。根据约定的算法解密请求和加密响应数据",
+  "msg【json】【按约。如果enc存在，以enc为准】Message，消息。": {
+    "rno": "如请求未给，则生成全局永久唯一递增编号。否则原样返回",
+    "ano": "如果asy>0且此值请求未给，则生成全局永久唯一递增编号。否则原样返回",
+    "dsz": "【字符串】【可选】DateTimeSssZone，响应时间。",
+    "jsn": "【json】【按需。暂无用，用于扩展】",
+    "body【json】【必给】【该节点将用于请求级缓存】Response Body，响应业务数据。": {
+      "code": "响应代码",
+      "info": "响应信息",
+      "page": "【json】【按需】对于分页表格类请求返回总条数等信息",
+      "data": "【json】【按需】响应业务对象",
+      "json": "【json】【按需。暂无用，用于扩展】"
     }
   }
 }
