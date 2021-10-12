@@ -36,8 +36,8 @@
     "dsz": "【字符串】【必给】DateTimeSssZone，响应时间。格式：yyyy-MM-dd HH:mm:ss.SSSXXX",
     "jsn": "【json】【按需。暂无用，用于扩展】",
     "body【json】【必给】【该节点将用于请求级缓存】Response Body，响应业务数据": {
-      "code": "字符串】【必给】响应代码",
-      "info": "字符串】【按需】响应信息",
+      "code": "【字符串】【必给】响应代码",
+      "info": "【字符串】【按需】响应信息",
       "page": "【json】【按需】对于分页表格类请求返回总条数等信息",
       "data": "【json】【按需】响应业务对象",
       "json": "【json】【按需。暂无用，用于扩展】"

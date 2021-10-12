@@ -2,7 +2,7 @@ package sktest.roc.rr;
 
 import org.junit.jupiter.api.Test;
 import org.shaneking.ling.jackson.databind.OM3;
-import org.shaneking.ling.persistence.Pagination;
+import org.shaneking.ling.zero.persistence.Pagination;
 import org.shaneking.roc.rr.Ext;
 import org.shaneking.roc.rr.Tbl;
 
