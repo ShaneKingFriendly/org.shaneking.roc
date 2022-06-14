@@ -19,10 +19,8 @@ public class UserBizImpl {
   @RrAudit
   @RrAccess
   @RrCrypto
-  public Resp<Req<SimpleUserEntity, Integer>> add(Req<SimpleUserEntity, Integer> req) {
-    Resp<Req<SimpleUserEntity, Integer>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.add(SimpleUserEntity.class, CacheableDao.pti(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
-    return resp;
+  public Resp<Integer, Req<SimpleUserEntity>> add(Req<SimpleUserEntity> req) {
+    return Resp.success(req, cacheableDao.add(SimpleUserEntity.class, CacheableDao.pti(req.getMsg().getBdy().getObj(), req.gnnCtx().gnaTenantId())));
   }
 
   @RrLimiting(prop = "sktest.roc.rr.biz.impl.UserBizImpl.lst", limit = 1)
@@ -30,29 +28,24 @@ public class UserBizImpl {
   @RrAccess
   @RrCache
   @RrCrypto
-  public Resp<Req<SimpleUserEntity, List<SimpleUserEntity>>> lst(Req<SimpleUserEntity, List<SimpleUserEntity>> req) {
-    Resp<Req<SimpleUserEntity, List<SimpleUserEntity>>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.lst(SimpleUserEntity.class, CacheableDao.pts(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
-    return resp;
+  public Resp<List<SimpleUserEntity>, Req<SimpleUserEntity>> lst(Req<SimpleUserEntity> req) {
+    return Resp.success(req, cacheableDao.lst(SimpleUserEntity.class, CacheableDao.pts(req.getMsg().getBdy().getObj(), req.gnnCtx().gnaTenantId())));
   }
 
   @RrAudit
   @RrAccess
   @RrCrypto
-  public Resp<Req<SimpleUserEntity, Integer>> modByIdVer(Req<SimpleUserEntity, Integer> req) {
-    Resp<Req<SimpleUserEntity, Integer>> resp = Resp.success(req);
-    req.getPri().setRtn(cacheableDao.modByIdVer(SimpleUserEntity.class, CacheableDao.ptu(req.getPri().getObj(), req.gnnCtx().gnaTenantId())));
-    return resp;
+  public Resp<Integer, Req<SimpleUserEntity>> modByIdVer(Req<SimpleUserEntity> req) {
+    return Resp.success(req, cacheableDao.modByIdVer(SimpleUserEntity.class, CacheableDao.ptu(req.getMsg().getBdy().getObj(), req.gnnCtx().gnaTenantId())));
   }
 
   @RrAudit
   @RrAccess
   @RrCrypto
-  public Resp<Req<String, Integer>> rmvById(Req<String, Integer> req) {
-    Resp<Req<String, Integer>> resp = Resp.success(req);
+  public Resp<Integer, Req<String>> rmvById(Req<String> req) {
+    Resp<Integer, Req<String>> resp = Resp.success(req, null);
     SimpleUserEntity userEntity = new SimpleUserEntity();
-    userEntity.setId(req.getPri().getObj());
-    req.getPri().setRtn(cacheableDao.rmvById(SimpleUserEntity.class, CacheableDao.ptu(userEntity, req.gnnCtx().gnaTenantId())));
-    return resp;
+    userEntity.setId(req.getMsg().getBdy().getObj());
+    return resp.srt(cacheableDao.rmvById(SimpleUserEntity.class, CacheableDao.ptu(userEntity, req.gnnCtx().gnaTenantId())));
   }
 }

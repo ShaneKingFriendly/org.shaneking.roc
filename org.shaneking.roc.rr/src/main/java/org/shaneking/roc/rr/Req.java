@@ -5,53 +5,34 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.rr.ReqMsg;
 
 @Accessors(chain = true)
 @ToString
-public class Req<O, R> {
+public class Req<I> {
+  @Getter
+  @Setter
+  private String cno;//ChannelNo
+  @Getter
+  @Setter
+  private String tkn;//Token, for one request on secret key scenario.
+  @Getter
+  @Setter
+  private String mvc;//Message Verification Code
+  @Getter
+  @Setter
+  private String enc;//ciphertext of msg
+  @Getter
+  @Setter
+  private ReqMsg<I> msg;
+
   @Getter
   @Schema(hidden = true)
   @Setter
   private Ctx ctx;
-  @Getter
-  @Setter
-  private String enc;
-  @Getter
-  @Setter
-  private Pri<O, R> pri;
-  @Getter
-  @Setter
-  private Pub pub;
 
-  public static <O, R> Req<O, R> build() {
-    return new Req<O, R>();
-  }
-
-  public static <O, R> Req<O, R> build(Pub pub) {
-    return new Req<O, R>().setPub(pub);
-  }
-
-  public static <O, R> Req<O, R> build(Pub pub, Pri<O, R> pri) {
-    return new Req<O, R>().setPub(pub).setPri(pri);
-  }
-
-  public static <O, R> Req<O, R> build(Pub pub, String enc) {
-    return new Req<O, R>().setPub(pub).setEnc(enc);
-  }
-
-  public static <O, R> Req<O, R> build(Pri<O, R> pri) {
-    return new Req<O, R>().setPri(pri);
-  }
-
-  public Req<O, R> attach(Ctx ctx) {
-    this.ctx = ctx;
-    return this;
-  }
-
-  public Ctx detach() {
-    Ctx rtn = ctx;
-    ctx = null;
-    return rtn;
+  public static <I> Req<I> build() {
+    return new Req<I>();
   }
 
   public Ctx gnnCtx() {
