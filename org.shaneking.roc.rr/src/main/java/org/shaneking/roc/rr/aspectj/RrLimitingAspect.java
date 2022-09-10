@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @Order(RrLimitingAspect.ORDER)
 public class RrLimitingAspect {
   public static final int ORDER = 34000;
-  public static final String ERR_CODE__BUSY_NOW = "RR_LIMITING_ASPECT__BUSY_NOW";
   private final Map<String, AtomicLong> map = Map0.newConcurrentHashMap();
   @Value("${sk.roc.rr.limiting.enabled:true}")
   private boolean enabled;
@@ -55,8 +54,8 @@ public class RrLimitingAspect {
             AtomicLong0.tryDecreaseFailed(atomicLong);
           }
         } else {
-          log.warn(MF0.fmt("{0} - {1} : {2}", ERR_CODE__BUSY_NOW, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
-          throw new RespException(Resp.failed(null, ERR_CODE__BUSY_NOW, pjp.getSignature().toLongString()));
+          log.warn(MF0.fmt("{0} - {1} : {2}", AtomicLong0.ERR_CODE__BUSY_NOW, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));
+          throw new RespException(Resp.failed(null, AtomicLong0.ERR_CODE__BUSY_NOW, pjp.getSignature().toLongString()));
         }
       } else {
         log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrLimiting)));

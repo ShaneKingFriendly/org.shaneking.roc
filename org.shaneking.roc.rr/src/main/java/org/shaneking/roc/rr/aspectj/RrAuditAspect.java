@@ -90,7 +90,7 @@ public class RrAuditAspect {
           log.error(OM3.lp(rtn, req, auditLogEntity), throwable);
           if (ifExceptionThenInProceed) {
             if (throwable instanceof RespException) {
-              rtn = Resp.failed(req, Resp.CODE_UNKNOWN_EXCEPTION, Resp.CODE_UNKNOWN_EXCEPTION).parseExp((RespException) throwable);
+              rtn = Resp.failed(req, Resp.CODE_UNKNOWN_EXCEPTION, throwable.getMessage()).parseExp((RespException) throwable);
             } else {
               throw throwable;
             }

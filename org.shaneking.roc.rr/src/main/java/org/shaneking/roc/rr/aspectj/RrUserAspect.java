@@ -71,12 +71,12 @@ public class RrUserAspect {
               rtn = Resp.failed(req, Numbered.ERR_CODE__NOT_FOUND_BY_NUMBER, req.gnaMsgUno());
             } else {
               req.gnnCtx().getAuditLog().setReqUserId(reqUserEntity.getId());
+
+              initReadableTenantUserCtx(req.gnnCtx());
+
+              ifExceptionThenInProceed = true;
+              rtn = pjp.proceed();
             }
-
-            initReadableTenantUserCtx(req.gnnCtx());
-
-            ifExceptionThenInProceed = true;
-            rtn = pjp.proceed();
           }
         } catch (Throwable throwable) {
           log.error(OM3.writeValueAsString(req), throwable);

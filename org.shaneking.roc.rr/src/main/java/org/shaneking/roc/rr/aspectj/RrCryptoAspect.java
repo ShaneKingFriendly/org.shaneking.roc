@@ -66,7 +66,7 @@ public class RrCryptoAspect {
             } else if (!String0.isNullOrEmpty(req.getMvc())) {
               if (MD5a.ALGORITHM_NAME.equalsIgnoreCase(channelEntity.getMvcTat())) {
                 if (!req.getMvc().equalsIgnoreCase(MD5a.encrypt(enc))) {
-                  rtn = Resp.failed(req, ChannelEntities.ERR_CODE__BAD_REQUEST_WITH_TAMPERED, OM3.lp(req.getMvc(), enc));
+                  rtn = Resp.failed(req, Req.ERR_CODE__BAD_WITH_TAMPERED, OM3.lp(req.getMvc(), enc));
                 } else {
                   verified = true;
                 }
@@ -94,7 +94,7 @@ public class RrCryptoAspect {
 
           if (rtn == null) {
             if (req.getMsg() == null || OM3.OBJECT_ERROR_STRING.equals(OM3.writeValueAsString(req.getMsg()))) {//can't use gnnMsg
-              rtn = Resp.failed(req, ChannelEntities.ERR_CODE__BAD_REQUEST_WITH_MESSAGE);
+              rtn = Resp.failed(req, Req.ERR_CODE__BAD_WITH_MESSAGE);
             } else {
               ifExceptionThenInProceed = true;
               rtn = pjp.proceed();

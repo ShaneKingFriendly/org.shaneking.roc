@@ -29,7 +29,7 @@ public class RrAsyncAspectHelper {
       asyncLogEntity.setRespJsonStr(OM3.writeValueAsString(resp)).setRespJsonStrCtx(OM3.writeValueAsString(req.gnnCtx())).setRespMsgBodyJsonStr(OM3.writeValueAsString(resp.getMsg().getBody())).setDoneDatetime(LDT0.on().dts());
       cacheableDao.modByIdVer(asyncLogEntity.entityClass(), asyncLogEntity);
     } catch (Throwable throwable) {
-      resp = Resp.failed(req, throwable.getClass().getName(), throwable.getMessage());
+      resp = Resp.failed(req, Resp.CODE_UNKNOWN_EXCEPTION, throwable.getMessage());
     }
     return new AsyncResult<>(resp);
   }
