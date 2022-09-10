@@ -6,17 +6,17 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.persistence.entity.sql.RrAuditLogEntities;
+import org.shaneking.ling.rr.Req;
 import org.shaneking.ling.rr.Resp;
+import org.shaneking.ling.rr.RespMsgBody;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.cache.ZeroCache;
+import org.shaneking.ling.zero.crypto.MD5a;
 import org.shaneking.ling.zero.lang.Boolean0;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.ling.zero.persistence.Tuple;
 import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.roc.jackson.JavaType3;
-import org.shaneking.roc.persistence.entity.sql.RrAuditLogEntities;
-import org.shaneking.roc.rr.Ctx;
-import org.shaneking.roc.rr.Req;
 import org.shaneking.roc.rr.annotation.RrCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Order(RrCacheAspect.ORDER)
 public class RrCacheAspect {
-  public static final int ORDER = 70000;
+  public static final int ORDER = 74000;
   @Value("${sk.roc.rr.cache.enabled:true}")
   private boolean enabled;
   @Autowired(required = false)
@@ -39,50 +39,36 @@ public class RrCacheAspect {
   @Around("pointcut() && @annotation(rrCache)")
   public Object around(ProceedingJoinPoint pjp, RrCache rrCache) throws Throwable {
     Object rtn = null;
-    boolean proceedBefore = false;
-    boolean proceedAfter = false;
     if (enabled && cache != null) {
       if (pjp.getArgs().length > rrCache.reqParamIdx() && pjp.getArgs()[rrCache.reqParamIdx()] instanceof Req) {
-        Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrCache.reqParamIdx()];
-        Tuple.Quintuple<Ctx, String, String, String, String> detached = detach(req);
+        boolean ifExceptionThenInProceed = false;
+        Req<?> req = (Req<?>) pjp.getArgs()[rrCache.reqParamIdx()];
         try {
-          String key = String.join(String0.MORE, pjp.getSignature().toLongString(), OM3.writeValueAsString(req));
-          String respCached = cache.get(key);
+          String key = String.join(String0.MORE, pjp.getSignature().toLongString(), MD5a.encrypt(OM3.writeValueAsString(req.gnnMsg().getBdy())));
+          String respMsgBody = cache.get(key);
 
-          RrAuditLogEntities auditLogEntity = Tuple.getFirst(detached).getAuditLog();
+          RrAuditLogEntities auditLogEntity = req.gnnCtx().getAuditLog();
           if (auditLogEntity != null) {
-            auditLogEntity.setCached(Boolean0.yn(!String0.isNullOrEmpty(respCached)));
+            auditLogEntity.setCached(Boolean0.yn(!String0.isNullOrEmpty(respMsgBody)));
           }
 
-          if (String0.isNullOrEmpty(respCached)) {
+          if (String0.isNullOrEmpty(respMsgBody)) {
             log.info(MF0.fmt("{0} - {1}", ZeroCache.ERR_CODE__CACHE_HIT_MISS, key));
-            attach(req, detached);
-            proceedBefore = true;
+            ifExceptionThenInProceed = true;
             rtn = pjp.proceed();
-            proceedAfter = true;
-            if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req) {
-              Resp<?> resp = (Resp<?>) rtn;
-              Tuple.Pair<Boolean, Tuple.Quintuple<Ctx, String, String, String, String>> respDetached = detach(resp);
-              cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(rtn));
-              attach(resp, respDetached);
+            if (rtn instanceof Resp) {
+              cache.set(key, rrCache.cacheSeconds(), OM3.writeValueAsString(((Resp<?, ?>) rtn).gnnMsg().gnnBody()));
             }
           } else {
-            log.info(MF0.fmt("{0} - {1} : {2}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, respCached));
-            Resp<?> resp = OM3.readValue(respCached, OM3.om().getTypeFactory().constructParametricType(Resp.class, JavaType3.resolveRtnJavaTypes(pjp)));
-            attach((Req<?, ?>) resp.getData(), detached);
-            rtn = resp;
+            log.info(MF0.fmt("{0} - {1} : {2}", ZeroCache.ERR_CODE__CACHE_HIT_ALL, key, respMsgBody));
+            rtn = Resp.success(req, null).srtMsgBody(OM3.readValue(respMsgBody, OM3.om().getTypeFactory().constructParametricType(RespMsgBody.class, JavaType3.resolveRtnJavaTypes(pjp))));
           }
         } catch (Throwable throwable) {
           log.error(OM3.writeValueAsString(req), throwable);
-          attach(req, detached);
-          if (proceedBefore && !proceedAfter) {
+          if (ifExceptionThenInProceed) {
             throw throwable;//process error
           } else {
-            if (proceedAfter) {
-              rtn = Resp.failed(Resp.CODE_UNKNOWN_EXCEPTION, String.valueOf(throwable), req);
-            } else {
-              rtn = pjp.proceed();
-            }
+            rtn = pjp.proceed();
           }
         }
       } else {
@@ -93,26 +79,6 @@ public class RrCacheAspect {
       rtn = pjp.proceed();
     }
     return rtn;
-  }
-
-  private void attach(Req<?, ?> req, Tuple.Quintuple<Ctx, String, String, String, String> detached) {
-    req.attach(Tuple.getFirst(detached)).getPub().setReqNo(Tuple.getSecond(detached)).setTracingNo(Tuple.getThird(detached)).setMvc(Tuple.getFifth(detached));
-    req.getPri().gnnExt().setDsz(Tuple.getFourth(detached));
-  }
-
-  private void attach(Resp<?> resp, Tuple.Pair<Boolean, Tuple.Quintuple<Ctx, String, String, String, String>> detached) {
-    attach((Req<?, ?>) resp.attach(Tuple.getFirst(detached)).getData(), Tuple.getSecond(detached));
-  }
-
-  private Tuple.Quintuple<Ctx, String, String, String, String> detach(Req<?, ?> req) {
-    Tuple.Quintuple<Ctx, String, String, String, String> rtn = Tuple.of(req.detach(), req.getPub().gnnReqNo(), req.getPub().gnnTracingNo(), req.getPri().gnnExt().getDsz(), req.getPub().getMvc());
-    req.getPub().setReqNo(null).setTracingNo(null).setMvc(null);
-    req.getPri().gnnExt().setDsz(null);
-    return rtn;
-  }
-
-  private Tuple.Pair<Boolean, Tuple.Quintuple<Ctx, String, String, String, String>> detach(Resp<?> resp) {
-    return Tuple.of(resp.detach(), detach((Req<?, ?>) resp.getData()));
   }
 
   @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrCache * *..*.*(..))")

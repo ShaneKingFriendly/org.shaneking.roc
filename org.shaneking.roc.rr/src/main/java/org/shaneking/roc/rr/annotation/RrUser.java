@@ -6,6 +6,6 @@ import java.lang.annotation.*;
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface RrAccess {
+public @interface RrUser {
   int reqParamIdx() default 0;
 }

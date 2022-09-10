@@ -1,6 +1,6 @@
 package org.shaneking.roc.persistence.entity;
 
-import org.shaneking.roc.persistence.CacheableEntities;
+import org.shaneking.ling.persistence.CacheableEntities;
 
 import javax.persistence.Transient;
 

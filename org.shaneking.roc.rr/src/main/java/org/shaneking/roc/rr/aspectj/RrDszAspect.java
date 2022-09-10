@@ -6,14 +6,15 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.ling.jackson.databind.OM3;
+import org.shaneking.ling.persistence.entity.sql.ChannelEntities;
+import org.shaneking.ling.rr.Req;
 import org.shaneking.ling.rr.Resp;
 import org.shaneking.ling.zero.annotation.ZeroAnnotation;
 import org.shaneking.ling.zero.lang.String0;
 import org.shaneking.ling.zero.text.MF0;
 import org.shaneking.ling.zero.time.ZDT0;
-import org.shaneking.roc.persistence.entity.sql.ChannelEntities;
-import org.shaneking.roc.rr.Req;
-import org.shaneking.roc.rr.annotation.RrAccess;
+import org.shaneking.roc.rr.annotation.RrDsz;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
@@ -28,31 +29,32 @@ import java.time.ZonedDateTime;
 @Slf4j
 @Order(RrDszAspect.ORDER)
 public class RrDszAspect {
-  public static final int ORDER = 60000;
+  public static final int ORDER = 72000;
   @Value("${sk.roc.rr.dsz.enabled:true}")
   private boolean enabled;
+  @Autowired(required = false)
+  private ChannelEntities channelEntityClass;
+  @Autowired
+  private RrCtxHelper rrCtxHelper;
 
-  @Around("pointcut() && @annotation(rrAccess)")
-  public Object around(ProceedingJoinPoint pjp, RrAccess rrAccess) throws Throwable {
+  @Around("pointcut() && @annotation(rrDsz)")
+  public Object around(ProceedingJoinPoint pjp, RrDsz rrDsz) throws Throwable {
     Object rtn = null;
-    if (enabled) {
-      if (pjp.getArgs().length > rrAccess.reqParamIdx() && pjp.getArgs()[rrAccess.reqParamIdx()] instanceof Req) {
-        Req<?, ?> req = (Req<?, ?>) pjp.getArgs()[rrAccess.reqParamIdx()];
-        ChannelEntities channelEntities = req.gnnCtx().getChannel();
-        if (channelEntities != null && channelEntities.getDszSeconds() != null && channelEntities.getDszSeconds() > 0
-          && (String0.isNullOrEmpty(req.getPri().gnnExt().getDsz()) || Duration.between(ZDT0.on().dTSZ(req.getPri().gnnExt().getDsz()).getZonedDateTime(), ZonedDateTime.now()).getSeconds() > channelEntities.getDszSeconds())) {
-          rtn = Resp.failed(ChannelEntities.ERR_CODE__INVALID_TIMESTAMP, req.getPri().gnnExt().getDsz(), req);
+    if (enabled && channelEntityClass != null) {
+      if (pjp.getArgs().length > rrDsz.reqParamIdx() && pjp.getArgs()[rrDsz.reqParamIdx()] instanceof Req) {
+        Req<?> req = (Req<?>) pjp.getArgs()[rrDsz.reqParamIdx()];
+        ChannelEntities channelEntity = req.gnnCtx().getChannel();
+        if (channelEntity.getDszSeconds() != null && channelEntity.getDszSeconds() > 0
+          && (String0.isNullOrEmpty(req.gnnMsg().getDsz()) || Duration.between(ZDT0.on().dTSZ(req.gnnMsg().getDsz()).getZonedDateTime(), ZonedDateTime.now()).getSeconds() > channelEntity.getDszSeconds())) {
+          rtn = Resp.failed(req, ChannelEntities.ERR_CODE__INVALID_TIMESTAMP, req.gnnMsg().getDsz());
         } else {
-          rtn = pjp.proceed();
-          if (rtn instanceof Resp && ((Resp<?>) rtn).getData() instanceof Req && ((Req<?, ?>) ((Resp<?>) rtn).getData()).getPri() != null) {
-            Req<?, ?> respReq = (Req<?, ?>) ((Resp<?>) rtn).getData();
-            if (!String0.isNullOrEmpty(respReq.getPri().gnnExt().getDsz())) {
-              respReq.getPri().gnnExt().setDsz(ZDT0.on().dTSZ());
-            }
+          rtn = pjp.proceed();//must no exception below
+          if (rtn instanceof Resp && !String0.isNullOrEmpty(req.gnnMsg().getDsz())) {
+            ((Resp<?, ?>) rtn).getMsg().setDsz(ZDT0.on().dTSZ());
           }
         }
       } else {
-        log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrAccess)));
+        log.error(MF0.fmt("{0} - {1} : {2}", ZeroAnnotation.ERR_CODE__ANNOTATION_SETTING_ERROR, pjp.getSignature().toLongString(), OM3.writeValueAsString(rrDsz)));
         rtn = pjp.proceed();
       }
     } else {
@@ -61,7 +63,7 @@ public class RrDszAspect {
     return rtn;
   }
 
-  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrAccess * *..*.*(..))")
+  @Pointcut("execution(@org.shaneking.roc.rr.annotation.RrDsz * *..*.*(..))")
   private void pointcut() {
   }
 }

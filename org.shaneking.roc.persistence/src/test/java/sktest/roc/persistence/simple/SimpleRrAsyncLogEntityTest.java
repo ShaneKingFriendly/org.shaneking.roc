@@ -28,7 +28,7 @@ class SimpleRrAsyncLogEntityTest extends SKUnit {
   @Test
   void testToString() {
     assertAll(
-      () -> Assertions.assertEquals("SimpleRrAsyncLogEntity(super=RrAsyncLogExample(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), tenantId=null), reqJsonStrRaw=null, ctxJsonStr=null, startDatetime=null, reqJsonStr=null, rtnJsonStr=null, rtnCode=null, rtnMsg=null, doneDatetime=null))", new SimpleRrAsyncLogEntity().toString()),
+      () -> Assertions.assertEquals("SimpleRrAsyncLogEntity(super=RrAsyncLogExample(super=TenantedEntity(super=AbstractCacheableEntity(super=AbstractDialectSqlEntity(id=null, ver=null, dd=N, ivd=null, lmDsz=null, lmUid=null, no=null), lastModifyUser=null), tenantId=null), startDatetime=null, reqJsonStr=null, respJsonStr=null, respJsonStrCtx=null, respMsgBodyJsonStr=null, doneDatetime=null))", new SimpleRrAsyncLogEntity().toString()),
       () -> assertEquals("{}", OM3.writeValueAsString(new SimpleRrAsyncLogEntity().nullSetter()))
     );
   }

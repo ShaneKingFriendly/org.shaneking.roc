@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.shaneking.ling.persistence.entity.sql.RrAuditLogEntities;
 import org.shaneking.roc.persistence.entity.TenantedChannelizedEntity;
-import org.shaneking.roc.persistence.entity.sql.RrAuditLogEntities;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -20,6 +20,9 @@ public abstract class RrAuditLogExample extends TenantedChannelizedEntity implem
   @Setter
   private String tracingNo;
 
+  /**
+   * @see org.shaneking.ling.zero.util.Date0#DATE_TIME
+   */
   @Column(length = 20, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter

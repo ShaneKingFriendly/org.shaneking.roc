@@ -1,8 +1,10 @@
 package org.shaneking.roc.rr.service;
 
-import org.shaneking.roc.persistence.entity.sql.UserEntities;
-import org.shaneking.roc.rr.Req;
+import org.shaneking.ling.persistence.entity.sql.UserEntities;
+import org.shaneking.ling.rr.Req;
 
 public interface RrAutoCreateUserService {
-  UserEntities create(Req<?, ?> req);
+  UserEntities createUser(Req<?> req);
+
+  UserEntities createReqUser(Req<?> req);
 }

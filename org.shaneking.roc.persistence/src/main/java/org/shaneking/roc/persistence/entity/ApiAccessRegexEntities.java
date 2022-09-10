@@ -1,7 +1,7 @@
 package org.shaneking.roc.persistence.entity;
 
+import org.shaneking.ling.persistence.CacheableEntities;
 import org.shaneking.ling.zero.lang.String0;
-import org.shaneking.roc.persistence.CacheableEntities;
 
 import java.util.regex.Pattern;
 

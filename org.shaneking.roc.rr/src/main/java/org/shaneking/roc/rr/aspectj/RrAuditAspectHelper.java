@@ -1,7 +1,7 @@
 package org.shaneking.roc.rr.aspectj;
 
+import org.shaneking.ling.persistence.entity.sql.RrAuditLogEntities;
 import org.shaneking.roc.persistence.dao.CacheableDao;
-import org.shaneking.roc.persistence.entity.sql.RrAuditLogEntities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;

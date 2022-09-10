@@ -1,5 +1,7 @@
 ## 请求响应（Request and Response）报文格式定义
+
 ### Request
+
 ```json
 {
     "cno": "【字符串】【必给】ChannelNo，渠道编号",
@@ -25,6 +27,7 @@
 ```
 
 ### Response
+
 ```json
 {
   "mvc": "【字符串】【按约。通常为msg字符串形式的校验码或enc字符串的校验码】Message Verification Code，消息校验码。根据约定的算法校验请求和响应数据完整性",

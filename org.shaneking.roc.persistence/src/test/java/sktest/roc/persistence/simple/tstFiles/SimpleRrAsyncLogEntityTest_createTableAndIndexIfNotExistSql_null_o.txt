@@ -7,13 +7,11 @@ create table if not exists `t_simple_rr_async_log_entity` (
   `lm_uid` varchar(40) default '',
   `no` varchar(40) default '',
   `tenant_id` varchar(40) default '',
-  `req_json_str_raw` text default '',
-  `ctx_json_str` text default '',
   `start_datetime` varchar(20) default '',
   `req_json_str` text default '',
-  `rtn_json_str` text default '',
-  `rtn_code` varchar(255) default '',
-  `rtn_msg` text default '',
+  `resp_json_str` text default '',
+  `resp_json_str_ctx` text default '',
+  `resp_msg_body_json_str` text default '',
   `done_datetime` varchar(20) default '',
   primary key (`id`)
 );

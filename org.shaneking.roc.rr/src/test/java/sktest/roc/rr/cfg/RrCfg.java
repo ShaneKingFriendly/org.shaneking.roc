@@ -1,6 +1,10 @@
 package sktest.roc.rr.cfg;
 
-import org.shaneking.roc.persistence.entity.sql.*;
+import org.shaneking.ling.persistence.entity.sql.ChannelEntities;
+import org.shaneking.ling.persistence.entity.sql.RrAuditLogEntities;
+import org.shaneking.ling.persistence.entity.sql.TenantEntities;
+import org.shaneking.ling.persistence.entity.sql.UserEntities;
+import org.shaneking.roc.persistence.entity.sql.ChannelAccessTenantRegexApiEntities;
 import org.shaneking.roc.persistence.simple.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

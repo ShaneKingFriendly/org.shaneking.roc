@@ -14,20 +14,6 @@ import javax.persistence.Lob;
 @Accessors(chain = true)
 @ToString(callSuper = true)
 public abstract class RrAsyncLogExample extends TenantedEntity implements RrAsyncLogEntities {
-  @Column(columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
-  @Getter
-  @Lob
-  @Setter
-  private String reqJsonStrRaw;
-
-  @Column(columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
-  @Getter
-  @Lob
-  @Setter
-  private String ctxJsonStr;
-
   @Column(length = 20, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
@@ -46,20 +32,21 @@ public abstract class RrAsyncLogExample extends TenantedEntity implements RrAsyn
   @Getter
   @Lob
   @Setter
-  private String rtnJsonStr;
-
-  @Column(columnDefinition = "default '' COMMENT ''")
-  @ExcelColumn
-  @Getter
-  @Setter
-  private String rtnCode;
+  private String respJsonStr;
 
   @Column(columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
   @Getter
   @Lob
   @Setter
-  private String rtnMsg;
+  private String respJsonStrCtx;
+
+  @Column(columnDefinition = "default '' COMMENT ''")
+  @ExcelColumn
+  @Getter
+  @Lob
+  @Setter
+  private String respMsgBodyJsonStr;
 
   @Column(length = 20, columnDefinition = "default '' COMMENT ''")
   @ExcelColumn
