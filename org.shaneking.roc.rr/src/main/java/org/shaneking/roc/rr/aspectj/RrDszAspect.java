@@ -34,8 +34,6 @@ public class RrDszAspect {
   private boolean enabled;
   @Autowired(required = false)
   private ChannelEntities channelEntityClass;
-  @Autowired
-  private RrCtxHelper rrCtxHelper;
 
   @Around("pointcut() && @annotation(rrDsz)")
   public Object around(ProceedingJoinPoint pjp, RrDsz rrDsz) throws Throwable {

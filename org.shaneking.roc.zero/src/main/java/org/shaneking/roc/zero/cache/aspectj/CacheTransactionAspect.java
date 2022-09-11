@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.shaneking.roc.zero.cache.listener.CacheTransactionEventObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.annotation.Order;
@@ -16,19 +17,23 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Aspect
 @Component
-@ConditionalOnProperty(prefix = "sk.roc.zero.cache.transactional", value = "enabled", matchIfMissing = false)
+@ConditionalOnProperty(prefix = "sk.roc.zero.cache.transactional", value = "enabled", matchIfMissing = true)
 @Slf4j
 @Order(CacheTransactionAspect.ORDER)//@EnableTransactionManagement(order = <this)
 public class CacheTransactionAspect {
   public static final int ORDER = 500000;
+  @Value("${sk.roc.zero.cache.transactional.enabled:true}")
+  private boolean enabled;
   @Autowired
   private ApplicationEventPublisher applicationEventPublisher;
 
   @Around("pointcut() && @annotation(transactional)")
   public Object around(ProceedingJoinPoint pjp, Transactional transactional) throws Throwable {
-    applicationEventPublisher.publishEvent(new CacheTransactionEventObject().setReadOnly(transactional.readOnly())
-      .setCurrentTransactionReadOnly(TransactionSynchronizationManager.isCurrentTransactionReadOnly())
-      .setTransactionName(TransactionSynchronizationManager.getCurrentTransactionName()));
+    if (enabled) {
+      applicationEventPublisher.publishEvent(new CacheTransactionEventObject().setReadOnly(transactional.readOnly())
+        .setCurrentTransactionReadOnly(TransactionSynchronizationManager.isCurrentTransactionReadOnly())
+        .setTransactionName(TransactionSynchronizationManager.getCurrentTransactionName()));
+    }
     return pjp.proceed();
   }
 

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @ConditionalOnProperty(prefix = "sk.roc.persistence.entity.cache", value = "enabled", matchIfMissing = true)
 @Slf4j
 public class EntityCacheEvictAspect {
-  @Value("${sk.roc.persistence.entity.cache.enabled:false}")
+  @Value("${sk.roc.persistence.entity.cache.enabled:true}")
   private boolean enabled;
   @Autowired
   private ZeroCache cache;
