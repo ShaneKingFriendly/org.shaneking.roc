@@ -93,7 +93,7 @@ public class RrCryptoAspect {
           }
 
           if (rtn == null) {
-            if (req.getMsg() == null || OM3.OBJECT_ERROR_STRING.equals(OM3.writeValueAsString(req.getMsg()))) {//can't use gnnMsg
+            if (req.getMsg() == null || OM3.OBJECT_EMPTY_STRING.equals(OM3.writeValueAsString(req.getMsg()))) {//can't use gnnMsg
               rtn = Resp.failed(req, Req.ERR_CODE__BAD_WITH_MESSAGE);
             } else {
               ifExceptionThenInProceed = true;
