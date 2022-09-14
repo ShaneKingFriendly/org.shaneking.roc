@@ -64,7 +64,9 @@ public class UserBizTest extends SKSpringUnit {
   }
 
   Req<SimpleUserEntity> req() {
-    return Req.<SimpleUserEntity>build().setCno("tstChannelNo").setMsg(reqMsg());
+    Req<SimpleUserEntity> rtn = Req.build();
+    rtn.setCno("tstChannelNo").setMsg(reqMsg());
+    return rtn;
   }
 
   SimpleUserEntity userEntity(String id) {
