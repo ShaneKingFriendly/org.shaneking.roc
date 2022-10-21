@@ -4,23 +4,6 @@ ShaneKing Java Spring Library
 
 ## @
 
-### @ConditionalOnMissingBean
-
-- persistence
-  - ApiAccessRegexEntities(**recommended**)
-  - ApiAccessSignatureEntities(optional)
-  - ApiAccessUrlEntities(**recommended**)
-  - AuditLogEntities(`required`)
-  - ChannelEntities(`required`)
-  - ChannelReadableTenantEntities(optional)
-  - TenantEntities(`required`)
-  - TenantReadableTenantEntities(optional)
-  - UserEntities(`required`)
-- rr
-  - RrAutoCreateUserService(optional)
-- zero
-  - ZeroCache(optional)
-
 ### @ConditionalOnProperty
 
 ```yaml
@@ -29,25 +12,33 @@ sk:
     persistence:
       entity:
         cache:
-          enabled: false
+          enabled: true
       simple:
         entity:
           enabled: false
     rr:
-      audit:
+      async:
         enabled: true
-      access:
+      audit:
         enabled: true
       cache:
         enabled: true
+      channel:
+        enabled: true
       crypto:
+        enabled: true
+      dsz:
         enabled: true
       limiting:
         enabled: true
+      tenant:
+        enabled: true
+      user:
+        enabled: true
     zero:
-      chche:
+      cache:
         transactional:
-          enabled: false
+          enabled: true
       simple:
         cache:
           enabled: false
@@ -78,20 +69,33 @@ sk:
     persistence:
       entity:
         cache:
-          enabled: false
+          enabled: true
       dao:
         cache:
           seconds: 180
     rr:
-      limiting:
+      async:
         enabled: true
       audit:
-        enabled: true
-      access:
+        async: true
         enabled: true
       cache:
         enabled: true
+      channel:
+        enabled: true
       crypto:
         enabled: true
+      dsz:
+        enabled: true
+      limiting:
+        enabled: true
+      tenant:
+        enabled: true
+      user:
+        enabled: true
+    zero:
+      cache:
+        transactional:
+          enabled: true
 ```
 

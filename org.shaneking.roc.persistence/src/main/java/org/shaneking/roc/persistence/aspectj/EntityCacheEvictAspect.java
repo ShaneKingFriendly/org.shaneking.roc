@@ -27,12 +27,12 @@ import java.util.stream.Collectors;
 public class EntityCacheEvictAspect {
   @Value("${sk.roc.persistence.entity.cache.enabled:true}")
   private boolean enabled;
-  @Autowired
+  @Autowired(required = false)
   private ZeroCache cache;
 
   @After("pointcut() && @annotation(entityCacheEvict)")
   public void after(JoinPoint jp, EntityCacheEvict entityCacheEvict) throws Throwable {
-    if (enabled) {
+    if (enabled && cache != null) {
       if (jp.getArgs().length > entityCacheEvict.clsIdx() && jp.getArgs()[entityCacheEvict.clsIdx()] instanceof Class) {
         Class clazz = (Class) jp.getArgs()[entityCacheEvict.clsIdx()];
         try {

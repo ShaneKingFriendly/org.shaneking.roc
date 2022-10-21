@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class EntityCacheableAspect {
   @Value("${sk.roc.persistence.entity.cache.enabled:true}")
   private boolean enabled;
-  @Autowired
+  @Autowired(required = false)
   private ZeroCache cache;
 
   @Around("pointcut() && @annotation(entityCacheable)")
@@ -38,7 +38,7 @@ public class EntityCacheableAspect {
     Object rtn = null;
     List<Object> rtnList = null;
     List<Object> argList = null;
-    if (enabled) {
+    if (enabled && cache != null) {
       if (pjp.getArgs().length > entityCacheable.clsIdx() && pjp.getArgs()[entityCacheable.clsIdx()] instanceof Class) {
         Class clazz = (Class) pjp.getArgs()[entityCacheable.clsIdx()];
         try {

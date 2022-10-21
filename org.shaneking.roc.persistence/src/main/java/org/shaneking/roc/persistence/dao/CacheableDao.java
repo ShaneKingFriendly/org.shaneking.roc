@@ -29,7 +29,7 @@ public class CacheableDao {
   public static final String FMT__DUPLICATE_RECORD = "Duplicate {0} records of {1} by `{2}`";
   public static final String FMT__NOT_FOUND = "Not found {0} by `{1}`";
 
-  @Autowired
+  @Autowired(required = false)
   @Getter
   private JdbcTemplate jdbcTemplate;
 
